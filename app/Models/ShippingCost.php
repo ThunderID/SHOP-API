@@ -1,0 +1,83 @@
+<?php
+
+namespace App\Models;
+
+// use App\Models\Observers\ShippingCostObserver;
+
+class ShippingCost extends BaseModel
+{
+	/**
+	 * The database table used by the model.
+	 *
+	 * @var string
+	 */
+	protected $table				= 'shipping_costs';
+
+	// protected $timestamps			= true;
+
+	/**
+	 * Timestamp field
+	 *
+	 * @var array
+	 */
+	protected $dates				=	['created_at', 'updated_at', 'deleted_at'];
+
+	/**
+	 * The appends attributes from mutator and accessor
+	 *
+	 * @var array
+	 */
+	protected $appends				=	[];
+
+	/**
+	 * The attributes excluded from the model's JSON form.
+	 *
+	 * @var array
+	 */
+	protected $hidden 				= [];
+
+	/**
+	 * The attributes that are mass assignable.
+	 *
+	 * @var array
+	 */
+
+	protected $fillable				=	[
+											'courier_id'					,
+											'start_postal_code'				,
+											'end_postal_code'				,
+											'started_at'					,
+											'cost'							,
+										];
+										
+	/**
+	 * Basic rule of database
+	 *
+	 * @var array
+	 */
+	protected $rules				=	[
+											'start_postal_code'				=> 'required|numeric',
+											'end_postal_code'				=> 'required|numeric',
+											'cost'							=> 'required|numeric',
+											'started_at'					=> 'required|date_format:"Y-m-d H:i:s"'/*|after:now*/,
+										];
+	
+	/* ---------------------------------------------------------------------------- RELATIONSHIP ----------------------------------------------------------------------------*/
+	
+	/* ---------------------------------------------------------------------------- QUERY BUILDER ----------------------------------------------------------------------------*/
+	
+	/* ---------------------------------------------------------------------------- MUTATOR ----------------------------------------------------------------------------*/
+	
+	/* ---------------------------------------------------------------------------- ACCESSOR ----------------------------------------------------------------------------*/
+	
+	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
+		
+	public static function boot() 
+	{
+        parent::boot();
+ 
+        // ShippingCost::observe(new ShippingCostObserver());
+    }
+
+	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
+}
