@@ -58,7 +58,7 @@ class Tag extends Cluster
 	{
         parent::boot();
  
-        Tag::observe(new TagObserver());
+        // Tag::observe(new TagObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/

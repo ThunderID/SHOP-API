@@ -51,19 +51,19 @@ abstract class BaseModel extends Eloquent
 	{
 		if(is_array($variable))
 		{
-			return 	$query->whereIn('id', $variable);
+			return 	$query->whereIn($query->getModel()->table.'.id', $variable);
 		}
 
-		return 	$query->where('id', $variable);
+		return 	$query->where($query->getModel()->table.'.id', $variable);
 	}
 
 	public function scopeNotID($query, $variable)
 	{
 		if(is_array($variable))
 		{
-			return 	$query->whereNotIn('id', $variable);
+			return 	$query->whereNotIn($query->getModel()->table.'.id', $variable);
 		}
 
-		return 	$query->where('id', '<>', $variable);
+		return 	$query->where($query->getModel()->table.'.id', '<>', $variable);
 	}
 }

@@ -53,7 +53,7 @@ class Cluster extends BaseModel
 	{
         parent::boot();
  
-        Cluster::observe(new ClusterObserver());
+        // Cluster::observe(new ClusterObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/

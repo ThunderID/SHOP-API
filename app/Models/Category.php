@@ -58,7 +58,7 @@ class Category extends Cluster
 	{
         parent::boot();
  
-        Category::observe(new CategoryObserver());
+        // Category::observe(new CategoryObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/

@@ -16,11 +16,25 @@ class CurrentStockScope implements ScopeInterface
 	 */
 	public function apply(Builder $builder, Model $model)
 	{
-		$builder->selectcurrentstock(true)
-				->LeftJoinVarianFromProduct(true)
-				->LeftJoinTransactionDetailFromVarian(true)
-				->LeftTransactionStockOn(['wait', 'paid', 'packed', 'shipping', 'delivered'])
-				;
+		if($model->getTable()=='products')
+		{
+			$builder->selectraw('products.*')
+					->selectcurrentstock(true)
+					->LeftJoinVarianFromProduct(true)
+					->LeftJoinTransactionDetailFromVarian(true)
+					->LeftTransactionStockOn(['wait', 'paid', 'packed', 'shipping', 'delivered'])
+					->groupby('products.id')
+					;
+		}
+		else
+		{
+			$builder->selectraw('varians.*')
+					->selectcurrentstock(true)
+					->LeftJoinTransactionDetailFromVarian(true)
+					->LeftTransactionStockOn(['wait', 'paid', 'packed', 'shipping', 'delivered'])
+					->groupby('varians.id')
+					;
+		}
 	}
 
 	/**

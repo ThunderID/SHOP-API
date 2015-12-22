@@ -2,19 +2,22 @@
 
 namespace App\Models;
 
-// use App\Models\Observers\ImageObserver;
+// use App\Models\Observers\ProductLabelObserver;
 
-class Image extends BaseModel
+class ProductLabel extends BaseModel
 {
 	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
-	use \App\Models\Traits\morphTo\HasImageableTrait;
-	
+
+	/* ---------------------------------------------------------------------------- GLOBAL SCOPE TRAITS ---------------------------------------------------------------------*/
+
+	/* ---------------------------------------------------------------------------- GLOBAL PLUG SCOPE TRAITS ---------------------------------------------------------------------*/
+
 	/**
 	 * The database table used by the model.
 	 *
 	 * @var string
 	 */
-	protected $table				= 'images';
+	protected $table				= 'product_lables';
 
 	// protected $timestamps			= true;
 
@@ -23,7 +26,7 @@ class Image extends BaseModel
 	 *
 	 * @var array
 	 */
-	protected $dates				=	['created_at', 'updated_at', 'deleted_at'];
+	protected $dates				=	['created_at', 'updated_at', 'deleted_at', 'ondate'];
 
 	/**
 	 * The appends attributes from mutator and accessor
@@ -46,25 +49,20 @@ class Image extends BaseModel
 	 */
 
 	protected $fillable				=	[
-											'thumbnail'						,
-											'image_xs'						,
-											'image_sm'						,
-											'image_md'						,
-											'image_lg'						,
-											'is_default'					,
+											'product_id'					,
+											'lable'							,
+											'value'							,
+											'started_at'					,
+											'ended_at'						,
 										];
-
+										
 	/**
 	 * Basic rule of database
 	 *
 	 * @var array
 	 */
 	protected $rules				=	[
-											'thumbnail'						=> 'required|max:255|url',
-											'image_xs'						=> 'required|max:255|url',
-											'image_sm'						=> 'required|max:255|url',
-											'image_md'						=> 'required|max:255|url',
-											'image_lg'						=> 'required|max:255|url',
+											'lable' 	=> 'required',
 										];
 	
 	/* ---------------------------------------------------------------------------- RELATIONSHIP ----------------------------------------------------------------------------*/
@@ -72,7 +70,7 @@ class Image extends BaseModel
 	/* ---------------------------------------------------------------------------- QUERY BUILDER ----------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- MUTATOR ----------------------------------------------------------------------------*/
-	
+
 	/* ---------------------------------------------------------------------------- ACCESSOR ----------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
@@ -81,7 +79,7 @@ class Image extends BaseModel
 	{
         parent::boot();
  
-        // Image::observe(new ImageObserver());
+        // ProductLabel::observe(new ProductLabelObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/

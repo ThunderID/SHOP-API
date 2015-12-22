@@ -2,10 +2,26 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasCurrentPriceTrait;
+use App\Models\Traits\HasCurrentStockTrait;
+use App\Models\Traits\HasDefaultImageTrait;
+
+use App\Models\Traits\HasStockTrait;
+use App\Models\Traits\HasTransactionStatusTrait;
 // use App\Models\Observers\VarianObserver;
 
 class Varian extends BaseModel
 {
+	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	use \App\Models\Traits\belongsTo\HasProductTrait;
+	
+	/* ---------------------------------------------------------------------------- GLOBAL SCOPE TRAITS ---------------------------------------------------------------------*/
+	use HasCurrentStockTrait;
+
+	/* ---------------------------------------------------------------------------- GLOBAL PLUG SCOPE TRAITS ---------------------------------------------------------------------*/
+	use HasStockTrait;
+	use HasTransactionStatusTrait;
+
 	/**
 	 * The database table used by the model.
 	 *

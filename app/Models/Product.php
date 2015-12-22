@@ -14,6 +14,12 @@ class Product extends BaseModel
 {
 	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
 	use \App\Models\Traits\hasMany\HasVariansTrait;
+	use \App\Models\Traits\hasMany\HasPricesTrait;
+	use \App\Models\Traits\hasMany\HasLabelsTrait;
+
+	use \App\Models\Traits\belongsToMany\HasClustersTrait;
+
+	use \App\Models\Traits\morphMany\HasImagesTrait;
 
 	/* ---------------------------------------------------------------------------- GLOBAL SCOPE TRAITS ---------------------------------------------------------------------*/
 	use HasCurrentStockTrait;
@@ -87,50 +93,6 @@ class Product extends BaseModel
 	
 	/* ---------------------------------------------------------------------------- MUTATOR ----------------------------------------------------------------------------*/
 	
-	// public function getPriceAttribute($value)
-	// {
-	// 	if(isset($this->price))
-	// 	{
-	// 		return $this->price;
-	// 	}
-	// 	else
-	// 	{
-	// 		$price 						= Price::productid($this->id)->ondate('now')->first();
-	// 		if($price)
-	// 		{
-	// 			return $price->price;
-	// 		}
-	// 		else
-	// 		{
-	// 			return 0;
-	// 		}
-	// 	}
-
-	// 	return 0;
-	// }
-
-	// public function getPromoPriceAttribute($value)
-	// {
-	// 	if(isset($this->price))
-	// 	{
-	// 		$price 						= $this->current_promo_price;
-	// 	}
-	// 	else
-	// 	{
-	// 		$promo 						= Price::productid($this->id)->ondate('now')->first();
-	// 		if($promo)
-	// 		{
-	// 			$price 					= $promo->promo_price;
-	// 		}
-	// 		else
-	// 		{
-	// 			$price 					= 0;
-	// 		}
-	// 	}
-
-	// 	return $price;
-	// }
-
 	/* ---------------------------------------------------------------------------- ACCESSOR ----------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
