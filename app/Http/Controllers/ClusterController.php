@@ -116,7 +116,7 @@ class ClusterController extends Controller
 
         DB::commit();
         
-        $final_category              = \App\Models\Cluster::id($cluster_data['id'])->with(['category', 'products'])->first()->toArray();
+        $final_cluster              = \App\Models\Cluster::id($cluster_data['id'])->with(['category', 'products'])->first()->toArray();
 
         return new JSend('success', (array)$final_cluster);
     }

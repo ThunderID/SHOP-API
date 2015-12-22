@@ -92,9 +92,42 @@ $app->post('/cluster/store',
 	]
 );
 
-$app->get('/cluster/delete/{id}',
+$app->delete('/cluster/delete/{id}',
 	[
 		// 'middleware'		=> 'oauth',
 		'uses'				=> 'ClusterController@delete'
+	]
+);
+
+// ------------------------------------------------------------------------------------
+// SUPPLIERS
+// ------------------------------------------------------------------------------------
+
+//Product it self
+$app->get('/suppliers',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'SupplierController@index'
+	]
+);
+
+$app->get('/supplier/{id}',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'SupplierController@detail'
+	]
+);
+
+$app->post('/supplier/store',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'SupplierController@store'
+	]
+);
+
+$app->delete('/supplier/delete/{id}',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'SupplierController@delete'
 	]
 );
