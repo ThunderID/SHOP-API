@@ -16,29 +16,29 @@
 // ------------------------------------------------------------------------------------
 
 $app->get('/products',
-   [
-        // 'middleware'    => 'oauth',
-        'uses'          => 'ProductController@index'
-    ]
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'ProductController@index'
+	]
 );
 
 $app->get('/product/{id}',
-   [
-        // 'middleware'    => 'oauth',
-        'uses'          => 'ProductController@detail'
-    ]
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'ProductController@detail'
+	]
 );
 
 $app->post('/product/store',
-   [
-        // 'middleware'    => 'oauth',
-        'uses'          => 'ProductController@store'
-    ]
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'ProductController@store'
+	]
 );
 
 $app->delete('/product/delete/{id}',
-   [
-        // 'middleware'    => 'oauth',
-        'uses'          => 'ProductController@delete'
-    ]
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'ProductController@delete'
+	]
 );
