@@ -65,3 +65,36 @@ $app->get('/products/stock/opname',
 		'uses'				=> 'WarehouseController@opname'
 	]
 );
+
+// ------------------------------------------------------------------------------------
+// CLUSTERS
+// ------------------------------------------------------------------------------------
+
+//Product it self
+$app->get('/clusters',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'ClusterController@index'
+	]
+);
+
+$app->get('/cluster/{id}',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'ClusterController@detail'
+	]
+);
+
+$app->post('/cluster/store',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'ClusterController@store'
+	]
+);
+
+$app->get('/cluster/delete/{id}',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'ClusterController@delete'
+	]
+);

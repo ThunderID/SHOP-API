@@ -2,12 +2,22 @@
 
 namespace App\Models;
 
-use App\Models\Traits\HasTypeTrait;
 // use App\Models\Observers\ClusterObserver;
+
+use App\Models\Traits\HasTypeTrait;
+use App\Models\Traits\HasStockTrait;
+use App\Models\Traits\HasTransactionStatusTrait;
 
 class Cluster extends BaseModel
 {
+	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	use \App\Models\Traits\belongsTo\HasClusterTrait;
+	use \App\Models\Traits\belongsToMany\HasProductsTrait;
+	
+	/* ---------------------------------------------------------------------------- GLOBAL PLUG SCOPE TRAITS ---------------------------------------------------------------------*/
 	use HasTypeTrait;
+	use HasStockTrait;
+	use HasTransactionStatusTrait;
 
 	/**
 	 * The database table used by the model.
