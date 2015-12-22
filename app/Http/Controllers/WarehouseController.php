@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Libraries\JSend;
 use Illuminate\Support\Facades\Input;
 
-class StockController extends Controller
+class WarehouseController extends Controller
 {
     /**
      * Display product stock

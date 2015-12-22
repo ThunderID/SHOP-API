@@ -44,24 +44,24 @@ $app->delete('/product/delete/{id}',
 	]
 );
 
-//Product's Stock it self
+//Warehouse
 $app->get('/product/stock/card/{id}',
 	[
 		// 'middleware'		=> 'oauth',
-		'uses'				=> 'StockController@card'
+		'uses'				=> 'WarehouseController@card'
 	]
 );
 
 $app->get('/products/stock/critical',
 	[
 		// 'middleware'		=> 'oauth',
-		'uses'				=> 'StockController@critical'
+		'uses'				=> 'WarehouseController@critical'
 	]
 );
 
 $app->get('/products/stock/opname',
 	[
 		// 'middleware'		=> 'oauth',
-		'uses'				=> 'StockController@opname'
+		'uses'				=> 'WarehouseController@opname'
 	]
 );
