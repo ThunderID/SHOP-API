@@ -15,6 +15,7 @@
 // PRODUCTS
 // ------------------------------------------------------------------------------------
 
+//Product it self
 $app->get('/products',
 	[
 		// 'middleware'		=> 'oauth',
@@ -40,5 +41,27 @@ $app->delete('/product/delete/{id}',
 	[
 		// 'middleware'		=> 'oauth',
 		'uses'				=> 'ProductController@delete'
+	]
+);
+
+//Product's Stock it self
+$app->get('/product/stock/card/{id}',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'StockController@card'
+	]
+);
+
+$app->get('/products/stock/critical',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'StockController@critical'
+	]
+);
+
+$app->get('/products/stock/opname',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'StockController@opname'
 	]
 );

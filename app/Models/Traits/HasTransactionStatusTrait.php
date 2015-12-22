@@ -94,7 +94,7 @@ trait HasTransactionStatusTrait
 			 ->leftjoin('transaction_logs', function ($join) use($variable) 
 			 {
                                     $join->on ( 'transaction_logs.transaction_id', '=', 'transactions.id' )
-									->on(DB::raw('(transaction_logs.changed_at = (select id from transaction_logs as tl2 where tl2.transaction_id = transaction_logs.transaction_id and tl2.deleted_at is null order by tl2.changed_at desc limit 1))'), DB::raw(''), DB::raw(''))
+									->on(DB::raw('(transaction_logs.id = (select id from transaction_logs as tl2 where tl2.transaction_id = transaction_logs.transaction_id and tl2.deleted_at is null order by tl2.changed_at desc limit 1))'), DB::raw(''), DB::raw(''))
                                     ->where('transaction_logs.status', '=', $variable)
                                     ->wherenull('transaction_logs.deleted_at')
                                     ;
@@ -107,7 +107,7 @@ trait HasTransactionStatusTrait
 			 ->leftjoin('transaction_logs', function ($join) use($variable) 
 			 {
                                     $join->on ( 'transaction_logs.transaction_id', '=', 'transactions.id' )
-									->on(DB::raw('(transaction_logs.changed_at = (select id from transaction_logs as tl2 where tl2.transaction_id = transaction_logs.transaction_id and tl2.deleted_at is null order by tl2.changed_at desc limit 1))'), DB::raw(''), DB::raw(''))
+									->on(DB::raw('(transaction_logs.id = (select id from transaction_logs as tl2 where tl2.transaction_id = transaction_logs.transaction_id and tl2.deleted_at is null order by tl2.changed_at desc limit 1))'), DB::raw(''), DB::raw(''))
                                     ->whereIn('transaction_logs.status', $variable)
                                     ->wherenull('transaction_logs.deleted_at')
                                     ;
@@ -158,7 +158,7 @@ trait HasTransactionStatusTrait
 
 	public function scopeLeftTransactionStockOn($query, $variable)
 	{
-		return $query->leftjointransaction(true)->lefttransactionlogstatus($variable)->extendtransactiontype(['sell', 'buy'])
+		return $query->leftjointransaction(true)->lefttransactionlogstatus($variable)
 		;
 	}
 
@@ -204,6 +204,18 @@ trait HasTransactionStatusTrait
 			})
 			;
 		}
+	}
+	
+	public function scopeJoinVarianFromProduct($query, $variable)
+	{
+		return $query
+		 ->join('varians', function ($join) use($variable) 
+		 {
+            $join->on ( 'varians.product_id', '=', 'products.id' )
+            ->wherenull('varians.deleted_at')
+            ;
+		})
+		;
 	}
 
 	public function scopeLeftJoinVarianFromProduct($query, $variable)

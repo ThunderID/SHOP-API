@@ -57,4 +57,24 @@ class StoreSetting extends BaseModel
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
+	
+	public function scopeType($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return 	$query->whereIn('type', $variable);
+		}
+
+		return 	$query->where('type', $variable);
+	}
+	
+	public  function scopeOndate($query, $variable)
+	{
+		if(!is_array($variable))
+		{
+			return $query->where('started_at', '<=', date('Y-m-d H:i:s', strtotime($variable)))->orderBy('started_at', 'desc');
+		}
+
+		return $query->where('started_at', '>=', date('Y-m-d H:i:s', strtotime($variable[0])))->where('started_at', '<=', date('Y-m-d H:i:s', strtotime($variable[1])))->orderBy('started_at', 'asc');
+	}
 }

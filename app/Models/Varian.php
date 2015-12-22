@@ -92,4 +92,12 @@ class Varian extends BaseModel
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
+	
+	public function scopeCritical($query, $variable)
+	{
+		return 	$query
+				->HavingCurrentStock($variable)
+				->orderby('current_stock', 'asc')
+				;
+	}
 }

@@ -19,7 +19,7 @@ class CurrentStockScope implements ScopeInterface
 		if($model->getTable()=='products')
 		{
 			$builder->selectraw('products.*')
-					->selectcurrentstock(true)
+					->selectglobalstock(true)
 					->LeftJoinVarianFromProduct(true)
 					->LeftJoinTransactionDetailFromVarian(true)
 					->LeftTransactionStockOn(['wait', 'paid', 'packed', 'shipping', 'delivered'])
@@ -29,7 +29,7 @@ class CurrentStockScope implements ScopeInterface
 		else
 		{
 			$builder->selectraw('varians.*')
-					->selectcurrentstock(true)
+					->selectglobalstock(true)
 					->LeftJoinTransactionDetailFromVarian(true)
 					->LeftTransactionStockOn(['wait', 'paid', 'packed', 'shipping', 'delivered'])
 					->groupby('varians.id')

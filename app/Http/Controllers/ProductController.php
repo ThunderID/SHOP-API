@@ -630,9 +630,13 @@ class ProductController extends Controller
 
         if($errors->count())
         {
+            DB::rollback();
+
             return new JSend('error', (array)Input::all(), $errors);
         }
 
+        DB::commit();
+        
         $final_product              = \App\Models\Product::id($product_data['id'])->with(['varians', 'categories', 'tags', 'labels', 'images', 'prices'])->first()->toArray();
 
         return new JSend('success', (array)$final_product);

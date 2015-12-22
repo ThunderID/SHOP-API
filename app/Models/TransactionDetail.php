@@ -2,10 +2,21 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\DB;
+
+use App\Models\Traits\HasStockTrait;
+use App\Models\Traits\HasTransactionStatusTrait;
 // use App\Models\Observers\TransactionDetailObserver;
 
 class TransactionDetail extends BaseModel
 {
+	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	use \App\Models\Traits\belongsTo\HasVarianTrait;
+
+	/* ---------------------------------------------------------------------------- GLOBAL PLUG SCOPE TRAITS ---------------------------------------------------------------------*/
+	use HasStockTrait;
+	use HasTransactionStatusTrait;
+
 	/**
 	 * The database table used by the model.
 	 *
@@ -79,4 +90,37 @@ class TransactionDetail extends BaseModel
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
+	
+	public function scopeStockMovement($query, $variable)
+	{
+		return 	$query
+					->selectraw('transaction_details.*')
+					->TransactionStockOn(['wait', 'paid', 'packed', 'shipping', 'delivered'])
+					->orderByRaw(DB::raw('varian_id asc, transactions.transact_at asc'))
+					;
+		;
+	}
+
+	public function scopeCritical($query, $variable)
+	{
+		return 	$query
+				->selectraw('transaction_details.*')
+				// ->selectcurrentstock(true)
+				->TransactionStockOn(['wait', 'paid', 'packed', 'shipping', 'delivered'])
+				->HavingCurrentStock($variable)
+				// ->orderby('current_stock', 'asc')
+				->groupBy('varian_id')
+				;
+	}
+
+	public function scopeGlobalStock($query, $variable)
+	{
+		return 	$query
+					->selectraw('transaction_details.*')
+					->selectglobalstock(true)
+					->LeftTransactionStockOn(['wait', 'paid', 'packed', 'shipping', 'delivered'])
+					->groupBy('varian_id')
+					;
+		;
+	}
 }
