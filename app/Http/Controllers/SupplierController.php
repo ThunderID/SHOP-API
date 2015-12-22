@@ -98,7 +98,7 @@ class SupplierController extends Controller
 
         DB::commit();
         
-        $final_category              = \App\Models\Supplier::id($supplier_data['id'])->with(['category', 'products'])->first()->toArray();
+        $final_supplier              = \App\Models\Supplier::id($supplier_data['id'])->with(['category', 'products'])->first()->toArray();
 
         return new JSend('success', (array)$final_supplier);
     }

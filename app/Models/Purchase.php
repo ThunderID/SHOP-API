@@ -11,6 +11,9 @@ use App\Models\Observers\PurchaseObserver;
 
 class Purchase extends Transaction
 {
+	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	use \App\Models\Traits\belongsTo\HasSupplierTrait;
+	
 	/**
 	 * The public variable that assigned type of inheritance model
 	 *

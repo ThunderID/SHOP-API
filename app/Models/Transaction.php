@@ -3,10 +3,22 @@
 namespace App\Models;
 
 use App\Models\Traits\HasTypeTrait;
+use App\Models\Traits\HasAmountTrait;
+use App\Models\Traits\HasStatusTrait;
+use App\Models\Traits\HasTransactionStatusTrait;
 use App\Models\Observers\TransactionObserver;
 
 class Transaction extends BaseModel
 {
+	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	use \App\Models\Traits\hasMany\HasTransactionLogsTrait;
+	use \App\Models\Traits\hasMany\HasTransactionDetailsTrait;
+	
+	/* ---------------------------------------------------------------------------- GLOBAL SCOPE TRAITS ---------------------------------------------------------------------*/
+	use HasAmountTrait;
+	use HasStatusTrait;
+	use HasTransactionStatusTrait;
+
 	use HasTypeTrait;
 
 	/**

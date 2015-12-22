@@ -131,3 +131,29 @@ $app->delete('/supplier/delete/{id}',
 		'uses'				=> 'SupplierController@delete'
 	]
 );
+
+// ------------------------------------------------------------------------------------
+// PURCHASES
+// ------------------------------------------------------------------------------------
+
+//Product it self
+$app->get('/purchases',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'PurchaseController@index'
+	]
+);
+
+$app->get('/purchase/{id}',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'PurchaseController@detail'
+	]
+);
+
+$app->post('/purchase/store',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'PurchaseController@store'
+	]
+);
