@@ -251,3 +251,25 @@ $app->post('/me/{id}/redeem',
 		'uses'				=> 'MyController@redeem'
 	]
 );
+
+//my area for products
+$app->get('/me/{id}/products/recommended',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'MyProductController@recommended'
+	]
+);
+
+$app->post('/me/{id}/products/purchased',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'MyProductController@purchased'
+	]
+);
+
+$app->get('/me/{id}/products/viewed',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'MyProductController@viewed'
+	]
+);
