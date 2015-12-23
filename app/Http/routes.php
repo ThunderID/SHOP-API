@@ -70,7 +70,6 @@ $app->get('/products/stock/opname',
 // CLUSTERS
 // ------------------------------------------------------------------------------------
 
-//Product it self
 $app->get('/clusters',
 	[
 		// 'middleware'		=> 'oauth',
@@ -103,7 +102,6 @@ $app->delete('/cluster/delete/{id}',
 // SUPPLIERS
 // ------------------------------------------------------------------------------------
 
-//Product it self
 $app->get('/suppliers',
 	[
 		// 'middleware'		=> 'oauth',
@@ -136,7 +134,6 @@ $app->delete('/supplier/delete/{id}',
 // PURCHASES
 // ------------------------------------------------------------------------------------
 
-//Product it self
 $app->get('/purchases',
 	[
 		// 'middleware'		=> 'oauth',
@@ -163,7 +160,6 @@ $app->post('/purchase/store',
 // VOUCHERS
 // ------------------------------------------------------------------------------------
 
-//Product it self
 $app->get('/vouchers',
 	[
 		// 'middleware'		=> 'oauth',
@@ -182,5 +178,31 @@ $app->post('/voucher/store',
 	[
 		// 'middleware'		=> 'oauth',
 		'uses'				=> 'VoucherController@store'
+	]
+);
+
+
+// ------------------------------------------------------------------------------------
+// CUSTOMERS
+// ------------------------------------------------------------------------------------
+
+$app->post('/customer/sign/in',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'AuthController@signin'
+	]
+);
+
+$app->post('/customer/sign/up',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'AuthController@signup'
+	]
+);
+
+$app->post('/customer/activate',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'AuthController@activate'
 	]
 );
