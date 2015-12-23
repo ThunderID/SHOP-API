@@ -157,3 +157,30 @@ $app->post('/purchase/store',
 		'uses'				=> 'PurchaseController@store'
 	]
 );
+
+
+// ------------------------------------------------------------------------------------
+// VOUCHERS
+// ------------------------------------------------------------------------------------
+
+//Product it self
+$app->get('/vouchers',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'VoucherController@index'
+	]
+);
+
+$app->get('/voucher/{id}',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'VoucherController@detail'
+	]
+);
+
+$app->post('/voucher/store',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'VoucherController@store'
+	]
+);

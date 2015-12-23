@@ -6,6 +6,9 @@ namespace App\Models;
 
 class QuotaLog extends BaseModel
 {
+	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	use \App\Models\Traits\belongsTo\HasVoucherTrait;
+	
 	/**
 	 * The database table used by the model.
 	 *

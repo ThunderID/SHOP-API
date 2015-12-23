@@ -3,10 +3,18 @@
 namespace App\Models;
 
 use App\Models\Traits\HasTypeTrait;
+use App\Models\Traits\HasQuotaTrait;
 // use App\Models\Observers\CampaignObserver;
 
 class Campaign extends BaseModel
 {
+	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	use \App\Models\Traits\hasMany\HasQuotaLogsTrait;
+	use \App\Models\Traits\hasMany\HasTransactionsTrait;
+
+	/* ---------------------------------------------------------------------------- GLOBAL SCOPE TRAITS ---------------------------------------------------------------------*/
+	use HasQuotaTrait;
+
 	use HasTypeTrait;
 
 	/**
@@ -53,7 +61,7 @@ class Campaign extends BaseModel
 	{
         parent::boot();
  
-        Campaign::observe(new CampaignObserver());
+        // Campaign::observe(new CampaignObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
