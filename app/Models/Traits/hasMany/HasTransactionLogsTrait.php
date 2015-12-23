@@ -36,10 +36,11 @@ trait HasTransactionLogsTrait
 
 	public function scopeStatus($query, $variable)
 	{
-		return $query
-			->selectraw('transactions.*')
-			->selectraw('transaction_logs.status as current_status')
-			->transactionlogstatus($variable)
-			;
+		if(is_array($variable))
+		{
+			return 	$query->whereIn('status', $variable);
+		}
+
+		return 	$query->where('status', $variable);
 	}
 }

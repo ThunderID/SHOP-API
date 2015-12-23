@@ -260,7 +260,7 @@ $app->get('/me/{id}/products/recommended',
 	]
 );
 
-$app->post('/me/{id}/products/purchased',
+$app->get('/me/{id}/products/purchased',
 	[
 		// 'middleware'		=> 'oauth',
 		'uses'				=> 'MyProductController@purchased'
@@ -271,5 +271,34 @@ $app->get('/me/{id}/products/viewed',
 	[
 		// 'middleware'		=> 'oauth',
 		'uses'				=> 'MyProductController@viewed'
+	]
+);
+
+//my area for orders
+$app->get('/me/{id}/orders',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'MyOrderController@index'
+	]
+);
+
+$app->get('/me/{id}/order/{order_id}',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'MyOrderController@detail'
+	]
+);
+
+$app->post('/me/{id}/order/store',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'MyOrderController@store'
+	]
+);
+
+$app->get('/me/{id}/incart',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'MyOrderController@incart'
 	]
 );

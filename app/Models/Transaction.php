@@ -13,6 +13,7 @@ class Transaction extends BaseModel
 	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
 	use \App\Models\Traits\hasMany\HasTransactionLogsTrait;
 	use \App\Models\Traits\hasMany\HasTransactionDetailsTrait;
+	use \App\Models\Traits\belongsTo\HasUserTrait;
 	
 	/* ---------------------------------------------------------------------------- GLOBAL SCOPE TRAITS ---------------------------------------------------------------------*/
 	use HasAmountTrait;
