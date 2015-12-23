@@ -36,4 +36,9 @@ trait HasTransactionsTrait
 	{
 		return $this->hasMany('App\Models\Transaction', 'user_id')->where('type', '=', 'sell')->wherein('status', ['wait', 'canceled', 'paid', 'shipping', 'packed', 'delivered']);
     }
+
+	public function Sales()
+	{
+		return $this->hasMany('App\Models\Transaction', 'user_id')->where('type', '=', 'sell');
+    }
 }

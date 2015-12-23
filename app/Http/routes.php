@@ -222,3 +222,32 @@ $app->get('/customer/{id}',
 		'uses'				=> 'CustomerController@detail'
 	]
 );
+
+//my area
+$app->get('/me/{id}',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'MyController@detail'
+	]
+);
+
+$app->get('/me/{id}/points',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'MyController@points'
+	]
+);
+
+$app->post('/me/{id}/update',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'MyController@store'
+	]
+);
+
+$app->post('/me/{id}/redeem',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'MyController@redeem'
+	]
+);

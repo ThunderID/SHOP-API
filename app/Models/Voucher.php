@@ -65,4 +65,38 @@ class Voucher extends Campaign
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
+
+	public function scopeCode($query, $variable)
+	{
+		return 	$query->where('code', $variable);
+	}
+
+	public function scopeOnDate($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			$started_at 	= date('Y-m-d H:i:s', strtotime($variable[0]));
+			$expired_at 	= date('Y-m-d H:i:s', strtotime($variable[1]));
+			return $query->where('started_at', '<=', $started_at)
+						->where('expired_at', '>=', $expired_at)
+						;
+		}
+		else
+		{
+			$ondate 	= date('Y-m-d H:i:s', strtotime($variable));
+			return $query->where('started_at', '<=', $ondate)
+						->where('expired_at', '>=', $ondate)
+						;
+		}
+	}
+	
+	public function scopeType($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return 	$query->whereIn('type', $variable);
+		}
+
+		return 	$query->where('type', $variable);
+	}
 }

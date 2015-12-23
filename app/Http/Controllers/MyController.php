@@ -7,30 +7,31 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 
-class AuthController extends Controller
+class MyController extends Controller
 {
     /**
-     * Authenticate user
+     * Display a customer by me
      *
      * @return Response
      */
-    public function signin()
+    public function detail($id = null)
     {
-        $email                          = Input::get('email');
-        $password                       = Input::get('password');
-        
-        $check                          = Auth::attempt(['email' => $email, 'password' => $password]);
+        $result                 = \App\Models\Customer::id($id)->with(['myreferrals', 'myreferrals.user'])->first()->toArray();
 
-        if ($check)
-        {
-            $result                     = Auth::user();
+        return new JSend('success', (array)$result);
+    }
 
-            return new JSend('success', (array)$result);
-        }
-        
-        return new JSend('error', (array)Input::all(), 'Username atau password tidak valid.');
+    /**
+     * Display my points
+     *
+     * @return Response
+     */
+    public function points($id = null)
+    {
+        $result                 = \App\Models\PointLog::userid($id)->get()->toArray();
+
+        return new JSend('success', (array)$result);
     }
 
     /**
@@ -38,7 +39,7 @@ class AuthController extends Controller
      *
      * @return Response
      */
-    public function signup()
+    public function store()
     {
         if(!Input::has('customer'))
         {
@@ -108,42 +109,50 @@ class AuthController extends Controller
     }
 
     /**
-     * Register customer
+     * Redeem code
      *
      * @return Response
      */
-    public function activate()
+    public function redeem($id = null)
     {
-        if(!Input::has('link'))
+        if(!Input::has('code'))
         {
-            return new JSend('error', (array)Input::all(), 'Tidak ada data customer.');
+            return new JSend('error', (array)Input::all(), 'Tidak ada data code.');
         }
 
-        $link                       = Input::get('link');
+        $code                       = Input::get('code');
 
         $errors                     = new MessageBag();
 
         DB::beginTransaction();
 
         //1. Check Link
-        $customer_data              = \App\Models\Customer::activationlink($link)->first();
+        $voucher_data              = \App\Models\Voucher::code($code)->ondate('now')->type(['referral', 'promo_referral'])->first();
 
-        if(!$customer_data)
+        if(!$voucher_data)
         {
-            $errors->add('Customer', 'Link tidak valid.');
+            $errors->add('Redeem', 'Code tidak valid.');
         }
-        elseif(!$customer_data->is_active)
+        elseif(!$voucher_data->quota > 0)
         {
-            $errors->add('Customer', 'Link tidak valid.');
+            $errors->add('Redeem', 'Quota sudah habis.');
         }
         else
         {
-            //if validator passed, save customer
-            $customer_data           = $customer_data->fill(['is_active' => true]);
+            //if validator passed, save voucher
+            $point                  =   [
+                                            'user_id'               => $id,
+                                            'reference_id'          => $voucher_data['user_id'],
+                                            'reference_type'        => '\App\Models\User',
+                                        ];
 
-            if(!$customer_data->save())
+            $point_data             = new \App\Models\PointLog;
+            
+            $point_data->fill($point);
+
+            if(!$point_data->save())
             {
-                $errors->add('Customer', $customer_data->getError());
+                $errors->add('Redeem', $point_data->getError());
             }
         }
 
@@ -156,8 +165,8 @@ class AuthController extends Controller
 
         DB::commit();
         
-        $final_customer                 = \App\Models\Customer::id($customer_data['id'])->first()->toArray();
+        $final_costumer                 = \App\Models\Customer::id($id)->with(['myreferrals', 'myreferrals.user'])->first()->toArray();
 
-        return new JSend('success', (array)$final_customer);
+        return new JSend('success', (array)$final_costumer);
     }
 }

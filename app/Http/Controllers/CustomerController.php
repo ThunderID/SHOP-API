@@ -29,7 +29,7 @@ class CustomerController extends Controller
      */
     public function detail($id = null)
     {
-        $result                 = \App\Models\Customer::id($id)->with(['myorders', 'myreferrals', 'myreferrals.user', 'pointlogs'])->first()->toArray();
+        $result                 = \App\Models\Customer::id($id)->with(['sales'])->first()->toArray();
 
         return new JSend('success', (array)$result);
     }

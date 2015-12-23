@@ -29,6 +29,6 @@ trait HasUserTrait
 
 	public function scopeUserID($query, $variable)
 	{
-		return $query->whereHas('user', function($q)use($variable){$q->id($variable);});
+		return $query->where('user_id', $variable);
 	}
 }
