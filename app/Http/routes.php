@@ -186,6 +186,7 @@ $app->post('/voucher/store',
 // CUSTOMERS
 // ------------------------------------------------------------------------------------
 
+//authenticate process
 $app->post('/customer/sign/in',
 	[
 		// 'middleware'		=> 'oauth',
@@ -204,5 +205,20 @@ $app->post('/customer/activate',
 	[
 		// 'middleware'		=> 'oauth',
 		'uses'				=> 'AuthController@activate'
+	]
+);
+
+//backend area
+$app->get('/customers',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'CustomerController@index'
+	]
+);
+
+$app->get('/customer/{id}',
+	[
+		// 'middleware'		=> 'oauth',
+		'uses'				=> 'CustomerController@detail'
 	]
 );

@@ -31,4 +31,9 @@ trait HasTransactionsTrait
 	{
 		return $query->whereHas('transactions', function($q)use($variable){$q->id($variable);});
 	}
+
+	public function MyOrders()
+	{
+		return $this->hasMany('App\Models\Transaction', 'user_id')->where('type', '=', 'sell')->wherein('status', ['wait', 'canceled', 'paid', 'shipping', 'packed', 'delivered']);
+    }
 }

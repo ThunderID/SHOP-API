@@ -17,7 +17,7 @@ class Admin extends User
 	 * @var string
 	 */
 
-	public $type_field				=	'role';
+	public $type_field				=	'users.role';
 
 	public $type					=	['staff', 'store_manager', 'admin'];
 

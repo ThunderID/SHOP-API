@@ -6,6 +6,9 @@ namespace App\Models;
 
 class PointLog extends BaseModel
 {
+	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	use \App\Models\Traits\belongsTo\HasUserTrait;
+
 	/**
 	 * The database table used by the model.
 	 *

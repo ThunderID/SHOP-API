@@ -3,6 +3,10 @@
 namespace App\Models;
 
 use App\Models\Traits\HasTypeTrait;
+use App\Models\Traits\HasQuotaTrait;
+use App\Models\Traits\HasReferencedByTrait;
+use App\Models\Traits\HasReferralOfTrait;
+use App\Models\Traits\HasTotalPointTrait;
 // use App\Models\Observers\UserObserver;
 
 use Illuminate\Auth\Authenticatable;
@@ -13,9 +17,19 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
-class User extends BaseModel implements AuthenticatableContract, CanResetPasswordContract, AuthorizableContract 
+class User extends BaseModel implements AuthenticatableContract, CanResetPasswordContract 
 {
-    use Authenticatable, CanResetPassword, Authorizable;
+    use Authenticatable, CanResetPassword;
+
+	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	use \App\Models\Traits\hasMany\HasTransactionsTrait;
+	use \App\Models\Traits\hasMany\HasPointLogsTrait;
+
+	/* ---------------------------------------------------------------------------- GLOBAL SCOPE TRAITS ---------------------------------------------------------------------*/
+	use HasQuotaTrait;
+	use HasReferencedByTrait;
+	use HasTotalPointTrait;
+	use HasReferralOfTrait;
 
 	use HasTypeTrait;
 

@@ -16,16 +16,39 @@ class QuotaScope implements ScopeInterface
 	 */
 	public function apply(Builder $builder, Model $model)
 	{
-		$builder->selectraw('tmp_vouchers.*')
-					->selectraw('IFNULL(sum(quota_logs.amount),0) as quota')
-					->leftjoin('quota_logs', function($join)
-					{
-						$join->on('quota_logs.voucher_id', '=', 'tmp_vouchers.id')
-						->wherenull('quota_logs.deleted_at')
+		if($model->getTable()=='tmp_vouchers')
+		{
+			$builder->selectraw('tmp_vouchers.*')
+						->selectraw('IFNULL(sum(quota_logs.amount),0) as quota')
+						->leftjoin('quota_logs', function($join)
+						{
+							$join->on('quota_logs.voucher_id', '=', 'tmp_vouchers.id')
+							->wherenull('quota_logs.deleted_at')
+							;
+						})
+						->groupby('tmp_vouchers.id')
 						;
-					})
-					->groupby('tmp_vouchers.id')
-					;
+		}
+		else
+		{
+			$builder->selectraw('users.*')
+						->selectraw('IFNULL(sum(quota_logs.amount),0) as quota_referral')
+						->leftjoin('tmp_vouchers', function($join)
+						{
+							$join->on('tmp_vouchers.user_id', '=', 'users.id')
+							->wherein('type', ['referral', 'promo_referral'])
+							->wherenull('tmp_vouchers.deleted_at')
+							;
+						})
+						->leftjoin('quota_logs', function($join)
+						{
+							$join->on('quota_logs.voucher_id', '=', 'tmp_vouchers.id')
+							->wherenull('quota_logs.deleted_at')
+							;
+						})
+						->groupby('users.id')
+						;
+		}
 	}
 
 	/**
