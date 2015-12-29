@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStatProductViewTable extends Migration
+class CreateStatUserViewTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateStatProductViewTable extends Migration
      */
     public function up()
     {
-        Schema::create('stat_user_views', function (Blueprint $table) {
+        Schema::table('stat_user_views', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
             $table->integer('statable_id')->unsigned()->index();
@@ -22,7 +22,7 @@ class CreateStatProductViewTable extends Migration
             $table->timestamps();
             $table->softDeletes();
             
-            $table->index(['deleted_at', 'ondate', 'statable_id', 'statable_type']);
+            $table->index(['deleted_at', 'ondate', 'statable_id']);
             $table->index(['deleted_at', 'ondate', 'user_id']);
         });
     }
