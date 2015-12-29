@@ -4,7 +4,7 @@ Shop API menggunakan lumen - laravel framework versi ^5.0 dengan fitur oauth2 un
 
 ## Official Documentation
 
-Dokumentasi resource dan authorization [Wiki](http://lumen.laravel.com/docs).
+Dokumentasi resource dan authorization [Wiki](hhttps://github.com/ThunderID/SHOP-API/wiki/Routes-Documentation).
 
 ## Security Vulnerabilities
 
