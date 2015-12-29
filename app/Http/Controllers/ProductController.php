@@ -31,7 +31,7 @@ class ProductController extends Controller
     {
         //
         $result                     = \App\Models\Product::id($id)->with(['varians', 'categories', 'tags', 'labels', 'images', 'prices'])->first()->toArray();
-
+dd($result);
         return new JSend('success', (array)$result);
     }
 

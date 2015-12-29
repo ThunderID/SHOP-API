@@ -17,7 +17,19 @@
 
 $app->post('/oauth/access_token', function() 
 {
-	return new \App\Libraries\JSend('success', (array)\LucaDegasperi\OAuth2Server\Facades\Authorizer::issueAccessToken());
+	$issue['token']								= \LucaDegasperi\OAuth2Server\Facades\Authorizer::issueAccessToken();
+
+	if(\Illuminate\Support\Facades\Auth::check())
+	{
+		$issue['me']							= \Illuminate\Support\Facades\Auth::user()->toArray();
+		
+		return new \App\Libraries\JSend('success', (array)$issue);
+	}
+	else
+	{
+		return new \App\Libraries\JSend('error', (array)Illuminate\Support\Facades\Input::all(), 'User invalid :( ');
+	}
+
 });
 
 $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], function ($app) 
@@ -26,11 +38,11 @@ $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], fu
 	// Gettin' Me
 	// ------------------------------------------------------------------------------------
 
-	$app->get('/', function() 
+	$app->get('/me', function() 
 	{
-		$user 						= \LucaDegasperi\OAuth2Server\Facades\Authorizer::getResourceOwnerId();
-		
-		return $user;
+		$user 								= \LucaDegasperi\OAuth2Server\Facades\Authorizer::getResourceOwnerId();
+
+		return new \App\Libraries\JSend('success', (array)$user);
 	});
 
 	// ------------------------------------------------------------------------------------
