@@ -25,7 +25,7 @@ class ReferencedByScope implements ScopeInterface
 					->wherenull('point_logs.deleted_at')
 					;
 				})
-				->leftjoin(DB::raw('(SELECT * from users) as users2'), function ($join)
+				->leftjoin(DB::raw('(SELECT name, id, deleted_at from users) as users2'), function ($join)
 				{
 					$join->on('users2.id', '=', 'point_logs.reference_id')
 					->wherenull('users2.deleted_at')

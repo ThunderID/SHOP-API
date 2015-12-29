@@ -10,13 +10,21 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
+$app->get('/', function() 
+{
+	// return fsockopen('192.168.1.118', '8800', $errno, $errstr, 60);
+	return 'Yeah';
+});
+
 // ------------------------------------------------------------------------------------
 // Authorizer
 // ------------------------------------------------------------------------------------
 
 $app->post('/oauth/access_token', function() 
 {
-	return json_decode(Authorizer::issueAccessToken());
+	// return \LucaDegasperi\OAuth2Server\Facades\Authorizer::issueAccessToken();
+	// return new JSend('success', (array)Input::all());
+	return new \App\Libraries\JSend('success', (array)\LucaDegasperi\OAuth2Server\Facades\Authorizer::issueAccessToken());
 });
 
 $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], function ($app) 
