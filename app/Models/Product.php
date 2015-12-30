@@ -8,7 +8,7 @@ use App\Models\Traits\HasDefaultImageTrait;
 
 use App\Models\Traits\HasStockTrait;
 use App\Models\Traits\HasTransactionStatusTrait;
-// use App\Models\Observers\ProductObserver;
+use App\Models\Observers\ProductObserver;
 
 class Product extends BaseModel
 {
@@ -101,7 +101,7 @@ class Product extends BaseModel
 	{
         parent::boot();
  
-        // Product::observe(new ProductObserver());
+        Product::observe(new ProductObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/

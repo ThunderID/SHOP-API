@@ -71,7 +71,7 @@ $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], fu
 		]
 	);
 
-	$app->delete('/product/delete/{id}',
+	$app->get('/product/delete/{id}',
 		[
 			// 'middleware'		=> 'oauth',
 			'uses'				=> 'ProductController@delete'
