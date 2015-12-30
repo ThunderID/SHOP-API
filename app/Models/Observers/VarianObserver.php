@@ -3,12 +3,7 @@
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Str;
 
-use App\Models\Product;
 use App\Models\Varian;
-use App\Models\CategoryProduct;
-use App\Models\ProductLabel;
-use App\Models\Image;
-use App\Models\Price;
 
 /* ----------------------------------------------------------------------
  * Event:

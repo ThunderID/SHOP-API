@@ -7,7 +7,7 @@
 
 namespace App\Models;
 
-use App\Models\Observers\TagObserver;
+use App\Models\Observers\ClusterObserver;
 
 class Tag extends Cluster
 {
@@ -58,7 +58,7 @@ class Tag extends Cluster
 	{
         parent::boot();
  
-        // Tag::observe(new TagObserver());
+        // Cluster::observe(new ClusterObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/

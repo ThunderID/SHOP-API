@@ -7,7 +7,7 @@
 
 namespace App\Models;
 
-// use App\Models\Observers\CategoryObserver;
+use App\Models\Observers\ClusterObserver;
 
 class Category extends Cluster
 {
@@ -58,7 +58,7 @@ class Category extends Cluster
 	{
         parent::boot();
  
-        // Category::observe(new CategoryObserver());
+        // Cluster::observe(new ClusterObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/

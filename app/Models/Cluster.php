@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use App\Models\Observers\ClusterObserver;
+use App\Models\Observers\ClusterObserver;
 
 use App\Models\Traits\HasTypeTrait;
 use App\Models\Traits\HasStockTrait;
@@ -63,7 +63,7 @@ class Cluster extends BaseModel
 	{
         parent::boot();
  
-        // Cluster::observe(new ClusterObserver());
+        Cluster::observe(new ClusterObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
