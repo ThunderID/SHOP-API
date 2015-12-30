@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use App\Models\Observers\ImageObserver;
+use App\Models\Observers\ImageObserver;
 
 class Image extends BaseModel
 {
@@ -81,7 +81,7 @@ class Image extends BaseModel
 	{
         parent::boot();
  
-        // Image::observe(new ImageObserver());
+        Image::observe(new ImageObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
