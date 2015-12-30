@@ -27,7 +27,7 @@ $app->post('/oauth/access_token', function()
 	}
 	else
 	{
-		return new \App\Libraries\JSend('error', (array)Illuminate\Support\Facades\Input::all(), 'User invalid :( ');
+		return new \App\Libraries\JSend('error', (array)['No Data'], 'User invalid :( ');
 	}
 
 });

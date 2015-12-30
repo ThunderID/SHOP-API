@@ -17,7 +17,28 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        $result                 = \App\Models\Supplier::get()->toArray();
+        $result                 = new \App\Models\Supplier;
+
+        if(Input::has('search'))
+        {
+            $search                 = Input::get('search');
+
+            foreach ($search as $key => $value) 
+            {
+                switch (strtolower($key)) 
+                {
+                    case 'name':
+                        $result     = $result->name($value);
+                        break;
+                    
+                    default:
+                        # code...
+                        break;
+                }
+            }
+        }
+
+        $result                     = $result->get()->toArray();
 
         return new JSend('success', (array)$result);
     }
@@ -29,9 +50,16 @@ class SupplierController extends Controller
      */
     public function detail($id = null)
     {
-        $result                 = \App\Models\Supplier::id($id)->first()->toArray();
+        $result                 = \App\Models\Supplier::id($id)->first();
+       
+        if($result)
+        {
+dd($result->toArray());
+            return new JSend('success', (array)$result->toArray());
 
-        return new JSend('success', (array)$result);
+        }
+        return new JSend('error', (array)Input::all(), 'ID Tidak Valid.');
+
     }
 
     /**

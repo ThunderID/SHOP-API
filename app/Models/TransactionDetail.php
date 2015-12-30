@@ -94,8 +94,12 @@ class TransactionDetail extends BaseModel
 	public function scopeStockMovement($query, $variable)
 	{
 		return 	$query
-					->selectraw('transaction_details.*')
+					->selectraw('transaction_details.varian_id')
+					->selectraw('transactions.transact_at')
+					->selectraw('sum(if(transactions.type = "buy", quantity, 0)) as stock_in')
+					->selectraw('sum(if(transactions.type = "sell", quantity, 0)) as stock_out')
 					->TransactionStockOn(['wait', 'paid', 'packed', 'shipping', 'delivered'])
+					->groupby('transactions.id')
 					->orderByRaw(DB::raw('varian_id asc, transactions.transact_at asc'))
 					;
 		;
@@ -116,7 +120,7 @@ class TransactionDetail extends BaseModel
 	public function scopeGlobalStock($query, $variable)
 	{
 		return 	$query
-					->selectraw('transaction_details.*')
+					->selectraw('transaction_detsls.*')
 					->selectglobalstock(true)
 					->LeftTransactionStockOn(['wait', 'paid', 'packed', 'shipping', 'delivered'])
 					->groupBy('varian_id')

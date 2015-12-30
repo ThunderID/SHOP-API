@@ -2,10 +2,18 @@
 
 namespace App\Models;
 
-// use App\Models\Observers\SupplierObserver;
+use App\Models\Traits\HasNameTrait;
+
+use App\Models\Observers\SupplierObserver;
 
 class Supplier extends BaseModel
 {
+	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	use \App\Models\Traits\hasMany\HasTransactionsTrait;
+
+	/* ---------------------------------------------------------------------------- GLOBAL PLUG SCOPE TRAITS ---------------------------------------------------------------------*/
+	use HasNameTrait;
+
 	/**
 	 * The database table used by the model.
 	 *
@@ -69,7 +77,7 @@ class Supplier extends BaseModel
 	{
         parent::boot();
  
-        // Supplier::observe(new SupplierObserver());
+        Supplier::observe(new SupplierObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/

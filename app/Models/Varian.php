@@ -10,6 +10,8 @@ use App\Models\Traits\HasStockTrait;
 use App\Models\Traits\HasTransactionStatusTrait;
 use App\Models\Observers\VarianObserver;
 
+use Illuminate\Support\Facades\DB;
+
 class Varian extends BaseModel
 {
 	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
@@ -94,16 +96,29 @@ class Varian extends BaseModel
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
 	
+	public function scopeSKU($query, $variable)
+	{
+		return 	$query->where('sku', $variable);
+	}
+	
+	public function scopeStockMovement($query, $variable)
+	{
+		return 	$query->selectraw('varians.*')
+					->selectraw('transactions.transact_at')
+					->selectraw('sum(if(transactions.type = "buy", quantity, 0)) as stock_in')
+					->selectraw('sum(if(transactions.type = "sell", quantity, 0)) as stock_out')
+					// ->TransactionStockOn(['wait', 'paid', 'packed', 'shipping', 'delivered'])
+					->groupby('transactions.id')
+					->orderByRaw(DB::raw('varian_id asc, transactions.transact_at asc'))
+					;
+		;
+	}
+
 	public function scopeCritical($query, $variable)
 	{
 		return 	$query
 				->HavingCurrentStock($variable)
 				->orderby('current_stock', 'asc')
 				;
-	}
-	
-	public function scopeSKU($query, $variable)
-	{
-		return 	$query->where('sku', $variable);
 	}
 }

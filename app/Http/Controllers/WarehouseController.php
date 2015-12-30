@@ -14,7 +14,7 @@ class WarehouseController extends Controller
      */
     public function card($id = null)
     {
-        $result                                 = \App\Models\TransactionDetail::stockmovement(true)->varianid($id)->get()->toArray();
+        $result                                 = \App\Models\TransactionDetail::varianid($id)->stockmovement(true)->with(['varian', 'varian.product'])->get()->toArray();
 
         return new JSend('success', (array)$result);
     }
@@ -34,7 +34,7 @@ class WarehouseController extends Controller
         }
         else
         {
-            $critical                           = 0 - $setting['value'];
+            $critical                           = $setting['value'];
         }
 
         $result                                 = \App\Models\Varian::critical($critical)->with(['product'])->get()->toArray();
@@ -50,7 +50,7 @@ class WarehouseController extends Controller
     public function opname()
     {
         $result                                 = \App\Models\Varian::with(['product'])->get()->toArray();
-
+dd($result);
         return new JSend('success', (array)$result);
     }
 }

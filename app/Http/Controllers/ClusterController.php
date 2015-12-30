@@ -19,12 +19,33 @@ class ClusterController extends Controller
     {
         if(Input::has('type') && Input::get('type')=='category')
         {
-            $result                 = \App\Models\Category::orderby('path', 'asc')->with(['category'])->get()->toArray();
+            $result                 = \App\Models\Category::orderby('path', 'asc')->with(['category']);
         }
         else
         {
-            $result                 = \App\Models\Tag::orderby('path', 'asc')->with(['tag'])->get()->toArray();
+            $result                 = \App\Models\Tag::orderby('path', 'asc')->with(['tag']);
         }
+
+        if(Input::has('search'))
+        {
+            $search                 = Input::get('search');
+
+            foreach ($search as $key => $value) 
+            {
+                switch (strtolower($key)) 
+                {
+                    case 'name':
+                        $result     = $result->name($value);
+                        break;
+                    
+                    default:
+                        # code...
+                        break;
+                }
+            }
+        }
+
+        $result                     = $result->get()->toArray();
 
         return new JSend('success', (array)$result);
     }
@@ -38,14 +59,19 @@ class ClusterController extends Controller
     {
         if(Input::has('type') && Input::get('type')=='category')
         {
-            $result                 = \App\Models\Category::id($id)->orderby('path', 'asc')->with(['category', 'products'])->first()->toArray();
+            $result                 = \App\Models\Category::id($id)->orderby('path', 'asc')->with(['category', 'products'])->first();
         }
         else
         {
-            $result                 = \App\Models\Tag::id($id)->orderby('path', 'asc')->with(['tag', 'products'])->first()->toArray();
+            $result                 = \App\Models\Tag::id($id)->orderby('path', 'asc')->with(['tag', 'products'])->first();
         }
 
-        return new JSend('success', (array)$result);
+        if($result)
+        {
+            return new JSend('success', (array)$result->toArray());
+        }
+
+        return new JSend('error', (array)Input::all(), 'ID Tidak Valid.');
     }
 
     /**

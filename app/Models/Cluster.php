@@ -6,6 +6,7 @@ use App\Models\Observers\ClusterObserver;
 
 use App\Models\Traits\HasTypeTrait;
 use App\Models\Traits\HasStockTrait;
+use App\Models\Traits\HasNameTrait;
 use App\Models\Traits\HasTransactionStatusTrait;
 
 class Cluster extends BaseModel
@@ -17,6 +18,7 @@ class Cluster extends BaseModel
 	/* ---------------------------------------------------------------------------- GLOBAL PLUG SCOPE TRAITS ---------------------------------------------------------------------*/
 	use HasTypeTrait;
 	use HasStockTrait;
+	use HasNameTrait;
 	use HasTransactionStatusTrait;
 
 	/**

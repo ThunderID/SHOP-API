@@ -17,6 +17,18 @@ trait HasTransactionStatusTrait
 		//
 	}
 
+	public function scopeLeftJoinTransactionFromSupplier($query, $variable)
+	{
+		return $query
+		 ->join('transactions', function ($join) use($variable) 
+			 {
+                                    $join->on ( 'suppliers.id', '=', 'transactions.supplier_id' )
+                                    ->wherenull('transactions.deleted_at')
+                                    ;
+			})
+		;
+	}
+
 	public function scopeJoinTransactionFromShipment($query, $variable)
 	{
 		return $query
