@@ -17,7 +17,28 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $result                     = \App\Models\Product::with(['varians'])->get()->toArray();
+        $result                     = new \App\Models\Product;
+
+        if(Input::has('search'))
+        {
+            $search                 = Input::get('search');
+
+            foreach ($search as $key => $value) 
+            {
+                switch (strtolower($key)) 
+                {
+                    case 'labelname':
+                        $result     = $result->labelsname($value);
+                        break;
+                    
+                    default:
+                        # code...
+                        break;
+                }
+            }
+        }
+
+        $result                     = $result->with(['varians'])->get()->toArray();
 
         return new JSend('success', (array)$result);
     }
@@ -30,9 +51,14 @@ class ProductController extends Controller
     public function detail($id = null)
     {
         //
-        $result                     = \App\Models\Product::id($id)->with(['varians', 'categories', 'tags', 'labels', 'images', 'prices'])->first()->toArray();
-dd($result);
-        return new JSend('success', (array)$result);
+        $result                     = \App\Models\Product::id($id)->with(['varians', 'categories', 'tags', 'labels', 'images', 'prices'])->first();
+
+        if($result)
+        {
+            return new JSend('success', (array)$result->toArray());
+
+        }
+        return new JSend('error', (array)Input::all(), 'ID Tidak Valid.');
     }
 
     /**

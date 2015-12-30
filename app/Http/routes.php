@@ -22,7 +22,7 @@ $app->post('/oauth/access_token', function()
 	if(\Illuminate\Support\Facades\Auth::check())
 	{
 		$issue['me']							= \Illuminate\Support\Facades\Auth::user()->toArray();
-		
+
 		return new \App\Libraries\JSend('success', (array)$issue);
 	}
 	else

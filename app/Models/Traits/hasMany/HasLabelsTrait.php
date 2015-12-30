@@ -21,4 +21,9 @@ trait HasLabelsTrait
 	{
 		return $this->hasMany('App\Models\ProductLabel');
 	}
+
+	public function scopeLabelsName($query, $variable)
+	{
+		return $query->wherehas('labels', function($q)use($variable){$q->name($variable);});
+	}
 }
