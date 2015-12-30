@@ -54,6 +54,7 @@ class ProductObserver
     {
 		$errors 						= new MessageBag();
 
+		/* --------------------------------DELETE PRODUCT RELATIONSHIP--------------------------------------*/
         //1. delete product's varian
         $varians                        = Varian::where('product_id', $model->id)->get();
 

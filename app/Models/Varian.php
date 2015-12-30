@@ -8,12 +8,13 @@ use App\Models\Traits\HasDefaultImageTrait;
 
 use App\Models\Traits\HasStockTrait;
 use App\Models\Traits\HasTransactionStatusTrait;
-// use App\Models\Observers\VarianObserver;
+use App\Models\Observers\VarianObserver;
 
 class Varian extends BaseModel
 {
 	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
 	use \App\Models\Traits\belongsTo\HasProductTrait;
+	use \App\Models\Traits\belongsToMany\HasTransactionsTrait;
 	
 	/* ---------------------------------------------------------------------------- GLOBAL SCOPE TRAITS ---------------------------------------------------------------------*/
 	use HasCurrentStockTrait;
@@ -88,7 +89,7 @@ class Varian extends BaseModel
 	{
         parent::boot();
  
-        // Varian::observe(new VarianObserver());
+        Varian::observe(new VarianObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
@@ -99,5 +100,10 @@ class Varian extends BaseModel
 				->HavingCurrentStock($variable)
 				->orderby('current_stock', 'asc')
 				;
+	}
+	
+	public function scopeSKU($query, $variable)
+	{
+		return 	$query->where('sku', $variable);
 	}
 }

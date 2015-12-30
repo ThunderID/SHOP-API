@@ -678,7 +678,12 @@ class ProductController extends Controller
         //
         $product                    = \App\Models\Product::id($id)->with(['varians', 'categories', 'tags', 'labels', 'images', 'prices'])->first();
 
-        $result                     = $product;
+        if(!$product)
+        {
+            return new JSend('error', (array)Input::all(), 'Produk tidak ditemukan.');
+        }
+
+        $result                     = $product->toArray();
 
         if($product->delete())
         {

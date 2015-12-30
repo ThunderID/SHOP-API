@@ -2,40 +2,16 @@
 
 namespace App\Models;
 
-use App\Models\Traits\HasCurrentPriceTrait;
-use App\Models\Traits\HasCurrentStockTrait;
-use App\Models\Traits\HasDefaultImageTrait;
+// use App\Models\Observers\CategoryProductObserver;
 
-use App\Models\Traits\HasStockTrait;
-use App\Models\Traits\HasTransactionStatusTrait;
-use App\Models\Observers\ProductObserver;
-
-class Product extends BaseModel
+class CategoryProduct extends BaseModel
 {
-	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/	
-	use \App\Models\Traits\hasMany\HasVariansTrait;
-	use \App\Models\Traits\hasMany\HasPricesTrait;
-	use \App\Models\Traits\hasMany\HasLabelsTrait;
-
-	use \App\Models\Traits\belongsToMany\HasClustersTrait;
-
-	use \App\Models\Traits\morphMany\HasImagesTrait;
-
-	/* ---------------------------------------------------------------------------- GLOBAL SCOPE TRAITS ---------------------------------------------------------------------*/
-	use HasCurrentStockTrait;
-	use HasCurrentPriceTrait;
-	use HasDefaultImageTrait;
-
-	/* ---------------------------------------------------------------------------- GLOBAL PLUG SCOPE TRAITS ---------------------------------------------------------------------*/
-	use HasStockTrait;
-	use HasTransactionStatusTrait;
-
 	/**
 	 * The database table used by the model.
 	 *
 	 * @var string
 	 */
-	protected $table				= 'products';
+	protected $table				= 'categories_products';
 
 	// protected $timestamps			= true;
 
@@ -51,10 +27,7 @@ class Product extends BaseModel
 	 *
 	 * @var array
 	 */
-	protected $appends				=	[
-											// 'price',
-											// 'promo_price',
-	];
+	protected $appends				=	[];
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -70,10 +43,8 @@ class Product extends BaseModel
 	 */
 
 	protected $fillable				=	[
-											'name'							,
-											'upc'							,
-											'slug'							,
-											'description'					,
+											'product_id'					,
+											'category_id'					,
 										];
 										
 	/**
@@ -82,9 +53,6 @@ class Product extends BaseModel
 	 * @var array
 	 */
 	protected $rules				=	[
-											'name'							=> 'required|max:50',
-											'upc'							=> 'required|max:255',
-											'slug'							=> 'required|max:255',
 										];
 	
 	/* ---------------------------------------------------------------------------- RELATIONSHIP ----------------------------------------------------------------------------*/
@@ -101,13 +69,8 @@ class Product extends BaseModel
 	{
         parent::boot();
  
-        Product::observe(new ProductObserver());
+        // CategoryProduct::observe(new CategoryProductObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
-
-	public function scopeUPC($query, $variable)
-	{
-		return 	$query->where('upc', $variable);
-	}
 }
