@@ -140,7 +140,7 @@ class TransactionLogObserver
                     $result                     = $this->dispatch(new SaveAuditAbandonCart($model->transaction));
                 break;
                 case 'wait' :
-                    $result                     = $this->dispatch(new CreditPoint($model->transaction)->first()));
+                    $result                     = $this->dispatch(new CreditPoint($model->transaction));
 
                     if($model->transaction->bills==0)
                     {

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use App\Models\Observers\TransactionLogObserver;
+use App\Models\Observers\TransactionLogObserver;
 
 class TransactionLog extends BaseModel
 {
@@ -74,7 +74,7 @@ class TransactionLog extends BaseModel
 	{
         parent::boot();
  
-        // TransactionLog::observe(new TransactionLogObserver());
+        TransactionLog::observe(new TransactionLogObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
