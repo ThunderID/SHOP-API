@@ -34,7 +34,7 @@ class PurchaseController extends Controller
             }
         }
 
-        $result                     = $result->with(['transactionlogs', 'supplier', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product'])->get()->toArray();
+        $result                     = $result->with(['supplier'])->get()->toArray();
 
         return new JSend('success', (array)$result);
     }
@@ -73,6 +73,9 @@ class PurchaseController extends Controller
         DB::beginTransaction();
 
         //1. Validate Purchase Parameter
+        
+        $purchase                    = Input::get('purchase');
+
         if(is_null($purchase['id']))
         {
             $is_new                 = true;
@@ -121,8 +124,10 @@ class PurchaseController extends Controller
                     {
                         $detail_rules   =   [
                                                 'transaction_id'            => 'required|numeric|'.($is_new ? '' : 'in:'.$purchase_data['id']),
-                                                'sku'                       => 'required|max:255|in:'.$detail_data['sku'].'unique:transaction_details,sku,'.(!is_null($detail_data['id']) ? $detail_data['id'] : ''),
-                                                'size'                      => 'required|max:255|in:'.$detail_data['size'],
+                                                'varian_id'                 => 'required|max:255|in:'.$detail_data['varian_id'],
+                                                'quantity'                  => 'required|max:255|in:'.$detail_data['quantity'],
+                                                'price'                     => 'required|max:255|in:'.$detail_data['price'],
+                                                'discount'                  => 'required|max:255|in:'.$detail_data['discount'],
                                             ];
 
                         $validator      = Validator::make($detail_data['attributes'], $detail_rules);
@@ -131,8 +136,10 @@ class PurchaseController extends Controller
                     {
                         $detail_rules   =   [
                                                 'transaction_id'            => 'numeric|'.($is_new ? '' : 'in:'.$purchase_data['id']),
-                                                'sku'                       => 'required|max:255|unique:transaction_details,sku,'.(!is_null($value['id']) ? $value['id'] : ''),
-                                                'size'                      => 'required|max:255|',
+                                                'varian_id'                 => 'required|max:255|',
+                                                'quantity'                  => 'required|numeric|',
+                                                'price'                     => 'required|numeric|',
+                                                'discount'                  => 'required|numeric|',
                                             ];
 
                         $validator      = Validator::make($value, $detail_rules);
@@ -234,8 +241,7 @@ class PurchaseController extends Controller
                     {
                         $log_rules   =   [
                                                 'transaction_id'            => 'required|numeric|'.($is_new ? '' : 'in:'.$purchase_data['id']),
-                                                'sku'                       => 'required|max:255|in:'.$log_data['sku'].'unique:transaction_logs,sku,'.(!is_null($log_data['id']) ? $log_data['id'] : ''),
-                                                'size'                      => 'required|max:255|in:'.$log_data['size'],
+                                                'status'                    => 'required|max:255|in:'.$log_data['status'],
                                             ];
 
                         $validator      = Validator::make($log_data['attributes'], $log_rules);
@@ -244,8 +250,7 @@ class PurchaseController extends Controller
                     {
                         $log_rules   =   [
                                                 'transaction_id'            => 'numeric|'.($is_new ? '' : 'in:'.$purchase_data['id']),
-                                                'sku'                       => 'required|max:255|unique:transaction_logs,sku,'.(!is_null($value['id']) ? $value['id'] : ''),
-                                                'size'                      => 'required|max:255|',
+                                                'status'                    => 'required|max:255|in:cart,wait,paid,packed,shipping,delivered,canceled,abandoned',
                                             ];
 
                         $validator      = Validator::make($value, $log_rules);
