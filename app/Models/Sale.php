@@ -4,11 +4,22 @@
 	* Inheritance Transaction Model
 	* For every inheritance model, allowed to have only $type, fillable, rules, and available function
 */
-
 namespace App\Models;
+
+use App\Models\Traits\HasBillAmountTrait;
 
 class Sale extends Transaction
 {
+	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	use \App\Models\Traits\belongsTo\HasUserTrait;
+	use \App\Models\Traits\belongsTo\HasVoucherTrait;
+	use \App\Models\Traits\hasOne\HasPaymentTrait;
+	use \App\Models\Traits\hasOne\HasShipmentTrait;
+	use \App\Models\Traits\hasMany\HasPointLogsTrait;
+	
+	/* ---------------------------------------------------------------------------- GLOBAL SCOPE TRAITS ---------------------------------------------------------------------*/
+	use HasBillAmountTrait;
+
 	/**
 	 * The public variable that assigned type of inheritance model
 	 *
