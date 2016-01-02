@@ -6,6 +6,9 @@ namespace App\Models;
 
 class Shipment extends BaseModel
 {
+	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	use \App\Models\Traits\belongsTo\HasAddressTrait;
+
 	/**
 	 * The database table used by the model.
 	 *

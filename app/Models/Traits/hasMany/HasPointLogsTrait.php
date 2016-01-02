@@ -36,4 +36,9 @@ trait HasPointLogsTrait
 	{
 		return $this->hasMany('App\Models\PointLog', 'reference_id')->where('reference_type', '=', 'App\Models\User');
 	}
+
+	public function PaidPointLogs()
+	{
+		return $this->hasMany('App\Models\PointLog', 'reference_id')->where('reference_type', '=', 'App\Models\Transaction')->where('amount', '<', 0);
+	}
 }

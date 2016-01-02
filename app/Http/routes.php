@@ -217,6 +217,32 @@ $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], fu
 
 
 	// ------------------------------------------------------------------------------------
+	// SALES
+	// ------------------------------------------------------------------------------------
+
+	$app->get('/sales',
+		[
+			// 'middleware'		=> 'oauth',
+			'uses'				=> 'SaleController@index'
+		]
+	);
+
+	$app->get('/sale/{id}',
+		[
+			// 'middleware'		=> 'oauth',
+			'uses'				=> 'SaleController@detail'
+		]
+	);
+
+	$app->post('/sale/update/status',
+		[
+			// 'middleware'		=> 'oauth',
+			'uses'				=> 'SaleController@status'
+		]
+	);
+
+
+	// ------------------------------------------------------------------------------------
 	// CUSTOMERS
 	// ------------------------------------------------------------------------------------
 
