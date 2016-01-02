@@ -17,7 +17,24 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        $result                 = \App\Models\Purchase::with(['transactionlogs', 'supplier', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product'])->get()->toArray();
+        $result                 = new \App\Models\Purchase;
+
+        if(Input::has('search'))
+        {
+            $search                 = Input::get('search');
+
+            foreach ($search as $key => $value) 
+            {
+                switch (strtolower($key)) 
+                {
+                    default:
+                        # code...
+                        break;
+                }
+            }
+        }
+
+        $result                     = $result->with(['transactionlogs', 'supplier', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product'])->get()->toArray();
 
         return new JSend('success', (array)$result);
     }
@@ -29,9 +46,14 @@ class PurchaseController extends Controller
      */
     public function detail($id = null)
     {
-        $result                 = \App\Models\Purchase::id($id)->with(['transactionlogs', 'supplier', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product'])->first()->toArray();
+        $result                 = \App\Models\Purchase::id($id)->with(['transactionlogs', 'supplier', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product'])->first();
 
-        return new JSend('success', (array)$result);
+        if($result)
+        {
+            return new JSend('success', (array)$result->toArray());
+
+        }
+        return new JSend('error', (array)Input::all(), 'ID Tidak Valid.');
     }
 
     /**

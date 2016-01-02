@@ -17,7 +17,24 @@ class VoucherController extends Controller
      */
     public function index()
     {
-        $result                 = \App\Models\Voucher::with(['quotalogs'])->get()->toArray();
+        $result                 = new \App\Models\Voucher;
+
+        if(Input::has('search'))
+        {
+            $search                 = Input::get('search');
+
+            foreach ($search as $key => $value) 
+            {
+                switch (strtolower($key)) 
+                {
+                    default:
+                        # code...
+                        break;
+                }
+            }
+        }
+
+        $result                     = $result->with(['quotalogs'])->get()->toArray();
 
         return new JSend('success', (array)$result);
     }
@@ -29,9 +46,13 @@ class VoucherController extends Controller
      */
     public function detail($id = null)
     {
-        $result                 = \App\Models\Voucher::id($id)->with(['quotalogs', 'transactions'])->first()->toArray();
+        $result                 = \App\Models\Voucher::id($id)->with(['quotalogs', 'sales', 'sales.customer'])->first();
 
-        return new JSend('success', (array)$result);
+        if($result)
+        {
+            return new JSend('success', (array)$result->toArray());
+        }
+        return new JSend('error', (array)Input::all(), 'ID Tidak Valid.');
     }
 
     /**

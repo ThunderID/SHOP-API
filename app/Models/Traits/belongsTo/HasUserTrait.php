@@ -31,4 +31,9 @@ trait HasUserTrait
 	{
 		return $query->where('user_id', $variable);
 	}
+
+	public function Customer()
+	{
+		return $this->belongsTo('App\Models\User', 'user_id');
+	}
 }
