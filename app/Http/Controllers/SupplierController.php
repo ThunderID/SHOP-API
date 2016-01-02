@@ -54,7 +54,6 @@ class SupplierController extends Controller
        
         if($result)
         {
-dd($result->toArray());
             return new JSend('success', (array)$result->toArray());
 
         }
@@ -80,7 +79,7 @@ dd($result->toArray());
 
         //1. Validate Supplier Parameter
 
-        // $supplier                    = Input::get('supplier');
+        $supplier                    = Input::get('supplier');
         if(is_null($supplier['id']))
         {
             $is_new                 = true;

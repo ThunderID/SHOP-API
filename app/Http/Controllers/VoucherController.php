@@ -72,6 +72,8 @@ class VoucherController extends Controller
         DB::beginTransaction();
 
         //1. Validate Voucher Parameter
+        $voucher                    = Input::get('voucher');
+        
         if(is_null($voucher['id']))
         {
             $is_new                 = true;

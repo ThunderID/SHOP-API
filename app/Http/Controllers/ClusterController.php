@@ -92,7 +92,7 @@ class ClusterController extends Controller
 
         //1. Validate Cluster Parameter
 
-        // $cluster                    = Input::get('cluster');
+        $cluster                    = Input::get('cluster');
         if(is_null($cluster['id']))
         {
             $is_new                 = true;

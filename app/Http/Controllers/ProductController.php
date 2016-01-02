@@ -79,7 +79,7 @@ class ProductController extends Controller
 
         //1. Validate Product Parameter
 
-        // $product                    = Input::get('product');
+        $product                    = Input::get('product');
         if(is_null($product['id']))
         {
             $is_new                 = true;
