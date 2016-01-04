@@ -60,7 +60,7 @@ class PointController extends Controller
 
         if(is_null($point['id']))
         {
-            return new JSend('error', (array)Input::all(), 'Tidak ada data point.');
+            $is_new                 = true;
         }
         else
         {
@@ -69,13 +69,13 @@ class PointController extends Controller
 
 
         //1. Get original data
-        $point_data                 = \App\Models\PointLog::findorfail($point['id']);
+        $point_data                 = \App\Models\PointLog::findornew($point['id']);
 
         //2. Check if status = shipping
         if(!$errors->count())
         {
             $point_rules   =   [
-                                                'user_id'                   => 'required|numeric|in:'.$purchase_data['user_id'],
+                                                'user_id'                   => 'required|numeric|'.($is_new ? '' : 'in:'.$point_data['user_id']),
                                                 'amount'                    => 'required|numeric',
                                                 'expired_at'                => 'required|date_format:"Y-m-d H:i:s"',
                                                 'notes'                     => 'required',
