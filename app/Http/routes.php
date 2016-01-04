@@ -45,6 +45,8 @@ $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], fu
 		return new \App\Libraries\JSend('success', (array)$user);
 	});
 
+	$app->group(['middleware' => 'oauth|staff', 'namespace' => 'App\Http\Controllers'], function ($app) 
+	{
 	// ------------------------------------------------------------------------------------
 	// PRODUCTS
 	// ------------------------------------------------------------------------------------
@@ -189,33 +191,6 @@ $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], fu
 		]
 	);
 
-
-	// ------------------------------------------------------------------------------------
-	// VOUCHERS
-	// ------------------------------------------------------------------------------------
-
-	$app->get('/vouchers',
-		[
-			// 'middleware'		=> 'oauth',
-			'uses'				=> 'VoucherController@index'
-		]
-	);
-
-	$app->get('/voucher/{id}',
-		[
-			// 'middleware'		=> 'oauth',
-			'uses'				=> 'VoucherController@detail'
-		]
-	);
-
-	$app->post('/voucher/store',
-		[
-			// 'middleware'		=> 'oauth',
-			'uses'				=> 'VoucherController@store'
-		]
-	);
-
-
 	// ------------------------------------------------------------------------------------
 	// SALES
 	// ------------------------------------------------------------------------------------
@@ -238,24 +213,6 @@ $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], fu
 		[
 			// 'middleware'		=> 'oauth',
 			'uses'				=> 'SaleController@status'
-		]
-	);
-
-	// ------------------------------------------------------------------------------------
-	// POINTS
-	// ------------------------------------------------------------------------------------
-
-	$app->get('/points',
-		[
-			// 'middleware'		=> 'oauth',
-			'uses'				=> 'PointController@index'
-		]
-	);
-
-	$app->post('/point/store',
-		[
-			// 'middleware'		=> 'oauth',
-			'uses'				=> 'PointController@store'
 		]
 	);
 
@@ -290,7 +247,56 @@ $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], fu
 			'uses'				=> 'CourierController@delete'
 		]
 	);
+	});
 
+	$app->group(['middleware' => 'oauth|manager', 'namespace' => 'App\Http\Controllers'], function ($app) 
+	{
+	// ------------------------------------------------------------------------------------
+	// VOUCHERS
+	// ------------------------------------------------------------------------------------
+
+	$app->get('/vouchers',
+		[
+			// 'middleware'		=> 'oauth',
+			'uses'				=> 'VoucherController@index'
+		]
+	);
+
+	$app->get('/voucher/{id}',
+		[
+			// 'middleware'		=> 'oauth',
+			'uses'				=> 'VoucherController@detail'
+		]
+	);
+
+	$app->post('/voucher/store',
+		[
+			// 'middleware'		=> 'oauth',
+			'uses'				=> 'VoucherController@store'
+		]
+	);
+
+	// ------------------------------------------------------------------------------------
+	// POINTS
+	// ------------------------------------------------------------------------------------
+
+	$app->get('/points',
+		[
+			// 'middleware'		=> 'oauth',
+			'uses'				=> 'PointController@index'
+		]
+	);
+
+	$app->post('/point/store',
+		[
+			// 'middleware'		=> 'oauth',
+			'uses'				=> 'PointController@store'
+		]
+	);
+	});
+
+	$app->group(['middleware' => 'oauth|admin', 'namespace' => 'App\Http\Controllers'], function ($app) 
+	{
 	// ------------------------------------------------------------------------------------
 	// ADMINISTRATORS
 	// ------------------------------------------------------------------------------------
@@ -315,6 +321,7 @@ $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], fu
 			'uses'				=> 'AdminController@store'
 		]
 	);
+	});
 
 	// ------------------------------------------------------------------------------------
 	// CUSTOMERS

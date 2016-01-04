@@ -71,6 +71,11 @@ $app->routeMiddleware([
     'oauth' => \LucaDegasperi\OAuth2Server\Middleware\OAuthMiddleware::class,
     'oauth-client' => \LucaDegasperi\OAuth2Server\Middleware\OAuthClientOwnerMiddleware::class,
     'oauth-user' => \LucaDegasperi\OAuth2Server\Middleware\OAuthUserOwnerMiddleware::class,
+
+    'customer'      => \App\Http\Middleware\CustomerAndAccessor::class,
+    'staff'         => \App\Http\Middleware\StaffAndAccessor::class,
+    'manager'       => \App\Http\Middleware\ManagerAndAccessor::class,
+    'admin'         => \App\Http\Middleware\AdminAuth::class,
 ]);
 
 /*

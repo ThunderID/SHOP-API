@@ -25,7 +25,11 @@ class AuthController extends Controller
 
         if ($check)
         {
-            $result                     = Auth::user()->toArray();
+            $result['name']             = Auth::user()['name'];
+            $result['email']            = Auth::user()['email'];
+            $result['date_of_birth']    = Auth::user()['date_of_birth'];
+            $result['role']             = Auth::user()['role'];
+            $result['gender']           = Auth::user()['gender'];
 
             return new JSend('success', (array)$result);
         }

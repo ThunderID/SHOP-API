@@ -93,7 +93,7 @@ class ProductController extends Controller
         $product_rules              =   [
                                             'name'                      => 'required|max:255',
                                             'upc'                       => 'required|max:255|unique:products,upc,'.(!is_null($product['id']) ? $product['id'] : ''),
-                                            'slug'                      => 'required|max:255|unique:products,slug,'.(!is_null($product['id']) ? $product['id'] : ''),
+                                            'slug'                      => 'max:255|unique:products,slug,'.(!is_null($product['id']) ? $product['id'] : ''),
                                             'description.description'   => 'required|max:512',
                                             'description.fit'           => 'required|max:512',
                                         ];
