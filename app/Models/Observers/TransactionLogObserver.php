@@ -189,6 +189,7 @@ class TransactionLogObserver
 
         return true;
     }
+    
     public function deleting($model)
     {
 		$errors 						= new MessageBag();
