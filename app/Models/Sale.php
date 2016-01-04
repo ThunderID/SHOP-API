@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use App\Models\Traits\HasBillAmountTrait;
+use App\Models\Observers\SaleObserver;
 
 class Sale extends Transaction
 {
@@ -67,5 +68,12 @@ class Sale extends Transaction
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
 	
+	public static function boot() 
+	{
+        parent::boot();
+ 
+        Sale::observe(new SaleObserver());
+    }
+
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
 }
