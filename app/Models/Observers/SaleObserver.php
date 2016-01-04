@@ -73,14 +73,24 @@ class SaleObserver
 
     public function saved($model)
     {
-        $result                                 = new JSend('success', (array)$model );
-
         if($model->voucher()->count())
         {
             $result                             = $this->dispatch(new CreditQuota($model->voucher, 'Penggunaan voucher untuk transaksi #'.$model->ref_number));
         }
 
-        return $result;
+        if($result->getStatus()=='error')
+        {
+            $errors->add('Log', $result->getErrorMessage());
+        }
+
+        if($errors->count())
+        {
+            $model['errors']                = $errors;
+
+            return false;
+        }
+
+        return true;
     }
 
     public function deleting($model)

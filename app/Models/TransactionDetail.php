@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 
 use App\Models\Traits\HasStockTrait;
 use App\Models\Traits\HasTransactionStatusTrait;
-// use App\Models\Observers\TransactionDetailObserver;
+use App\Models\Observers\TransactionDetailObserver;
 
 class TransactionDetail extends BaseModel
 {
@@ -86,7 +86,7 @@ class TransactionDetail extends BaseModel
 	{
         parent::boot();
  
-        // TransactionDetail::observe(new TransactionDetailObserver());
+        TransactionDetail::observe(new TransactionDetailObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
