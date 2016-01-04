@@ -2,10 +2,18 @@
 
 namespace App\Models;
 
-// use App\Models\Observers\CourierObserver;
+use App\Models\Traits\HasNameTrait;
+
+use App\Models\Observers\CourierObserver;
 
 class Courier extends BaseModel
 {
+	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	use \App\Models\Traits\hasMany\HasShippingCostsTrait;
+
+	/* ---------------------------------------------------------------------------- GLOBAL PLUG SCOPE TRAITS ---------------------------------------------------------------------*/
+	use HasNameTrait;
+
 	/**
 	 * The database table used by the model.
 	 *
@@ -69,7 +77,7 @@ class Courier extends BaseModel
 	{
         parent::boot();
  
-        // Courier::observe(new CourierObserver());
+        Courier::observe(new CourierObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/

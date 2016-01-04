@@ -110,4 +110,9 @@ class Product extends BaseModel
 	{
 		return 	$query->where('upc', $variable);
 	}
+
+	public function scopeSlug($query, $variable)
+	{
+		return 	$query->where('slug', $variable);
+	}
 }

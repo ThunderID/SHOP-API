@@ -78,7 +78,6 @@ class ProductController extends Controller
         DB::beginTransaction();
 
         //1. Validate Product Parameter
-
         $product                    = Input::get('product');
         if(is_null($product['id']))
         {

@@ -6,6 +6,9 @@ namespace App\Models;
 
 class ShippingCost extends BaseModel
 {
+	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	use \App\Models\Traits\belongsTo\HasCourierTrait;
+
 	/**
 	 * The database table used by the model.
 	 *

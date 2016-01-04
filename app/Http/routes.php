@@ -260,6 +260,38 @@ $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], fu
 	);
 
 	// ------------------------------------------------------------------------------------
+	// COURIERS
+	// ------------------------------------------------------------------------------------
+
+	$app->get('/couriers',
+		[
+			// 'middleware'		=> 'oauth',
+			'uses'				=> 'CourierController@index'
+		]
+	);
+
+	$app->get('/courier/{id}',
+		[
+			// 'middleware'		=> 'oauth',
+			'uses'				=> 'CourierController@detail'
+		]
+	);
+
+	$app->post('/courier/store',
+		[
+			// 'middleware'		=> 'oauth',
+			'uses'				=> 'CourierController@store'
+		]
+	);
+
+	$app->delete('/courier/delete/{id}',
+		[
+			// 'middleware'		=> 'oauth',
+			'uses'				=> 'CourierController@delete'
+		]
+	);
+
+	// ------------------------------------------------------------------------------------
 	// ADMINISTRATORS
 	// ------------------------------------------------------------------------------------
 
