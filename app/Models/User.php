@@ -24,6 +24,7 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
 	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
 	use \App\Models\Traits\hasMany\HasTransactionsTrait;
 	use \App\Models\Traits\hasMany\HasPointLogsTrait;
+	use \App\Models\Traits\hasMany\HasAuditorsTrait;
 
 	/* ---------------------------------------------------------------------------- GLOBAL SCOPE TRAITS ---------------------------------------------------------------------*/
 	use HasQuotaTrait;

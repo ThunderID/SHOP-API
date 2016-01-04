@@ -259,6 +259,30 @@ $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], fu
 		]
 	);
 
+	// ------------------------------------------------------------------------------------
+	// ADMINISTRATORS
+	// ------------------------------------------------------------------------------------
+
+	$app->get('/admins',
+		[
+			// 'middleware'		=> 'oauth',
+			'uses'				=> 'AdminController@index'
+		]
+	);
+
+	$app->get('/admin/{id}',
+		[
+			// 'middleware'		=> 'oauth',
+			'uses'				=> 'AdminController@detail'
+		]
+	);
+
+	$app->post('/admin/store',
+		[
+			// 'middleware'		=> 'oauth',
+			'uses'				=> 'AdminController@store'
+		]
+	);
 
 	// ------------------------------------------------------------------------------------
 	// CUSTOMERS

@@ -8,7 +8,6 @@ class TransactionObserver
 {
 	public function saving($model)
 	{
-		dd('salah');
 		return false;
 	}
 }

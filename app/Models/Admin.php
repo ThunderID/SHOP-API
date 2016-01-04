@@ -7,7 +7,7 @@
 
 namespace App\Models;
 
-// use App\Models\Observers\AdminObserver;
+use App\Models\Observers\UserObserver;
 
 class Admin extends User
 {
@@ -69,7 +69,7 @@ class Admin extends User
 	{
         parent::boot();
  
-        // Admin::observe(new AdminObserver());
+        Admin::observe(new UserObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
