@@ -241,6 +241,24 @@ $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], fu
 		]
 	);
 
+	// ------------------------------------------------------------------------------------
+	// POINTS
+	// ------------------------------------------------------------------------------------
+
+	$app->get('/points',
+		[
+			// 'middleware'		=> 'oauth',
+			'uses'				=> 'PointController@index'
+		]
+	);
+
+	$app->post('/point/store',
+		[
+			// 'middleware'		=> 'oauth',
+			'uses'				=> 'PointController@store'
+		]
+	);
+
 
 	// ------------------------------------------------------------------------------------
 	// CUSTOMERS
