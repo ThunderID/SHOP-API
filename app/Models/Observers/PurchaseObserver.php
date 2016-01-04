@@ -7,7 +7,9 @@ use App\Jobs\GenerateTransactionRefNumber;
 
 /* ----------------------------------------------------------------------
  * Event:
- * saving
+ * creating
+ * created
+ * deleting
  * ---------------------------------------------------------------------- */
 
 class PurchaseObserver 
@@ -18,6 +20,7 @@ class PurchaseObserver
 
         $model->transact_at  				= Carbon::now()->format('Y-m-d H:i:s');
 
+		//generate ref number of transaction
         $result                             = $this->dispatch(new GenerateTransactionRefNumber($model));
 
         if($result->getStatus()=='error')
@@ -39,6 +42,7 @@ class PurchaseObserver
 	{
 		$errors 							= new MessageBag();
 
+		//change status to delivered
         $result                             = $this->dispatch(new ChangeStatus($model, 'delivered', 'stock'));
 
         if($result->getStatus()=='error')
@@ -56,7 +60,7 @@ class PurchaseObserver
         return true;
 	}
 
-	public function deleting()
+	public function deleting($model)
     {
 		$errors 							= new MessageBag();
 

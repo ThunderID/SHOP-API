@@ -7,7 +7,7 @@
 
 namespace App\Models;
 
-// use App\Models\Observers\VoucherObserver;
+use App\Models\Observers\VoucherObserver;
 
 class Voucher extends Campaign
 {
@@ -61,7 +61,7 @@ class Voucher extends Campaign
 	{
         parent::boot();
  
-        // Voucher::observe(new VoucherObserver());
+        Voucher::observe(new VoucherObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
