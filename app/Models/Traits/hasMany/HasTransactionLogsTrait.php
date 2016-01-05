@@ -24,6 +24,11 @@ trait HasTransactionLogsTrait
 		return $this->hasMany('App\Models\TransactionLog', 'transaction_id');
 	}
 
+	public function OrderLogs()
+	{
+		return $this->hasMany('App\Models\TransactionLog', 'transaction_id')->wherein('status', ['wait', 'paid', 'packing', 'shipping', 'delivered', 'canceled']);
+	}
+
 	public function scopeHasTransactionLogs($query, $variable)
 	{
 		return $query->whereHas('transactionlogs', function($q)use($variable){$q;});

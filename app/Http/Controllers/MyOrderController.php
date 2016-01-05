@@ -15,9 +15,9 @@ class MyOrderController extends Controller
      *
      * @return Response
      */
-    public function index($id = null)
+    public function index($user_id = null)
     {
-        $result                 = \App\Models\Sale::userid($id)->status(['wait', 'canceled', 'paid', 'shipping', 'packed', 'delivered'])->get()->toArray();
+        $result                 = \App\Models\Sale::userid($user_id)->status(['wait', 'canceled', 'paid', 'shipping', 'packed', 'delivered'])->get()->toArray();
 
         return new JSend('success', (array)$result);
     }
@@ -27,11 +27,16 @@ class MyOrderController extends Controller
      *
      * @return Response
      */
-    public function detail($id = null, $order_id = null)
+    public function detail($user_id = null, $order_id = null)
     {
-        $result                 = \App\Models\Sale::userid($id)->id($order_id)->status(['wait', 'canceled', 'paid', 'shipping', 'packed', 'delivered'])->first()->toArray();
+        $result                 = \App\Models\Sale::userid($user_id)->id($order_id)->status(['wait', 'canceled', 'paid', 'shipping', 'packed', 'delivered'])->with(['orderlogs', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product'])->first();
 
-        return new JSend('success', (array)$result);
+        if($result)
+        {
+            return new JSend('success', (array)$result->toArray());
+        }
+
+        return new JSend('error', (array)Input::all(), 'ID Tidak Valid.');
     }
 
     /**
@@ -39,11 +44,16 @@ class MyOrderController extends Controller
      *
      * @return Response
      */
-    public function incart($id = null, $order_id = null)
+    public function incart($user_id = null)
     {
-        $result                 = \App\Models\Sale::userid($id)->id($order_id)->status('cart')->first();
+        $result                 = \App\Models\Sale::userid($user_id)->status('cart')->with(['transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product'])->first();
 
-        return new JSend('success', (array)$result);
+        if($result)
+        {
+            return new JSend('success', (array)$result->toArray());
+        }
+        
+        return new JSend('error', (array)Input::all(), 'ID Tidak Valid.');
     }
 
 

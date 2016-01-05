@@ -457,17 +457,17 @@ $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], fu
 		]
 	);
 
-	$app->post('/me/{user_id}/order/store',
-		[
-			// 'middleware'		=> 'oauth',
-			'uses'				=> 'MyOrderController@store'
-		]
-	);
-
 	$app->get('/me/{user_id}/incart',
 		[
 			// 'middleware'		=> 'oauth',
 			'uses'				=> 'MyOrderController@incart'
+		]
+	);
+
+	$app->post('/me/{user_id}/order/store',
+		[
+			// 'middleware'		=> 'oauth',
+			'uses'				=> 'MyOrderController@store'
 		]
 	);
 	});
