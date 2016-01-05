@@ -7,7 +7,7 @@
 
 namespace App\Models;
 
-// use App\Models\Observers\PolicyObserver;
+use App\Models\Observers\PolicyObserver;
 
 class Policy extends StoreSetting
 {
@@ -52,7 +52,7 @@ class Policy extends StoreSetting
 	{
         parent::boot();
  
-        // Policy::observe(new PolicyObserver());
+        Policy::observe(new PolicyObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/

@@ -293,6 +293,31 @@ $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], fu
 			'uses'				=> 'PointController@store'
 		]
 	);
+
+	// ------------------------------------------------------------------------------------
+	// SETTING
+	// ------------------------------------------------------------------------------------
+	$app->get('/settings/{type}',
+		[
+			// 'middleware'		=> 'oauth',
+			'uses'				=> 'StoreSettingController@index'
+		]
+	);
+
+	$app->get('/setting/{id}',
+		[
+			// 'middleware'		=> 'oauth',
+			'uses'				=> 'StoreSettingController@detail'
+		]
+	);
+
+	$app->post('/setting/store',
+		[
+			// 'middleware'		=> 'oauth',
+			'uses'				=> 'StoreSettingController@store'
+		]
+	);
+
 	});
 
 	$app->group(['middleware' => 'oauth|admin', 'namespace' => 'App\Http\Controllers'], function ($app) 

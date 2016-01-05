@@ -7,10 +7,13 @@
 
 namespace App\Models;
 
-// use App\Models\Observers\SliderObserver;
+use App\Models\Observers\StoreSettingObserver;
 
 class Slider extends StoreSetting
 {
+	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	use \App\Models\Traits\morphMany\HasImagesTrait;
+
 	/**
 	 * The public variable that assigned type of inheritance model
 	 *
@@ -54,7 +57,7 @@ class Slider extends StoreSetting
 	{
         parent::boot();
  
-        // Slider::observe(new SliderObserver());
+        Slider::observe(new StoreSettingObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/

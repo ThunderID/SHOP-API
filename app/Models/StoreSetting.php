@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\HasTypeTrait;
-// use App\Models\Observers\StoreSettingObserver;
+use App\Models\Observers\StoreSettingObserver;
 
 class StoreSetting extends BaseModel
 {
@@ -53,7 +53,7 @@ class StoreSetting extends BaseModel
 	{
         parent::boot();
  
-        // StoreSetting::observe(new StoreSettingObserver());
+        StoreSetting::observe(new StoreSettingObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/

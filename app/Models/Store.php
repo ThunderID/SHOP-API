@@ -7,7 +7,7 @@
 
 namespace App\Models;
 
-// use App\Models\Observers\StoreObserver;
+use App\Models\Observers\StoreSettingObserver;
 
 class Store extends StoreSetting
 {
@@ -52,7 +52,7 @@ class Store extends StoreSetting
 	{
         parent::boot();
  
-        // Store::observe(new StoreObserver());
+        Store::observe(new StoreSettingObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/

@@ -54,6 +54,11 @@ abstract class BaseModel extends Eloquent
 			return 	$query->whereIn($query->getModel()->table.'.id', $variable);
 		}
 
+		if(is_null($variable))
+		{
+			return $query;
+		}
+
 		return 	$query->where($query->getModel()->table.'.id', $variable);
 	}
 
@@ -62,6 +67,11 @@ abstract class BaseModel extends Eloquent
 		if(is_array($variable))
 		{
 			return 	$query->whereNotIn($query->getModel()->table.'.id', $variable);
+		}
+
+		if(is_null($variable))
+		{
+			return $query;
 		}
 
 		return 	$query->where($query->getModel()->table.'.id', '<>', $variable);
