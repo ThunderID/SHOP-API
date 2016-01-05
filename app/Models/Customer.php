@@ -73,4 +73,9 @@ class Customer extends User
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
+	
+	public function scopeActivationLink($query, $variable)
+	{
+		return 	$query->where('activation_link', $variable);
+	}
 }

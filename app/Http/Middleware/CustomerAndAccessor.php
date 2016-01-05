@@ -6,48 +6,56 @@ use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use League\OAuth2\Server\Exception\AccessDeniedException;
+use LucaDegasperi\OAuth2Server\Authorizer;
 
 class CustomerAndAccessor
 {
     /**
-     * The Guard implementation.
+     * The Authorizer instance.
      *
-     * @var Guard
+     * @var \LucaDegasperi\OAuth2Server\Authorizer
      */
-    protected $auth;
+    protected $authorizer;
 
     /**
-     * Create a new filter instance.
+     * Create a new oauth client middleware instance.
      *
-     * @param  Guard  $auth
-     * @return void
+     * @param \LucaDegasperi\OAuth2Server\Authorizer $authorizer
      */
-    public function __construct(Guard $auth)
+    public function __construct(Authorizer $authorizer)
     {
-        $this->auth = $auth;
+        $this->authorizer = $authorizer;
     }
 
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure $next
+     *
+     * @throws \League\OAuth2\Server\Exception\AccessDeniedException
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-        if ($this->auth->guest()) 
+        $this->authorizer->setRequest($request);
+
+        $user                       = $this->authorizer->getResourceOwnerId();
+
+        $user                       = json_decode($user, true)['data'];
+
+        if (in_array($user['role'], ['staff', 'store_manager', 'admin'])) 
         {
-            if ($request->ajax()) 
-            {
-                return response('Unauthorized.', 401);
-            } 
-            else 
-            {
-                return redirect()->route('frontend.join.index');
-            }
+            return $next($request);
+        }
+        elseif(isset($request->route()[2]['user_id']) && $request->route()[2]['user_id'] == $user['id'])
+        {
+            return $next($request);
         }
 
-        return $next($request);
+        throw new AccessDeniedException();
     }
 }
+

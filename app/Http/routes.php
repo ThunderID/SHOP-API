@@ -377,41 +377,43 @@ $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], fu
 	//backend area
 	$app->get('/customers',
 		[
-			// 'middleware'		=> 'oauth',
+			'middleware'		=> 'oauth|admin',
 			'uses'				=> 'CustomerController@index'
 		]
 	);
 
 	$app->get('/customer/{id}',
 		[
-			// 'middleware'		=> 'oauth',
+			'middleware'		=> 'oauth|admin',
 			'uses'				=> 'CustomerController@detail'
 		]
 	);
 
+	$app->group(['middleware' => 'oauth|me', 'namespace' => 'App\Http\Controllers'], function ($app) 
+	{
 	//my area
-	$app->get('/me/{id}',
+	$app->get('/me/{user_id}',
 		[
 			// 'middleware'		=> 'oauth',
 			'uses'				=> 'MyController@detail'
 		]
 	);
 
-	$app->get('/me/{id}/points',
+	$app->get('/me/{user_id}/points',
 		[
 			// 'middleware'		=> 'oauth',
 			'uses'				=> 'MyController@points'
 		]
 	);
 
-	$app->post('/me/{id}/update',
+	$app->post('/me/{user_id}/update',
 		[
 			// 'middleware'		=> 'oauth',
 			'uses'				=> 'MyController@store'
 		]
 	);
 
-	$app->post('/me/{id}/redeem',
+	$app->post('/me/{user_id}/redeem',
 		[
 			// 'middleware'		=> 'oauth',
 			'uses'				=> 'MyController@redeem'
@@ -419,21 +421,21 @@ $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], fu
 	);
 
 	//my area for products
-	$app->get('/me/{id}/products/recommended',
+	$app->get('/me/{user_id}/products/recommended',
 		[
 			// 'middleware'		=> 'oauth',
 			'uses'				=> 'MyProductController@recommended'
 		]
 	);
 
-	$app->get('/me/{id}/products/purchased',
+	$app->get('/me/{user_id}/products/purchased',
 		[
 			// 'middleware'		=> 'oauth',
 			'uses'				=> 'MyProductController@purchased'
 		]
 	);
 
-	$app->get('/me/{id}/products/viewed',
+	$app->get('/me/{user_id}/products/viewed',
 		[
 			// 'middleware'		=> 'oauth',
 			'uses'				=> 'MyProductController@viewed'
@@ -441,31 +443,32 @@ $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], fu
 	);
 
 	//my area for orders
-	$app->get('/me/{id}/orders',
+	$app->get('/me/{user_id}/orders',
 		[
 			// 'middleware'		=> 'oauth',
 			'uses'				=> 'MyOrderController@index'
 		]
 	);
 
-	$app->get('/me/{id}/order/{order_id}',
+	$app->get('/me/{user_id}/order/{order_id}',
 		[
 			// 'middleware'		=> 'oauth',
 			'uses'				=> 'MyOrderController@detail'
 		]
 	);
 
-	$app->post('/me/{id}/order/store',
+	$app->post('/me/{user_id}/order/store',
 		[
 			// 'middleware'		=> 'oauth',
 			'uses'				=> 'MyOrderController@store'
 		]
 	);
 
-	$app->get('/me/{id}/incart',
+	$app->get('/me/{user_id}/incart',
 		[
 			// 'middleware'		=> 'oauth',
 			'uses'				=> 'MyOrderController@incart'
 		]
 	);
+	});
 });

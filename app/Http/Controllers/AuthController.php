@@ -25,6 +25,7 @@ class AuthController extends Controller
 
         if ($check)
         {
+            $result['id']               = Auth::user()['id'];
             $result['name']             = Auth::user()['name'];
             $result['email']            = Auth::user()['email'];
             $result['date_of_birth']    = Auth::user()['date_of_birth'];
