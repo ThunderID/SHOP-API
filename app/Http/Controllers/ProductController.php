@@ -123,7 +123,7 @@ class ProductController extends Controller
         //End of validate product
 
         //2. Validate Product Varian Parameter
-        if(!$errors->count())
+        if(!$errors->count() && isset($product['varians']) && is_array($product['varians']))
         {
             $varian_current_ids         = [];
             foreach ($product['varians'] as $key => $value) 
@@ -238,7 +238,7 @@ class ProductController extends Controller
         //End of validate product varian
 
         //3. Validate Product Price Parameter
-        if(!$errors->count())
+        if(!$errors->count() && isset($product['prices']) && is_array($product['prices']))
         {
             $price_current_ids         = [];
             foreach ($product['prices'] as $key => $value) 
@@ -354,7 +354,7 @@ class ProductController extends Controller
         //End of validate product price
 
         //4. Validate Product Category Parameter
-        if(!$errors->count())
+        if(!$errors->count() && isset($product['categories']) && is_array($product['categories']))
         {
             $category_current_ids               = [];
 
@@ -383,7 +383,7 @@ class ProductController extends Controller
         //End of validate product category
 
         //5. Validate Product Tag Parameter
-        if(!$errors->count())
+        if(!$errors->count() && isset($product['tags']) && is_array($product['tags']))
         {
             $tag_current_ids                = [];
 
@@ -412,7 +412,7 @@ class ProductController extends Controller
         //End of validate product category
 
         //6. Validate Product Label Parameter
-        if(!$errors->count())
+        if(!$errors->count() && isset($product['labels']) && is_array($product['labels']))
         {
             $label_current_ids         = [];
             foreach ($product['labels'] as $key => $value) 
@@ -530,9 +530,9 @@ class ProductController extends Controller
         //End of validate product label
 
         //7. Validate Product Image Parameter
-        if(!$errors->count())
+        if(!$errors->count() && isset($product['images']) && is_array($product['images']))
         {
-            $label_current_ids         = [];
+            $image_current_ids         = [];
             foreach ($product['images'] as $key => $value) 
             {
                 if(!$errors->count())
