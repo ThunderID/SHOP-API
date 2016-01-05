@@ -15,9 +15,9 @@ class MyController extends Controller
      *
      * @return Response
      */
-    public function detail($id = null)
+    public function detail($user_id = null)
     {
-        $result                 = \App\Models\Customer::id($id)->with(['myreferrals', 'myreferrals.user'])->first()->toArray();
+        $result                 = \App\Models\Customer::id($user_id)->with(['myreferrals', 'myreferrals.user'])->first()->toArray();
 
         return new JSend('success', (array)$result);
     }
@@ -27,9 +27,9 @@ class MyController extends Controller
      *
      * @return Response
      */
-    public function points($id = null)
+    public function points($user_id = null)
     {
-        $result                 = \App\Models\PointLog::userid($id)->get()->toArray();
+        $result                 = \App\Models\PointLog::userid($user_id)->get()->toArray();
 
         return new JSend('success', (array)$result);
     }
@@ -113,7 +113,7 @@ class MyController extends Controller
      *
      * @return Response
      */
-    public function redeem($id = null)
+    public function redeem($user_id = null)
     {
         if(!Input::has('code'))
         {
@@ -141,7 +141,7 @@ class MyController extends Controller
         {
             //if validator passed, save voucher
             $point                  =   [
-                                            'user_id'               => $id,
+                                            'user_id'               => $user_id,
                                             'reference_id'          => $voucher_data['user_id'],
                                             'reference_type'        => '\App\Models\User',
                                         ];
@@ -165,7 +165,7 @@ class MyController extends Controller
 
         DB::commit();
         
-        $final_costumer                 = \App\Models\Customer::id($id)->with(['myreferrals', 'myreferrals.user'])->first()->toArray();
+        $final_costumer                 = \App\Models\Customer::id($user_id)->with(['myreferrals', 'myreferrals.user'])->first()->toArray();
 
         return new JSend('success', (array)$final_costumer);
     }
