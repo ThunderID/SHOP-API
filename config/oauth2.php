@@ -28,12 +28,29 @@ return [
     */
 
     'grant_types' => [
-                        'password' => [
-                                        'class'             => 'League\OAuth2\Server\Grant\PasswordGrant',
-                                        'access_token_ttl'  => 604800,
-                                        // the code to run in order to verify the user's identity
-                                        'callback'          => '\App\Http\Controllers\AuthController@signin'
-                                     ]
+                        'authorization_code'    =>  [
+                                                        'class'             => '\League\OAuth2\Server\Grant\AuthCodeGrant',
+                                                        'access_token_ttl'  => 3600,
+                                                        'auth_token_ttl'    => 3600
+                                                    ],
+
+                        'password'              =>  [
+                                                        'class'             => 'League\OAuth2\Server\Grant\PasswordGrant',
+                                                        'access_token_ttl'  => 604800,
+                                                        // the code to run in order to verify the user's identity
+                                                        'callback'          => '\App\Http\Controllers\AuthController@signin'
+                                                    ],
+
+                        'client_credentials'    =>  [
+                                                        'class'             => 'League\OAuth2\Server\Grant\ClientCredentialsGrant',
+                                                        'access_token_ttl'  => 3600,
+                                                    ],
+
+                        'refresh_token'         =>  [
+                                                        'class' => '\League\OAuth2\Server\Grant\RefreshTokenGrant',
+                                                        'access_token_ttl' => 3600,
+                                                        'refresh_token_ttl' => 36000
+                                                    ]
     ],
 
     /*
