@@ -46,6 +46,8 @@ class Image extends BaseModel
 	 */
 
 	protected $fillable				=	[
+											'imageable_id'					,
+											'imageable_type'				,
 											'thumbnail'						,
 											'image_xs'						,
 											'image_sm'						,
