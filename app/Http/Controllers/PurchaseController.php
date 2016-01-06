@@ -197,30 +197,30 @@ class PurchaseController extends Controller
                         }
                     }
                 }
+            }
 
-                //if there was no error, check if there were things need to be delete
-                if(!$errors->count())
+            //if there was no error, check if there were things need to be delete
+            if(!$errors->count())
+            {
+                $details                            = \App\Models\TransactionDetail::transactionid($purchase['id'])->get()->toArray();
+                
+                $detail_should_be_ids               = [];
+                foreach ($details as $key => $value) 
                 {
-                    $details                            = \App\Models\TransactionDetail::transactionid($purchase['id'])->get()->toArray();
-                    
-                    $detail_should_be_ids               = [];
-                    foreach ($details as $key => $value) 
-                    {
-                        $detail_should_be_ids[]         = $value['id'];
-                    }
+                    $detail_should_be_ids[]         = $value['id'];
+                }
 
-                    $difference_detail_ids              = array_diff($detail_should_be_ids, $detail_current_ids);
+                $difference_detail_ids              = array_diff($detail_should_be_ids, $detail_current_ids);
 
-                    if($difference_detail_ids)
+                if($difference_detail_ids)
+                {
+                    foreach ($difference_detail_ids as $key => $value) 
                     {
-                        foreach ($difference_detail_ids as $key => $value) 
+                        $detail_data                = \App\Models\TransactionDetail::find($value);
+
+                        if(!$detail_data->delete())
                         {
-                            $detail_data                = \App\Models\TransactionDetail::find($value);
-
-                            if(!$detail_data->delete())
-                            {
-                                $errors->add('Detail', $detail_data->getError());
-                            }
+                            $errors->add('Detail', $detail_data->getError());
                         }
                     }
                 }
@@ -308,30 +308,30 @@ class PurchaseController extends Controller
                         }
                     }
                 }
+            }
 
-                //if there was no error, check if there were things need to be delete
-                if(!$errors->count())
+            //if there was no error, check if there were things need to be delete
+            if(!$errors->count())
+            {
+                $logs                            = \App\Models\TransactionLog::transactionid($purchase['id'])->get()->toArray();
+                
+                $log_should_be_ids               = [];
+                foreach ($logs as $key => $value) 
                 {
-                    $logs                            = \App\Models\TransactionLog::transactionid($purchase['id'])->get()->toArray();
-                    
-                    $log_should_be_ids               = [];
-                    foreach ($logs as $key => $value) 
-                    {
-                        $log_should_be_ids[]         = $value['id'];
-                    }
+                    $log_should_be_ids[]         = $value['id'];
+                }
 
-                    $difference_log_ids              = array_diff($log_should_be_ids, $log_current_ids);
+                $difference_log_ids              = array_diff($log_should_be_ids, $log_current_ids);
 
-                    if($difference_log_ids)
+                if($difference_log_ids)
+                {
+                    foreach ($difference_log_ids as $key => $value) 
                     {
-                        foreach ($difference_log_ids as $key => $value) 
+                        $log_data                = \App\Models\TransactionLog::find($value);
+
+                        if(!$log_data->delete())
                         {
-                            $log_data                = \App\Models\TransactionLog::find($value);
-
-                            if(!$log_data->delete())
-                            {
-                                $errors->add('Log', $log_data->getError());
-                            }
+                            $errors->add('Log', $log_data->getError());
                         }
                     }
                 }

@@ -70,7 +70,7 @@ class ProductController extends Controller
     {
         if(!Input::has('product'))
         {
-            return new JSend('error', (array)Input::all(), 'Tidak ada data product.');
+            return new JSend('error', (array)Input::all(), 'Tidak ada data produk.');
         }
 
         $errors                     = new MessageBag();
@@ -205,30 +205,30 @@ class ProductController extends Controller
                         }
                     }
                 }
+            }
 
-                //if there was no error, check if there were things need to be delete
-                if(!$errors->count())
+            //if there was no error, check if there were things need to be delete
+            if(!$errors->count())
+            {
+                $varians                            = \App\Models\Varian::productid($product['id'])->get()->toArray();
+                
+                $varian_should_be_ids               = [];
+                foreach ($varians as $key => $value) 
                 {
-                    $varians                            = \App\Models\Varian::productid($product['id'])->get()->toArray();
-                    
-                    $varian_should_be_ids               = [];
-                    foreach ($varians as $key => $value) 
-                    {
-                        $varian_should_be_ids[]         = $value['id'];
-                    }
+                    $varian_should_be_ids[]         = $value['id'];
+                }
 
-                    $difference_varian_ids              = array_diff($varian_should_be_ids, $varian_current_ids);
+                $difference_varian_ids              = array_diff($varian_should_be_ids, $varian_current_ids);
 
-                    if($difference_varian_ids)
+                if($difference_varian_ids)
+                {
+                    foreach ($difference_varian_ids as $key => $value) 
                     {
-                        foreach ($difference_varian_ids as $key => $value) 
+                        $varian_data                = \App\Models\Varian::find($value);
+
+                        if(!$varian_data->delete())
                         {
-                            $varian_data                = \App\Models\Varian::find($value);
-
-                            if(!$varian_data->delete())
-                            {
-                                $errors->add('Varian', $varian_data->getError());
-                            }
+                            $errors->add('Varian', $varian_data->getError());
                         }
                     }
                 }
@@ -322,30 +322,30 @@ class ProductController extends Controller
                         }
                     }
                 }
+            }
 
-                //if there was no error, check if there were things need to be delete
-                if(!$errors->count())
+            //if there was no error, check if there were things need to be delete
+            if(!$errors->count())
+            {
+                $prices                            = \App\Models\Price::productid($product['id'])->get()->toArray();
+                
+                $price_should_be_ids               = [];
+                foreach ($prices as $key => $value) 
                 {
-                    $prices                            = \App\Models\Price::productid($product['id'])->get()->toArray();
-                    
-                    $price_should_be_ids               = [];
-                    foreach ($prices as $key => $value) 
-                    {
-                        $price_should_be_ids[]         = $value['id'];
-                    }
+                    $price_should_be_ids[]         = $value['id'];
+                }
 
-                    $difference_price_ids              = array_diff($price_should_be_ids, $price_current_ids);
+                $difference_price_ids              = array_diff($price_should_be_ids, $price_current_ids);
 
-                    if($difference_price_ids)
+                if($difference_price_ids)
+                {
+                    foreach ($difference_price_ids as $key => $value) 
                     {
-                        foreach ($difference_price_ids as $key => $value) 
+                        $price_data                = \App\Models\Price::find($value);
+
+                        if(!$price_data->delete())
                         {
-                            $price_data                = \App\Models\Price::find($value);
-
-                            if(!$price_data->delete())
-                            {
-                                $errors->add('Price', $price_data->getError());
-                            }
+                            $errors->add('Price', $price_data->getError());
                         }
                     }
                 }
@@ -498,30 +498,29 @@ class ProductController extends Controller
                         }
                     }
                 }
-
-                //if there was no error, check if there were things need to be delete
-                if(!$errors->count())
+            }
+            //if there was no error, check if there were things need to be delete
+            if(!$errors->count())
+            {
+                $labels                            = \App\Models\ProductLabel::productid($product['id'])->get()->toArray();
+                
+                $label_should_be_ids               = [];
+                foreach ($labels as $key => $value) 
                 {
-                    $labels                            = \App\Models\ProductLabel::productid($product['id'])->get()->toArray();
-                    
-                    $label_should_be_ids               = [];
-                    foreach ($labels as $key => $value) 
-                    {
-                        $label_should_be_ids[]         = $value['id'];
-                    }
+                    $label_should_be_ids[]         = $value['id'];
+                }
 
-                    $difference_label_ids              = array_diff($label_should_be_ids, $label_current_ids);
+                $difference_label_ids              = array_diff($label_should_be_ids, $label_current_ids);
 
-                    if($difference_label_ids)
+                if($difference_label_ids)
+                {
+                    foreach ($difference_label_ids as $key => $value) 
                     {
-                        foreach ($difference_label_ids as $key => $value) 
+                        $label_data                = \App\Models\ProductLabel::find($value);
+
+                        if(!$label_data->delete())
                         {
-                            $label_data                = \App\Models\ProductLabel::find($value);
-
-                            if(!$label_data->delete())
-                            {
-                                $errors->add('ProductLabel', $label_data->getError());
-                            }
+                            $errors->add('ProductLabel', $label_data->getError());
                         }
                     }
                 }
@@ -622,30 +621,29 @@ class ProductController extends Controller
                         }
                     }
                 }
-
-                //if there was no error, check if there were things need to be delete
-                if(!$errors->count())
+            }
+            //if there was no error, check if there were things need to be delete
+            if(!$errors->count())
+            {
+                $images                            = \App\Models\Image::imageableid($product['id'])->get()->toArray();
+                
+                $image_should_be_ids               = [];
+                foreach ($images as $key => $value) 
                 {
-                    $images                            = \App\Models\Image::imageableid($product['id'])->get()->toArray();
-                    
-                    $image_should_be_ids               = [];
-                    foreach ($images as $key => $value) 
-                    {
-                        $image_should_be_ids[]         = $value['id'];
-                    }
+                    $image_should_be_ids[]         = $value['id'];
+                }
 
-                    $difference_image_ids              = array_diff($image_should_be_ids, $image_current_ids);
+                $difference_image_ids              = array_diff($image_should_be_ids, $image_current_ids);
 
-                    if($difference_image_ids)
+                if($difference_image_ids)
+                {
+                    foreach ($difference_image_ids as $key => $value) 
                     {
-                        foreach ($difference_image_ids as $key => $value) 
+                        $image_data                = \App\Models\Image::find($value);
+
+                        if(!$image_data->delete())
                         {
-                            $image_data                = \App\Models\Image::find($value);
-
-                            if(!$image_data->delete())
-                            {
-                                $errors->add('Image', $image_data->getError());
-                            }
+                            $errors->add('Image', $image_data->getError());
                         }
                     }
                 }

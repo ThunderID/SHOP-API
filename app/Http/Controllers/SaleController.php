@@ -192,11 +192,9 @@ class SaleController extends Controller
             }
             else
             {
-                $value['transaction_id']     = $sale_data['id'];
-
                 $log_data                    = new \App\Models\TransactionLog;
 
-                $log_data                    = $log_data->fill(['status' => $sale['status']]);
+                $log_data                    = $log_data->fill(['status' => $sale['status'], 'transaction_id' => $sale_data['id']]);
 
                 if(!$log_data->save())
                 {
