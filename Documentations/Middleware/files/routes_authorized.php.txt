@@ -14,7 +14,7 @@
 *
 * Parameter Send 	: [email => 'xx', password => 'yy', grant_type => ('password' or 'refresh_token'), client_id => 'xx', client_secret => 'xx']
 *
-* Returned JSend 	: [token => [access_token => 'xx', refresh_token => 'xx', token_type => 'Bearer', 'expires_in' => 00], me => [id => 'xx', email => 'xx', name => 'xx', role => 'xx', quota_referral => 00, reference_name => 'xx', total_point => 00, total_reference => 00]]
+* Returned JSend 	: [token => [access_token => 'xx', refresh_token => 'xx', token_type => 'Bearer', expires_in => 00], me => [id => 'xx', email => 'xx', name => 'xx', role => 'xx', quota_referral => 00, reference_name => 'xx', total_point => 00, total_reference => 00]]
 *
 *
 *
@@ -24,7 +24,7 @@
 *
 * Parameter Send 	: [grant_type => 'client_credentials', client_id => 'xx', client_secret => 'xx']
 *
-* Returned JSend 	: [token => [access_token => 'xx', token_type => 'Bearer', 'expires_in' => 00]]]
+* Returned JSend 	: [token => [access_token => 'xx', token_type => 'Bearer', expires_in => 00]]
 */
 
 $app->post('/oauth/access_token', function() 
