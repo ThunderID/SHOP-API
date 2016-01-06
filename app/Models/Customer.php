@@ -7,7 +7,7 @@
 
 namespace App\Models;
 
-// use App\Models\Observers\CustomerObserver;
+use App\Models\Observers\UserObserver;
 
 class Customer extends User
 {
@@ -69,7 +69,7 @@ class Customer extends User
 	{
         parent::boot();
  
-        // Customer::observe(new CustomerObserver());
+        Customer::observe(new UserObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
