@@ -38,9 +38,12 @@ class ProductController extends Controller
             }
         }
 
-        $result                     = $result->with(['varians'])->get()->toArray();
+        $result                     = $result->with(['varians'])->paginate()->toArray();
+        $data                       = $result['data']; 
+        unset($result['data']);
+        $page                       = $result; 
 
-        return new JSend('success', (array)$result);
+        return new JSend('success', (array)$data, null, null, (array)$page);
     }
 
     /**

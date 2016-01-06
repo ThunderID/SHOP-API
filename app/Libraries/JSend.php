@@ -10,12 +10,18 @@ class JSend
 
 	protected $status;
 	protected $data;
+	protected $page;
 	protected $errorCode;
 	protected $errorMessage;
 
-	public static function success(array $data = null)
+	public static function success(array $data = null, array $page = null)
 	{
-		return new self(self::SUCCESS, $data);
+		if(is_null($page))
+		{
+			return new self(self::SUCCESS, $data);
+		}
+
+		return new self(self::SUCCESS, $data, $page);
 	}
 
 	public static function fail(array $data = null)
@@ -28,7 +34,7 @@ class JSend
 		return new self(self::ERROR, $data, $errorMessage, $errorCode);
 	}
 
-	public function __construct($status, array $data = null, $errorMessage = null, $errorCode = null)
+	public function __construct($status, array $data = null, $errorMessage = null, $errorCode = null, $page = null)
 	{
 		if (! $this->isStatusValid($status)) 
 		{
@@ -48,13 +54,14 @@ class JSend
 			$array_of_error_message	= json_decode($array_of_error_message, true);
 			$this->parsingErrorMessage($array_of_error_message);
 
-			$this->errorMessage 	= json_encode($this->errorMessage);
+			$this->errorMessage 	= $this->errorMessage;
 			//end of send error message as an array 2 D
 
 			$this->errorCode = $errorCode;
 		}
 
 		$this->data = $data;
+		$this->page = $page;
 	}
 
 	public function parsingErrorMessage($array_of_error_message)
@@ -80,6 +87,11 @@ class JSend
 	public function getData()
 	{
 		return $this->data;
+	}
+
+	public function getPage()
+	{
+		return $this->page;
 	}
 
 	public function getErrorMessage()
@@ -150,12 +162,23 @@ class JSend
 
 		if ($this->isError()) 
 		{
-			$theArray['message'] = (string) $this->errorMessage;
+			if(is_array($this->errorMessage))
+			{
+				$theArray['message'] = (array) $this->errorMessage;
+			}
+			else
+			{
+				$theArray['message'] = (string) $this->errorMessage;
+			}
 
 			if (! empty($this->errorCode)) 
 			{
 				$theArray['code'] = (int) $this->errorCode;
 			}
+		}
+		elseif ($this->isSuccess() && ! is_null($this->page)) 
+		{
+			$theArray['page'] = (array) $this->page;
 		}
 
 		return $theArray;
