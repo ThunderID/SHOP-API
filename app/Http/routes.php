@@ -11,26 +11,10 @@
 |
 */
 
-// ------------------------------------------------------------------------------------
-// Authorizer
-// ------------------------------------------------------------------------------------
-
-$app->post('/oauth/access_token', function() 
-{
-	$issue['token']								= \LucaDegasperi\OAuth2Server\Facades\Authorizer::issueAccessToken();
-
-	if(\Illuminate\Support\Facades\Auth::check())
-	{
-		$issue['me']							= \Illuminate\Support\Facades\Auth::user()->toArray();
-
-		return new \App\Libraries\JSend('success', (array)$issue);
-	}
-	else
-	{
-		return new \App\Libraries\JSend('error', (array)['No Data'], 'User invalid :( ');
-	}
-
-});
+include('routes_authorized.php');
+// include('routes_protected_resource.php');
+// include('routes_private.php');
+// include('routes_public.php');
 
 $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], function ($app) 
 {

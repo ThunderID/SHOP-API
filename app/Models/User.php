@@ -62,7 +62,7 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
 	 *
 	 * @var array
 	 */
-	protected $hidden 				= ['password', 'remember_token'];
+	protected $hidden 				= ['password', 'remember_token', 'activation_link', 'reset_password_link', 'expired_at'];
 
 	/* ---------------------------------------------------------------------------- RELATIONSHIP ----------------------------------------------------------------------------*/
 	
