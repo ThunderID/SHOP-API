@@ -21,6 +21,7 @@ class CurrentPriceScope implements ScopeInterface
 		->selectraw('products.*')
 		->selectraw('prices.price as price')
 		->selectraw('prices.promo_price as promo_price')
+		->selectraw('prices.started_at as price_start')
 		->leftjoin('prices', function ($join) 
 		 {
             $join->on ( 'prices.product_id', '=', 'products.id' )

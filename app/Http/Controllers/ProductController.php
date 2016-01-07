@@ -13,8 +13,10 @@ class ProductController extends Controller
     /**
      * Display all products
      *
-     * @return Response
+     * @return JSend Response
+     * @param search, skip, take
      */
+
     public function index()
     {
         $result                     = new \App\Models\Product;
@@ -38,12 +40,23 @@ class ProductController extends Controller
             }
         }
 
-        $result                     = $result->with(['varians'])->paginate()->toArray();
-        $data                       = $result['data']; 
-        unset($result['data']);
-        $page                       = $result; 
+        $count                      = $result->count();
 
-        return new JSend('success', (array)$data, null, null, (array)$page);
+        if(Input::has('skip'))
+        {
+            $skip                   = Input::get('skip');
+            $result                 = $result->skip($skip);
+        }
+
+        if(Input::has('take'))
+        {
+            $take                   = Input::get('take');
+            $result                 = $result->take($take);
+        }
+
+        $result                     = $result->with(['varians'])->get()->toArray();
+
+        return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
 
     /**
@@ -51,6 +64,7 @@ class ProductController extends Controller
      *
      * @return Response
      */
+
     public function detail($id = null)
     {
         //
