@@ -5,16 +5,21 @@ use Illuminate\Support\Str;
 
 use App\Models\Cluster;
 
-/* ----------------------------------------------------------------------
- * Event:
- * saving
- * deleting
- * ---------------------------------------------------------------------- */
-
+/**
+ * Used in Cluster model
+ *
+ * @author cmooy
+ */
 class ClusterObserver 
 {
+    /** 
+     * observe cluster event created
+     * 1. modify path
+     * 2. act, accept or refuse
+     */
     public function created($model)
     {
+        //1.modify path
         if($model->category()->count())
         {
             $model->path           = $model->category->path.','.$model->id;
@@ -34,8 +39,15 @@ class ClusterObserver
         return true;
     }
 
+    /** 
+     * observe cluster event saving
+     * 1. modify path
+     * 2. check slug
+     * 3. act, accept or refuse
+     */
     public function saving($model)
     {
+        //1.modify slug
         if(isset($model->category_id) && $model->category_id != 0 )
         {
             $model->slug                = Str::slug($model->category->name.' '.$model->name);
@@ -54,6 +66,7 @@ class ClusterObserver
             $id                         = $model->id;
         }
 
+        //2. check slug
         $category                       = Cluster::slug($model->slug)->notid($id)->first();
 
         if($category)
@@ -66,10 +79,17 @@ class ClusterObserver
         return true;
     }
 
+    /** 
+     * observe cluster event updating
+     * 1. updated parent + child path
+     * 2. act, accept or refuse
+     */
     public function updating($model)
     {
+        //1. check parent
         if(isset($model->getDirty()['category_id']) || !isset($model ->getDirty()['path']))
         {
+            //1a. mengganti path
             if($model->category()->count())
             {
                 $model->path = $model->category->path . "," . $model ->id;
@@ -81,7 +101,7 @@ class ClusterObserver
 
             if(isset($model ->getOriginal()['path']))
             {
-                //mengganti semua path child
+                //1b. mengganti semua path child
                 $childs                         = Cluster::orderBy('path','asc')
                                                     ->where('path','like',$model->getOriginal()['path'] . ',%')
                                                     ->get();
@@ -96,16 +116,19 @@ class ClusterObserver
         return true;
     }
 
+    /** 
+     * observe cluster event deleting
+     * 1. updated parent + child path
+     * 2. act, accept or refuse
+     */
     public function deleting($model)
     {
 		$errors 						= new MessageBag();
 
-		/* --------------------------------DELETE VARIAN RELATIONSHIP--------------------------------------*/
-
         //1. Check varian relationship with transaction
-        if($model->transactions()->count())
+        if($model->products()->varians()->transactions()->count())
         {
-            $errors->add('varian', 'Tidak dapat menghapus produk varian yang pernah di stok &/ order.');
+            $errors->add('varian', 'Tidak dapat menghapus kategori yang berhubungan dengan produk varian yang pernah di stok &/ order.');
         }
 
         if($errors->count())

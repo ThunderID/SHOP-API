@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\DB;
  * @return price, promo sprice, price start
  * @author cmooy
  */
-
 class CurrentPriceScope implements ScopeInterface  
 {
 	

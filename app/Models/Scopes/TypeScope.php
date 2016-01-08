@@ -4,6 +4,12 @@ use Illuminate\Database\Eloquent\ScopeInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Scope to get precise type of inheritance model
+ *
+ * @param type
+ * @author cmooy
+ */
 class TypeScope implements ScopeInterface  
 {
 	

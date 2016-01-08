@@ -1,14 +1,13 @@
 <?php
 
-/** 
-	* Inheritance Cluster Model
-	* For every inheritance model, allowed to have only $type, fillable, rules, and available function
-*/
-
 namespace App\Models;
 
 use App\Models\Observers\ClusterObserver;
 
+/** 
+	* Inheritance Cluster Model
+	* For every inheritance model, allowed to have only $type, fillable, rules, and available function
+*/
 class Category extends Cluster
 {
 	/**
@@ -54,11 +53,17 @@ class Category extends Cluster
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
 		
+		
+	/**
+	 * boot
+	 * observing model
+	 *
+	 */
 	public static function boot() 
 	{
         parent::boot();
  
-        // Cluster::observe(new ClusterObserver());
+        Cluster::observe(new ClusterObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/

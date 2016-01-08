@@ -9,13 +9,25 @@ use App\Models\Traits\HasStockTrait;
 use App\Models\Traits\HasNameTrait;
 use App\Models\Traits\HasTransactionStatusTrait;
 
+/**
+ * Used for Category and Term Models
+ * 
+ * @author cmooy
+ */
+
 class Cluster extends BaseModel
 {
-	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	/**
+	 * Relationship Traits.
+	 *
+	 */
 	use \App\Models\Traits\belongsTo\HasClusterTrait;
 	use \App\Models\Traits\belongsToMany\HasProductsTrait;
-	
-	/* ---------------------------------------------------------------------------- GLOBAL PLUG SCOPE TRAITS ---------------------------------------------------------------------*/
+
+	/**
+	 * Global traits used as query builder (global scope).
+	 *
+	 */
 	use HasTypeTrait;
 	use HasStockTrait;
 	use HasNameTrait;
@@ -28,10 +40,15 @@ class Cluster extends BaseModel
 	 */
 	protected $table				= 'categories';
 
-	// protected $timestamps			= true;
-
 	/**
 	 * Timestamp field
+	 *
+	 * @var array
+	 */
+	// protected $timestamps			= true;
+	
+	/**
+	 * Date will be returned as carbon
 	 *
 	 * @var array
 	 */
@@ -61,6 +78,11 @@ class Cluster extends BaseModel
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
 	
+	/**
+	 * boot
+	 * observing model
+	 *
+	 */
 	public static function boot() 
 	{
         parent::boot();

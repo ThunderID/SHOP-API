@@ -27,7 +27,7 @@ paths:
           format: integer
         - name: search
           in: query
-          description: Longitude component of location.
+          description: search parameter.
           required: false
           type: array
           items:
@@ -143,7 +143,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/productdetail'
+              $ref: '#/definitions/product'
         default:
           description: Unexpected error
           schema:

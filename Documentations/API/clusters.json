@@ -1,0 +1,260 @@
+swagger: '2.0'
+info:
+  title: Cluster API
+  description: Move your app forward with the Cluster API
+  version: 1.0.0
+host: localhost:8800
+schemes:
+  - https
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /clusters/{type}:
+    get:
+      summary: Cluster Lists
+      description: |
+        The Clusters endpoint returns information about the *BALIN* Clusters
+        could be tags or categories.
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+        - name: type
+          in: query
+          description: required in category or tag.
+          required: true
+          type: string
+          format: string
+        - name: search
+          in: query
+          description: search parameter.
+          required: false
+          type: array
+          items:
+            $ref: '#/definitions/search'
+        - name: skip
+          in: query
+          description: How many records are going to be skipped
+          required: false
+          type: number
+          format: integer
+        - name: take
+          in: query
+          description: How many records are going to be taken from resource
+          required: false
+          type: number
+          format: integer
+      tags:
+        - Clusters
+      responses:
+        '200':
+          description: An array of Clusters' data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Clusters'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /Clusters/store/{type}:
+    post:
+      summary: Store a Cluster
+      description: >
+        Store a Cluster with details those are varians, prices, categories, tags, labels, images
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+        - name: type
+          in: query
+          description: required in category or tag.
+          required: true
+          type: string
+          format: string
+        - name: id
+          in: query
+          description: Let it null for new Cluster.
+          required: true
+          type: number
+          format: double
+        - name: category_id
+          in: query
+          description: Cluster category_id.
+          required: true
+          type: string
+          format: string
+        - name: slug
+          in: query
+          description: Must be unique let it null for new.
+          required: true
+          type: string
+          format: string
+      tags:
+        - Clusters
+        - Tags
+        - Categories
+      responses:
+        '200':
+          description: An array of Cluster
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/cluster'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /Cluster/{id}:
+    get:
+      summary: Cluster Detail
+      description: 'Get Cluster detail information.'
+      parameters:
+        - name: id
+          in: query
+          description: Cluster id.
+          required: true
+          type: number
+          format: integer
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: number
+          format: integer
+      tags:
+        - Clusters
+      responses:
+        '200':
+          description: Cluster rich data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Cluster'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /Cluster/delete/{id}:
+    delete:
+      summary: Delete a Cluster
+      description: 'Get Cluster detail information.'
+      parameters:
+        - name: id
+          in: query
+          description: Cluster id.
+          required: true
+          type: number
+          format: integer
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: number
+          format: integer
+      tags:
+        - Clusters
+      responses:
+        '200':
+          description: Cluster rich data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Cluster'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  search:
+    type: array
+    properties:
+      name:
+        type: string
+        description: 'Search Cluster that hath certain name'
+  Clusters:
+    type: object
+    properties:
+      count:
+        type: numeric
+        description: 'Total Clusters.'
+      data:
+        type: array
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+          path:
+            type: string
+          slug:
+            type: string
+          category:
+            type: array
+            items:
+              $ref: '#/definitions/cluster'
+  cluster:
+    type: object
+    properties:
+      id:
+        type: number
+      name:
+        type: string
+      path:
+        type: string
+      slug:
+        type: string
+      varians:
+        type: array
+        items:
+          $ref: '#/definitions/products'
+  products:
+    type: object
+    properties:
+      count:
+        type: numeric
+        description: 'Total products.'
+      data:
+        type: array
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+          upc:
+            type: string
+          slug:
+            type: string
+          description:
+            type: array
+          current_stock:
+            type: number
+          on_hold_stock:
+            type: number
+          inventory_stock:
+            type: number
+          reserved_stock:
+            type: number
+          packed_stock:
+            type: number
+          price:
+            type: number
+          promo_price:
+            type: number
+          thumbnail:
+            type: string
+          image_xs:
+            type: string
+          image_sm:
+            type: string
+          image_md:
+            type: string
+          image_lg:
+            type: string

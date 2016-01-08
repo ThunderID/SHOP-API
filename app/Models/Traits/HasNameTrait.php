@@ -1,5 +1,10 @@
 <?php namespace App\Models\Traits;
 
+/**
+ * available function to get name of records
+ *
+ * @author cmooy
+ */
 trait HasNameTrait 
 {
 
@@ -7,15 +12,17 @@ trait HasNameTrait
 	 * boot
 	 *
 	 * @return void
-	 * @author 
 	 **/
-
 	function HasNameTraitConstructor()
 	{
 		//
 	}
 
-
+	/**
+	 * scope to get condition where name
+	 *
+	 * @param name
+	 **/
 	public function scopeName($query, $variable)
 	{
 		if(is_array($variable))

@@ -92,25 +92,25 @@ $app->group(['middleware' => 'oauth|staff', 'namespace' => 'App\Http\Controllers
 	// CLUSTERS
 	// ------------------------------------------------------------------------------------
 
-	$app->get('/clusters',
+	$app->get('/clusters/{type}',
 		[
 			'uses'				=> 'ClusterController@index'
 		]
 	);
 
-	$app->get('/cluster/{id}',
+	$app->get('/cluster/{type}/{id}',
 		[
 			'uses'				=> 'ClusterController@detail'
 		]
 	);
 
-	$app->post('/cluster/store',
+	$app->post('/cluster/{type}/store',
 		[
 			'uses'				=> 'ClusterController@store'
 		]
 	);
 
-	$app->delete('/cluster/delete/{id}',
+	$app->delete('/cluster/{type}/delete/{id}',
 		[
 			'uses'				=> 'ClusterController@delete'
 		]

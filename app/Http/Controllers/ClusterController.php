@@ -8,16 +8,22 @@ use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Handle Protected Resource of cluster
+ * 
+ * @author cmooy
+ */
 class ClusterController extends Controller
 {
     /**
-     * Display all products
+     * Display all clusters
      *
+     * @param type, search, skip, take
      * @return Response
      */
-    public function index()
+    public function index($type = null)
     {
-        if(Input::has('type') && Input::get('type')=='category')
+        if($type=='category')
         {
             $result                 = \App\Models\Category::orderby('path', 'asc')->with(['category']);
         }
@@ -45,19 +51,34 @@ class ClusterController extends Controller
             }
         }
 
+        $count                      = $result->count();
+
+        if(Input::has('skip'))
+        {
+            $skip                   = Input::get('skip');
+            $result                 = $result->skip($skip);
+        }
+
+        if(Input::has('take'))
+        {
+            $take                   = Input::get('take');
+            $result                 = $result->take($take);
+        }
+
         $result                     = $result->get()->toArray();
 
-        return new JSend('success', (array)$result);
+        return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
 
     /**
-     * Display a product
+     * Display a cluster
      *
+     * @param type, cluster id
      * @return Response
      */
-    public function detail($id = null)
+    public function detail($type = null, $id = null)
     {
-        if(Input::has('type') && Input::get('type')=='category')
+        if($type=='category')
         {
             $result                 = \App\Models\Category::id($id)->orderby('path', 'asc')->with(['category', 'products'])->first();
         }
@@ -75,13 +96,14 @@ class ClusterController extends Controller
     }
 
     /**
-     * Store a product
+     * Store a cluster
      *
+     * @param type
      * @return Response
      */
-    public function store()
+    public function store($type = null)
     {
-        if(!Input::has('cluster'))
+        if(!Input::has('category') || !Input::has('tag'))
         {
             return new JSend('error', (array)Input::all(), 'Tidak ada data cluster.');
         }
@@ -91,8 +113,15 @@ class ClusterController extends Controller
         DB::beginTransaction();
 
         //1. Validate Cluster Parameter
+        if($type=='category')
+        {
+            $cluster                    = Input::get('category');
+        }
+        else
+        {
+            $cluster                    = Input::get('tag');
+        }
 
-        $cluster                    = Input::get('cluster');
         if(is_null($cluster['id']))
         {
             $is_new                 = true;
@@ -104,8 +133,8 @@ class ClusterController extends Controller
 
         $cluster_rules             =   [
                                             'category_id'               => 'numeric',
-                                            'type'                      => 'required|in:category,id',
-                                            'path'                      => 'required|max:255',
+                                            // 'type'                      => 'required|in:category,id',
+                                            // 'path'                      => 'required|max:255',
                                             'name'                      => 'required|max:255',
                                             'slug'                      => 'required|max:255|unique:categories,slug,'.(!is_null($cluster['id']) ? $cluster['id'] : ''),
                                         ];
@@ -148,14 +177,15 @@ class ClusterController extends Controller
     }
 
     /**
-     * Delete a product
+     * Delete a cluster
      *
+     * @param type, cluster id
      * @return Response
      */
-    public function delete($id = null)
+    public function delete($type = null, $id = null)
     {
         //
-        if(Input::has('type') && Input::get('type')=='category')
+        if($type=='category')
         {
             $cluster                = \App\Models\Category::id($id)->orderby('path', 'asc')->with(['category', 'products'])->first();
         }

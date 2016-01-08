@@ -1,5 +1,10 @@
 <?php namespace App\Models\Traits\belongsToMany;
 
+/**
+ * Trait for models belongs to many Products.
+ *
+ * @author cmooy
+ */
 trait HasProductsTrait 
 {
 
@@ -7,16 +12,16 @@ trait HasProductsTrait
 	 * boot
 	 *
 	 * @return void
-	 * @author 
 	 **/
-
 	function HasProductsTraitConstructor()
 	{
 		//
 	}
 
-	/* ------------------------------------------------------------------- RELATIONSHIP TO SERVICE -------------------------------------------------------------------*/
-
+	/**
+	 * call belongsto many relationship products
+	 *
+	 **/
 	public function Products()
 	{
 		return $this->belongsToMany('App\Models\Product', 'categories_products', 'category_id');

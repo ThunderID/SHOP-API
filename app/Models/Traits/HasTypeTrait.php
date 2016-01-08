@@ -4,6 +4,11 @@ namespace App\Models\Traits;
 
 use App\Models\Scopes\TypeScope;
 
+/**
+ * Apply scope to get type of inheritance model
+ *
+ * @author cmooy
+ */
 trait HasTypeTrait 
 {
     /**
