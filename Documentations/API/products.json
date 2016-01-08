@@ -219,7 +219,7 @@ definitions:
     type: object
     properties:
       count:
-        type: numeric
+        type: number
         description: 'Total products.'
       data:
         type: array

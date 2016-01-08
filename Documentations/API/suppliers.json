@@ -1,0 +1,173 @@
+swagger: '2.0'
+info:
+  title: Supplier API
+  description: Move your app forward with the Supplier API
+  version: 1.0.0
+host: localhost:8800
+schemes:
+  - https
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /suppliers:
+    get:
+      summary: Supplier Lists
+      description: |
+        The Suppliers endpoint returns information about the *BALIN* Suppliers
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+        - name: search
+          in: query
+          description: search parameter.
+          required: false
+          type: array
+          items:
+            $ref: '#/definitions/search'
+        - name: skip
+          in: query
+          description: How many records are going to be skipped
+          required: false
+          type: number
+          format: integer
+        - name: take
+          in: query
+          description: How many records are going to be taken from resource
+          required: false
+          type: number
+          format: integer
+      tags:
+        - Suppliers
+      responses:
+        '200':
+          description: An array of Suppliers' data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/suppliers'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /suppliers/store:
+    post:
+      summary: Store a Supplier
+      description: >
+        Store a Supplier with details those are varians, prices, categories, tags, labels, images
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+        - name: name
+          in: query
+          description: suppliers' name.
+          required: true
+          type: string
+          format: string
+      tags:
+        - Suppliers
+      responses:
+        '200':
+          description: An array of Supplier
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/supplier'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /supplier/{id}:
+    get:
+      summary: Supplier Detail
+      description: 'Get Supplier detail information.'
+      parameters:
+        - name: id
+          in: query
+          description: Supplier id.
+          required: true
+          type: number
+          format: integer
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+      tags:
+        - Suppliers
+      responses:
+        '200':
+          description: Supplier rich data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/supplier'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /supplier/delete/{id}:
+    delete:
+      summary: Delete a Supplier
+      description: 'Get Supplier detail information.'
+      parameters:
+        - name: id
+          in: query
+          description: Supplier id.
+          required: true
+          type: number
+          format: integer
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+      tags:
+        - Suppliers
+      responses:
+        '200':
+          description: Supplier rich data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/supplier'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  search:
+    type: array
+    properties:
+      name:
+        type: string
+        description: 'Search Supplier that hath certain name'
+  suppliers:
+    type: object
+    properties:
+      count:
+        type: number
+        description: 'Total Suppliers.'
+      data:
+        type: array
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+  supplier:
+    type: object
+    properties:
+      id:
+        type: number
+      name:
+        type: string

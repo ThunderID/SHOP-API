@@ -8,11 +8,17 @@ use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Handle Protected Resource of Supplier
+ * 
+ * @author cmooy
+ */
 class SupplierController extends Controller
 {
     /**
      * Display all products
      *
+     * @param type, search, skip, take
      * @return Response
      */
     public function index()
@@ -38,13 +44,27 @@ class SupplierController extends Controller
             }
         }
 
+        $count                      = $result->count();
+
+        if(Input::has('skip'))
+        {
+            $skip                   = Input::get('skip');
+            $result                 = $result->skip($skip);
+        }
+
+        if(Input::has('take'))
+        {
+            $take                   = Input::get('take');
+            $result                 = $result->take($take);
+        }
+
         $result                     = $result->get()->toArray();
 
-        return new JSend('success', (array)$result);
+        return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
 
     /**
-     * Display a product
+     * Display a supplier
      *
      * @return Response
      */
@@ -62,7 +82,7 @@ class SupplierController extends Controller
     }
 
     /**
-     * Store a product
+     * Store a supplier
      *
      * @return Response
      */
@@ -78,7 +98,6 @@ class SupplierController extends Controller
         DB::beginTransaction();
 
         //1. Validate Supplier Parameter
-
         $supplier                    = Input::get('supplier');
         if(is_null($supplier['id']))
         {
@@ -131,7 +150,7 @@ class SupplierController extends Controller
     }
 
     /**
-     * Delete a product
+     * Delete a supplier
      *
      * @return Response
      */

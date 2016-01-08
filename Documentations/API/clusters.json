@@ -112,7 +112,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /Cluster/{id}:
+  /Cluster/{type}/{id}:
     get:
       summary: Cluster Detail
       description: 'Get Cluster detail information.'
@@ -123,6 +123,12 @@ paths:
           required: true
           type: number
           format: integer
+        - name: type
+          in: query
+          description: required in category or tag.
+          required: true
+          type: string
+          format: string
         - name: access_token
           in: query
           description: Access token given by apps.
@@ -142,7 +148,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /Cluster/delete/{id}:
+  /cluster/delete/{type}/{id}:
     delete:
       summary: Delete a Cluster
       description: 'Get Cluster detail information.'
@@ -153,6 +159,12 @@ paths:
           required: true
           type: number
           format: integer
+        - name: type
+          in: query
+          description: required in category or tag.
+          required: true
+          type: string
+          format: string
         - name: access_token
           in: query
           description: Access token given by apps.
@@ -167,7 +179,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Cluster'
+              $ref: '#/definitions/cluster'
         default:
           description: Unexpected error
           schema:
@@ -179,11 +191,11 @@ definitions:
       name:
         type: string
         description: 'Search Cluster that hath certain name'
-  Clusters:
+  clusters:
     type: object
     properties:
       count:
-        type: numeric
+        type: number
         description: 'Total Clusters.'
       data:
         type: array
@@ -219,7 +231,7 @@ definitions:
     type: object
     properties:
       count:
-        type: numeric
+        type: number
         description: 'Total products.'
       data:
         type: array

@@ -6,12 +6,23 @@ use App\Models\Traits\HasNameTrait;
 
 use App\Models\Observers\SupplierObserver;
 
+/**
+ * Used for Supplier Models
+ * 
+ * @author cmooy
+ */
 class Supplier extends BaseModel
 {
-	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
-	use \App\Models\Traits\hasMany\HasTransactionsTrait;
+	/**
+	 * Relationship Traits.
+	 *
+	 */
+ 	use \App\Models\Traits\hasMany\HasTransactionsTrait;
 
-	/* ---------------------------------------------------------------------------- GLOBAL PLUG SCOPE TRAITS ---------------------------------------------------------------------*/
+	/**
+	 * Global traits used as query builder (global scope).
+	 *
+	 */
 	use HasNameTrait;
 
 	/**
@@ -21,10 +32,15 @@ class Supplier extends BaseModel
 	 */
 	protected $table				= 'suppliers';
 
-	// protected $timestamps			= true;
-
 	/**
 	 * Timestamp field
+	 *
+	 * @var array
+	 */
+	// protected $timestamps			= true;
+	
+	/**
+	 * Date will be returned as carbon
 	 *
 	 * @var array
 	 */
@@ -72,7 +88,12 @@ class Supplier extends BaseModel
 	/* ---------------------------------------------------------------------------- ACCESSOR ----------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
-		
+				
+	/**
+	 * boot
+	 * observing model
+	 *
+	 */
 	public static function boot() 
 	{
         parent::boot();
