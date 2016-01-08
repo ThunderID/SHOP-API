@@ -1,5 +1,10 @@
 <?php namespace App\Models\Traits\hasOne;
 
+/**
+ * Trait for models has one shipment.
+ *
+ * @author cmooy
+ */
 trait HasShipmentTrait 
 {
 
@@ -7,16 +12,16 @@ trait HasShipmentTrait
 	 * boot
 	 *
 	 * @return void
-	 * @author 
 	 **/
-
 	function HasShipmentTraitConstructor()
 	{
 		//
 	}
 
-	/* ------------------------------------------------------------------- RELATIONSHIP TO SERVICE -------------------------------------------------------------------*/
-
+	/**
+	 * call has one relationship
+	 *
+	 **/
 	public function Shipment()
 	{
 		return $this->hasOne('App\Models\Shipment', 'transaction_id');

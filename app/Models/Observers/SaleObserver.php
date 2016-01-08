@@ -2,32 +2,29 @@
 
 use Illuminate\Support\MessageBag;
 
-use App\Jobs\ChangeStatus;
-use App\Jobs\GenerateTransactionRefNumber;
-use App\Jobs\GenerateTransactionUniqNumber;
-use App\Jobs\Points\CountVoucherDiscount;
 use App\Jobs\Points\CreditQuota;
 
-/* ----------------------------------------------------------------------
- * Event:
- * created
- * saving
- * saved
- * deleting
- * ---------------------------------------------------------------------- */
-
+/**
+ * Used in Sale model
+ *
+ * @author cmooy
+ */
 class SaleObserver 
 {
+    /** 
+     * observe sale event created
+     * 1. change status to cart
+     * 2. execute it there was no error
+     */
 	public function created($model)
 	{
 		$errors 							= new MessageBag();
 
-		//change status to delivered
-        $result                             = $this->dispatch(new ChangeStatus($model, 'cart'));
-
-        if($result->getStatus()=='error')
+		//1. change status to cart
+        $result                             = $this->ChangeStatus($model, 'cart', null);
+        if(!$result)
         {
-            $errors->add('Log', $result->getErrorMessage());
+            return false;
         }
 
 		if($errors->count())
@@ -40,25 +37,23 @@ class SaleObserver
         return true;
 	}
 
+    /** 
+     * observe sale event saving
+     * 1. generate ref number
+     * 2. generate unique number
+     * 3. execute it there was no error
+     */
     public function saving($model)
     {
         $errors                             = new MessageBag();
 
-        $result                             = $this->dispatch(new GenerateTransactionRefNumber($model));
+        //1. Generate ref number
+        $model->ref_number                  = $this->generateRefNumber($model);
         
-        if($result->getStatus()=='success')
+        //2. Generate unique number
+        if($model->status=='cart' || $model->status=='na')
         {
-            if($model->status=='cart' || $model->status=='na')
-            {
-                $result                     = $this->dispatch(new GenerateTransactionUniqNumber($model));
-            }
-        
-            $result                         = $this->dispatch(new CountVoucherDiscount($model));
-        }
-
-        if($result->getStatus()=='error')
-        {
-            $errors->add('Log', $result->getErrorMessage());
+            $model->unique_number           = $this->generateUniqeNumber($model);
         }
 
         if($errors->count())
@@ -71,16 +66,22 @@ class SaleObserver
         return true;
     }
 
+    /** 
+     * observe sale event saved
+     * 1. credit voucher's quota
+     * 2. execute it there was no error
+     */
     public function saved($model)
     {
+        //1. credit voucher's quota
         if($model->voucher()->count())
         {
-            $result                             = $this->dispatch(new CreditQuota($model->voucher, 'Penggunaan voucher untuk transaksi #'.$model->ref_number));
-        }
-
-        if($result->getStatus()=='error')
-        {
-            $errors->add('Log', $result->getErrorMessage());
+            $result                         = $this->CreditQuota($model->voucher, 'Penggunaan voucher untuk transaksi #'.$model->ref_number);
+        
+            if(!$result)
+            {
+                return false;
+            }
         }
 
         if($errors->count())
@@ -92,7 +93,11 @@ class SaleObserver
 
         return true;
     }
-
+    
+    /** 
+     * observe sale event deleting
+     * 1. disable delete function
+     */
     public function deleting($model)
     {
         $model['errors']        		= 'Tidak dapat menghapus transaksi, silahkan batalkan.';

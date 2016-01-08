@@ -8,6 +8,7 @@ class Shipment extends BaseModel
 {
 	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
 	use \App\Models\Traits\belongsTo\HasAddressTrait;
+	use \App\Models\Traits\belongsTo\HasCourierTrait;
 
 	/**
 	 * The database table used by the model.

@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
-  title: Purchase API
-  description: Move your app forward with the Purchase API
+  title: Sale API
+  description: Move your app forward with the Sale API
   version: 1.0.0
 host: localhost:8800
 schemes:
@@ -10,11 +10,11 @@ basePath: /v1
 produces:
   - application/json
 paths:
-  /purchases:
+  /sales:
     get:
-      summary: Purchase Lists
+      summary: Sale Lists
       description: |
-        The Purchases endpoint returns information about the *BALIN* Purchases
+        The Sales endpoint returns information about the *BALIN* Sales
       parameters:
         - name: access_token
           in: query
@@ -41,23 +41,23 @@ paths:
           type: number
           format: integer
       tags:
-        - Purchases
+        - Sales
       responses:
         '200':
-          description: An array of Purchases' data
+          description: An array of Sales' data
           schema:
             type: array
             items:
-              $ref: '#/definitions/purchases'
+              $ref: '#/definitions/sales'
         default:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /purchases/store:
+  /Sales/store:
     post:
-      summary: Store a Purchase
+      summary: Store a Sale
       description: >
-        Store a Purchase with details those are varians, prices, categories, tags, labels, images
+        Store a Sale with details those are varians, prices, categories, tags, labels, images
       parameters:
         - name: access_token
           in: query
@@ -92,26 +92,26 @@ paths:
           items:
             $ref: '#/definitions/logs'
       tags:
-        - Purchases
+        - Sales
       responses:
         '200':
-          description: An array of Purchase
+          description: An array of Sale
           schema:
             type: array
             items:
-              $ref: '#/definitions/purchase'
+              $ref: '#/definitions/Sale'
         default:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /purchase/{id}:
+  /sale/{id}:
     get:
-      summary: Purchase Detail
-      description: 'Get Purchase detail information.'
+      summary: Sale Detail
+      description: 'Get Sale detail information.'
       parameters:
         - name: id
           in: query
-          description: Purchase id.
+          description: Sale id.
           required: true
           type: number
           format: integer
@@ -122,14 +122,14 @@ paths:
           type: string
           format: string
       tags:
-        - Purchases
+        - Sales
       responses:
         '200':
-          description: Purchase rich data
+          description: Sale rich data
           schema:
             type: array
             items:
-              $ref: '#/definitions/purchase'
+              $ref: '#/definitions/Sale'
         default:
           description: Unexpected error
           schema:
@@ -140,13 +140,13 @@ definitions:
     properties:
       name:
         type: string
-        description: 'Search Purchase that hath certain name'
-  purchases:
+        description: 'Search Sale that hath certain name'
+  sales:
     type: object
     properties:
       count:
         type: number
-        description: 'Total Purchases.'
+        description: 'Total Sales.'
       data:
         type: array
         properties:
@@ -158,13 +158,21 @@ definitions:
             type: string
           status:
             type: string
+          unique_number:
+            type: number
+          shipping_cost:
+            type: number
+          voucher_discount:
+            type: number
           amount:
             type: number
-          supplier:
+          bills:
+            type: number
+          user:
             type: array
             items:
-              $ref: '#/definitions/supplier'
-  purchase:
+              $ref: '#/definitions/user'
+  sale:
     type: object
     properties:
       id:
@@ -175,12 +183,20 @@ definitions:
         type: string
       status:
         type: string
+      unique_number:
+        type: number
+      shipping_cost:
+        type: number
+      voucher_discount:
+        type: number
       amount:
         type: number
-      supplier:
+      bills:
+        type: number
+      user:
         type: array
         items:
-          $ref: '#/definitions/supplier'
+          $ref: '#/definitions/user'
       transactiondetails:
         type: array
         items:
@@ -189,13 +205,49 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/logs'
-  supplier:
+      paidpointlogs:
+        type: array
+        items:
+          $ref: '#/definitions/points'
+      payment:
+        type: array
+        items:
+          $ref: '#/definitions/payment'
+      shipment:
+        type: array
+        items:
+          $ref: '#/definitions/shipment'
+  user:
     type: object
     properties:
       id:
         type: string
       name:
         type: string
+      role:
+        type: string
+      is_active:
+        type: boolean
+      sso_id:
+        type: string
+      sso_media:
+        type: string
+      sso_data:
+        type: string
+      gender:
+        type: string
+      date_of_birth:
+        type: string
+      last_logged_at:
+        type: string
+      quota_referral:
+        type: number
+      reference_name:
+        type: string
+      total_point:
+        type: number
+      total_reference:
+        type: number
   details:
     type: object
     properties:
@@ -281,6 +333,69 @@ definitions:
       image_md:
         type: string
       image_lg:
+        type: string
+  points:
+    type: object
+    properties:
+      id:
+        type: string
+      amount:
+        type: number
+      expired_at:
+        type: string
+      notes:
+        type: string
+  payment:
+    type: object
+    properties:
+      id:
+        type: string
+      method:
+        type: string
+      destination:
+        type: string
+      account_name:
+        type: string
+      account_number:
+        type: string
+      ondate:
+        type: string
+      amount:
+        type: number
+  shipment:
+    type: object
+    properties:
+      id:
+        type: string
+      receipt_number:
+        type: string
+      receiver_name:
+        type: string
+      address:
+        type: array
+        items:
+          $ref: '#/definitions/address'
+      courier:
+        type: array
+        items:
+          $ref: '#/definitions/courier'
+  address:
+    type: object
+    properties:
+      id:
+        type: string
+      phone:
+        type: string
+      address:
+        type: string
+      zipcode:
+        type: string
+  courier:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
         type: string
   Error:
     type: object

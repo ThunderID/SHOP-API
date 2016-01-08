@@ -1,25 +1,33 @@
 <?php
 
+namespace App\Models;
+
+use App\Models\Traits\HasBillAmountTrait;
+use App\Models\Traits\Calculations\HasVoucherQuotaTrait;
+use App\Models\Observers\SaleObserver;
+
 /** 
 	* Inheritance Transaction Model
 	* For every inheritance model, allowed to have only $type, fillable, rules, and available function
 */
-namespace App\Models;
-
-use App\Models\Traits\HasBillAmountTrait;
-use App\Models\Observers\SaleObserver;
-
 class Sale extends Transaction
 {
-	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	/**
+	 * Relationship Traits.
+	 *
+	 */
 	use \App\Models\Traits\belongsTo\HasUserTrait;
 	use \App\Models\Traits\belongsTo\HasVoucherTrait;
 	use \App\Models\Traits\hasOne\HasPaymentTrait;
 	use \App\Models\Traits\hasOne\HasShipmentTrait;
 	use \App\Models\Traits\hasMany\HasPointLogsTrait;
 	
-	/* ---------------------------------------------------------------------------- GLOBAL SCOPE TRAITS ---------------------------------------------------------------------*/
+	/**
+	 * Global traits used as query builder (global scope).
+	 *
+	 */
 	use HasBillAmountTrait;
+	use HasVoucherQuotaTrait;
 
 	/**
 	 * The public variable that assigned type of inheritance model
@@ -66,13 +74,56 @@ class Sale extends Transaction
 	
 	/* ---------------------------------------------------------------------------- ACCESSOR ----------------------------------------------------------------------------*/
 	
-	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
-	
+	/**
+	 * boot
+	 * observing model
+	 *
+	 */
 	public static function boot() 
 	{
         parent::boot();
  
         Sale::observe(new SaleObserver());
+    }
+
+	/**
+	 * generate unique number
+	 * 
+	 * @param model of sale
+	 * @return unique_number
+	 */	
+    public function generateRefNumber($sale)
+	{
+		if(!is_null($sale->unique_number))
+        {
+            $i                          = 0;
+            $amount                     = true;
+
+            while($amount)
+            {
+                $prev_number            = Transaction::orderBy('id', 'DESC')->status('wait')->type('sell')->first();
+
+                $limit                  = StoreSetting::type('limit_unique_number')->ondate('now')->first();
+
+                if($prev_number['unique_number'] < $limit['value'])
+                {
+                    $unique_number      = $i+ $prev_number['unique_number'] + 1;
+                }
+                else
+                {
+                    $unique_number      = $i+ 1;
+                }
+
+                $amount                 = Transaction::amount($sale->amount - $unique_number)->status('wait')->notid($sale->id)->first();
+                $i                      = $i+1;
+            }
+
+            return $unique_number;
+        }
+        else
+        {
+        	return $sale->unique_number;
+        }
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/

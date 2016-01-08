@@ -6,7 +6,7 @@ use Carbon\Carbon;
 
 use App\Models\Traits\HasTypeTrait;
 use App\Models\Traits\HasAmountTrait;
-use App\Models\Traits\HasStatusTrait;
+use App\Models\Traits\HasCurrentStatusTrait;
 use App\Models\Traits\HasTransactionStatusTrait;
 use App\Models\Observers\TransactionObserver;
 
@@ -97,7 +97,7 @@ class Transaction extends BaseModel
 	 * @param model of transaction
 	 * @return ref number
 	 */	
-    public generateRefNumber($transaction) 
+    public function generateRefNumber($transaction) 
 	{
 		if(is_null($transaction->id) || $transaction->ref_number=='0000000000')
         {
@@ -154,7 +154,7 @@ class Transaction extends BaseModel
 	 * @param model of transaction, status, notes
 	 * @return boolean, error message saved to models
 	 */	
-    public changeStatus($transaction, $status, $notes) 
+    public function changeStatus($transaction, $status, $notes) 
 	{
 		$logs 					= new TransactionLog;
 		$params 				= 	[

@@ -56,7 +56,7 @@ class PurchaseController extends Controller
 
         $result                     = $result->with(['supplier'])->get()->toArray();
 
-        return new JSend('success', (array)$result);
+        return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
 
     /**

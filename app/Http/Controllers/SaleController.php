@@ -8,11 +8,17 @@ use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Handle Protected Resource of Sale
+ * 
+ * @author cmooy
+ */
 class SaleController extends Controller
 {
     /**
-     * Display all products
+     * Display all sales
      *
+     * @param search, skip, take
      * @return Response
      */
     public function index()
@@ -34,31 +40,49 @@ class SaleController extends Controller
             }
         }
 
+        $count                      = $result->count();
+
+        if(Input::has('skip'))
+        {
+            $skip                   = Input::get('skip');
+            $result                 = $result->skip($skip);
+        }
+
+        if(Input::has('take'))
+        {
+            $take                   = Input::get('take');
+            $result                 = $result->take($take);
+        }
+
         $result                     = $result->with(['user'])->get()->toArray();
 
-        return new JSend('success', (array)$result);
+        return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
 
     /**
-     * Display a product
+     * Display a sale
      *
      * @return Response
      */
     public function detail($id = null)
     {
-        $result                 = \App\Models\Sale::id($id)->with(['transactionlogs', 'user', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'paidpointlogs', 'payment', 'shipment', 'shipment.address'])->first();
+        $result                 = \App\Models\Sale::id($id)->with(['transactionlogs', 'user', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'paidpointlogs', 'payment', 'shipment', 'shipment.address', 'shipment.courier'])->first();
 
         if($result)
         {
             return new JSend('success', (array)$result->toArray());
-
         }
+
         return new JSend('error', (array)Input::all(), 'ID Tidak Valid.');
     }
 
     /**
-     * Store a product
+     * Store a sale
      *
+     * 1. Save Sale
+     * 2. Save Payment or shipment
+     * 3. Save Transaction Log
+     * 
      * @return Response
      */
     public function status()
@@ -175,7 +199,7 @@ class SaleController extends Controller
             }
         }
 
-        //4. Check if status = others
+        //3. Check if status = others
         if(!$errors->count() && !in_array($sale['status'], ['paid', 'shipping']))
         {
             $log_rules   =   [
