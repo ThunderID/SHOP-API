@@ -5,6 +5,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Scope to get current price of product
+ *
+ * @return price, promo sprice, price start
+ * @author cmooy
+ */
+
 class CurrentPriceScope implements ScopeInterface  
 {
 	

@@ -4,10 +4,15 @@ namespace App\Models\Traits;
 
 use App\Models\Scopes\CurrentStockScope;
 
+/**
+ * Apply scope to count current stock
+ *
+ * @author cmooy
+ */
 trait HasCurrentStockTrait 
 {
-    /**
-     * Boot the Has CurrentStock trait for a model (used for morph/inherit table).
+	/**
+     * Boot the Has CurrentPrice trait for a model has stock.
      *
      * @return void
      */

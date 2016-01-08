@@ -4,13 +4,18 @@ namespace App\Models;
 
 // use App\Models\Observers\ProductLabelObserver;
 
+/**
+ * Used for ProductLabel Models
+ * 
+ * @author cmooy
+ */
 class ProductLabel extends BaseModel
 {
-	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
-
-	/* ---------------------------------------------------------------------------- GLOBAL SCOPE TRAITS ---------------------------------------------------------------------*/
-
-	/* ---------------------------------------------------------------------------- GLOBAL PLUG SCOPE TRAITS ---------------------------------------------------------------------*/
+	/**
+	 * Relationship Traits.
+	 *
+	 */
+	use \App\Models\Traits\belongsTo\HasProductTrait;
 
 	/**
 	 * The database table used by the model.
@@ -19,10 +24,15 @@ class ProductLabel extends BaseModel
 	 */
 	protected $table				= 'product_lables';
 
-	// protected $timestamps			= true;
-
 	/**
 	 * Timestamp field
+	 *
+	 * @var array
+	 */
+	// protected $timestamps			= true;
+	
+	/**
+	 * Date will be returned as carbon
 	 *
 	 * @var array
 	 */
@@ -75,6 +85,10 @@ class ProductLabel extends BaseModel
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
 		
+	/**
+	 * boot
+	 *
+	 */
 	public static function boot() 
 	{
         parent::boot();
@@ -85,13 +99,13 @@ class ProductLabel extends BaseModel
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
 
 
+	/**
+	 * scope to find label of product
+	 *
+	 * @param string of labelnames
+	 */
 	public function scopeName($query, $variable)
 	{
-		if(is_array($variable))
-		{
-			return 	$query->whereIn($query->getModel()->table.'.lable', $variable);
-		}
-
 		return 	$query->where($query->getModel()->table.'.lable', '=', $variable);
 	}
 }

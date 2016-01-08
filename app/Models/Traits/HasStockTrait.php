@@ -1,20 +1,27 @@
 <?php namespace App\Models\Traits;
 
+/**
+ * available function to get result of stock
+ *
+ * @author cmooy
+ */
 trait HasStockTrait 
 {
-
 	/**
 	 * boot
 	 *
 	 * @return void
-	 * @author 
 	 **/
-
 	function HasStockTraitConstructor()
 	{
 		//
 	}
 
+	/**
+	 * count total items in cart of customers' order
+	 *
+	 * @return cart_item
+	 **/
 	public function scopeSelectStockInCart($query, $variable)
 	{
 		return $query->selectraw('IFNULL(SUM(
@@ -23,6 +30,11 @@ trait HasStockTrait
 		;
 	}
 	
+	/**
+	 * count current stock, from sale wait. paid, packed, shipping, delivered as out, and delivered purchase as in 
+	 *
+	 * @return current_stock
+	 **/
 	public function scopeSelectCurrentStock($query, $variable)
 	{
 		return $query->selectraw('IFNULL(SUM(
@@ -31,6 +43,11 @@ trait HasStockTrait
 		;
 	}
 	
+	/**
+	 * count on hold stock, defined as checked out stock (sale wait)
+	 *
+	 * @return on_hold_stock
+	 **/
 	public function scopeSelectOnHoldStock($query, $variable)
 	{
 		return $query->selectraw('IFNULL(SUM(
@@ -38,6 +55,12 @@ trait HasStockTrait
 									),0) as on_hold_stock')
 		;
 	}
+
+	/**
+	 * count packed stock (sale packed)
+	 *
+	 * @return packed_stock
+	 **/
 	public function scopeSelectPackedStock($query, $variable)
 	{
 		return $query->selectraw('IFNULL(SUM(
@@ -46,6 +69,11 @@ trait HasStockTrait
 		;
 	}
 
+	/**
+	 * count inventory stock, defined as current stock in warehouse and belongs to warehouse (sale shipping, sale packed, sale delivered as out and purchase delivered as in)
+	 *
+	 * @return inventory_stock
+	 **/
 	public function scopeSelectInventoryStock($query, $variable)
 	{
 		return $query->selectraw('IFNULL(SUM(
@@ -54,6 +82,11 @@ trait HasStockTrait
 		;
 	}
 
+	/**
+	 * count reserved stock, defined as stock exists in warehouse but does not belongs to shop (sale paid)
+	 *
+	 * @return packed_stock
+	 **/
 	public function scopeSelectReservedStock($query, $variable)
 	{
 		return $query->selectraw('IFNULL(SUM(
@@ -62,18 +95,35 @@ trait HasStockTrait
 		;
 	}
 
+	/**
+	 * count reserved stock, defined as stock exists in warehouse but does not belongs to shop (sale paid)
+	 *
+	 * @return packed_stock
+	 **/
 	public function scopeSelectSoldItem($query, $variable)
 	{
-		return $query->selectraw('IFNULL(SUM(quantity),0) sold_item')
+		return $query->selectraw('IFNULL(SUM(
+									if(transactions.type ="sell", if(transaction_logs.status ="paid" OR transaction_logs.status="packed" OR transaction_logs.status="shipping" OR transaction_logs.status="delivered", quantity, 0), 0)
+									),0) as sold_item')
 		;
 	}
-
+	
+	/**
+	 * combine all stocks' scope calculation
+	 *
+	 * @return current_stock, on_hold_stock, inventory_stock, reserved_stock, packed_stock
+	 **/
 	public function scopeSelectGlobalStock($query, $variable)
 	{
 		return $query->selectcurrentstock(true)->selectonholdstock(true)->selectinventorystock(true)->selectreservedstock(true)->selectpackedstock(true);
 		;
 	}
 
+	/**
+	 * condition of current_stock having certain value
+	 *
+	 * @param threshold (negative defined as less than, positive defined as greater than)
+	 **/
 	public function scopeHavingCurrentStock($query, $variable)
 	{
 		if($variable < 0)

@@ -4,10 +4,18 @@ namespace App\Models;
 
 use App\Models\Observers\ImageObserver;
 
+/**
+ * Used for Image Models
+ * 
+ * @author cmooy
+ */
 class Image extends BaseModel
 {
-	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
-	use \App\Models\Traits\morphTo\HasImageableTrait;
+	/**
+	 * Relationship Traits.
+	 *
+	 */
+ 	use \App\Models\Traits\morphTo\HasImageableTrait;
 	
 	/**
 	 * The database table used by the model.
@@ -16,10 +24,15 @@ class Image extends BaseModel
 	 */
 	protected $table				= 'images';
 
-	// protected $timestamps			= true;
-
 	/**
 	 * Timestamp field
+	 *
+	 * @var array
+	 */
+	// protected $timestamps			= true;
+	
+	/**
+	 * Date will be returned as carbon
 	 *
 	 * @var array
 	 */
@@ -78,7 +91,12 @@ class Image extends BaseModel
 	/* ---------------------------------------------------------------------------- ACCESSOR ----------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
-		
+
+	/**
+	 * boot
+	 * observing model
+	 *
+	 */
 	public static function boot() 
 	{
         parent::boot();

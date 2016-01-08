@@ -10,9 +10,17 @@ use App\Models\Traits\HasStockTrait;
 use App\Models\Traits\HasTransactionStatusTrait;
 use App\Models\Observers\ProductObserver;
 
+/**
+ * Used for Product Models
+ * 
+ * @author cmooy
+ */
 class Product extends BaseModel
 {
-	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/	
+	/**
+	 * Relationship Traits.
+	 *
+	 */
 	use \App\Models\Traits\hasMany\HasVariansTrait;
 	use \App\Models\Traits\hasMany\HasPricesTrait;
 	use \App\Models\Traits\hasMany\HasLabelsTrait;
@@ -21,12 +29,18 @@ class Product extends BaseModel
 
 	use \App\Models\Traits\morphMany\HasImagesTrait;
 
-	/* ---------------------------------------------------------------------------- GLOBAL SCOPE TRAITS ---------------------------------------------------------------------*/
+	/**
+	 * Global traits used as query builder (global scope).
+	 *
+	 */
 	use HasCurrentStockTrait;
 	use HasCurrentPriceTrait;
 	use HasDefaultImageTrait;
 
-	/* ---------------------------------------------------------------------------- GLOBAL PLUG SCOPE TRAITS ---------------------------------------------------------------------*/
+	/**
+	 * Global traits used as scope (plugged scope).
+	 *
+	 */
 	use HasStockTrait;
 	use HasTransactionStatusTrait;
 
@@ -37,10 +51,15 @@ class Product extends BaseModel
 	 */
 	protected $table				= 'products';
 
-	// protected $timestamps			= true;
-
 	/**
 	 * Timestamp field
+	 *
+	 * @var array
+	 */
+	// protected $timestamps			= true;
+	
+	/**
+	 * Date will be returned as carbon
 	 *
 	 * @var array
 	 */
@@ -68,7 +87,6 @@ class Product extends BaseModel
 	 *
 	 * @var array
 	 */
-
 	protected $fillable				=	[
 											'name'							,
 											'upc'							,
@@ -86,7 +104,8 @@ class Product extends BaseModel
 											'upc'							=> 'required|max:255',
 											'slug'							=> 'required|max:255',
 										];
-	
+
+
 	/* ---------------------------------------------------------------------------- RELATIONSHIP ----------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- QUERY BUILDER ----------------------------------------------------------------------------*/
@@ -97,6 +116,11 @@ class Product extends BaseModel
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
 		
+	/**
+	 * boot
+	 * observing model
+	 *
+	 */
 	public static function boot() 
 	{
         parent::boot();
@@ -106,11 +130,21 @@ class Product extends BaseModel
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
 
+	/**
+	 * scope to find upc of product
+	 *
+	 * @param string of upc
+	 */
 	public function scopeUPC($query, $variable)
 	{
 		return 	$query->where('upc', $variable);
 	}
 
+	/**
+	 * scope to find slug of product
+	 *
+	 * @param string of slug
+	 */
 	public function scopeSlug($query, $variable)
 	{
 		return 	$query->where('slug', $variable);

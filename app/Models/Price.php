@@ -4,9 +4,17 @@ namespace App\Models;
 
 // use App\Models\Observers\PriceObserver;
 
+/**
+ * Used for Price Models
+ * 
+ * @author cmooy
+ */
 class Price extends BaseModel
 {
-	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	/**
+	 * Relationship Traits.
+	 *
+	 */
 	use \App\Models\Traits\belongsTo\HasProductTrait;
 
 	/**
@@ -16,10 +24,15 @@ class Price extends BaseModel
 	 */
 	protected $table				= 'prices';
 
-	// protected $timestamps			= true;
-
 	/**
 	 * Timestamp field
+	 *
+	 * @var array
+	 */
+	// protected $timestamps			= true;
+	
+	/**
+	 * Date will be returned as carbon
 	 *
 	 * @var array
 	 */
@@ -44,7 +57,6 @@ class Price extends BaseModel
 	 *
 	 * @var array
 	 */
-
 	protected $fillable				=	[
 											'product_id'					,
 											'price'							,
@@ -72,7 +84,11 @@ class Price extends BaseModel
 	/* ---------------------------------------------------------------------------- ACCESSOR ----------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
-		
+	
+	/**
+	 * boot
+	 *
+	 */	
 	public static function boot() 
 	{
         parent::boot();

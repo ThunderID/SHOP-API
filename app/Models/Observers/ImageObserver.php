@@ -5,16 +5,21 @@ use Illuminate\Support\Str;
 
 use App\Models\Image;
 
-/* ----------------------------------------------------------------------
- * Event:
- * saving
- * deleting
- * ---------------------------------------------------------------------- */
-
+/**
+ * Used in Image model
+ *
+ * @author cmooy
+ */
 class ImageObserver 
 {
+    /** 
+     * observe image event saving
+     * 1. check default image to set init default
+     * 2. act, accept or refuse
+     */
 	public function saving($model)
     {
+        //1. check default image to set init default
 		if(isset($model->imageable_id))
         {
             $model                     = Image::where('imageable_id', $model->imageable_id)
@@ -30,8 +35,14 @@ class ImageObserver
         return true;
     }
 
+    /** 
+     * observe image event saved
+     * 1. check default image and make sure it's the only default
+     * 2. act, accept or refuse
+     */
     public function saved($model)
     {
+        //1. check default image event
 		if(isset($model->imageable_id) && $model->is_default == 1)
         {
             $images                     = Image::where('imageable_id', $model->imageable_id)
@@ -42,6 +53,7 @@ class ImageObserver
 
             foreach ($images as $image) 
             {
+                //1a. set is_default to false for other image
                $image->fill([
                     'is_default'        => 0,
                 ]);

@@ -5,14 +5,18 @@ use Illuminate\Support\Str;
 
 use App\Models\Varian;
 
-/* ----------------------------------------------------------------------
- * Event:
- * saving
- * deleting
- * ---------------------------------------------------------------------- */
-
+/**
+ * Used in varian model
+ *
+ * @author cmooy
+ */
 class VarianObserver 
 {
+    /** 
+     * observe product event saving
+     * 1. check unique sku
+     * 2. act, accept or refuse
+     */
 	public function saving($model)
     {
 		$errors 						= new MessageBag();
@@ -35,6 +39,11 @@ class VarianObserver
         return true;
     }
 
+    /** 
+     * observe product event deleting
+     * 1. check varian relationship with transaction
+     * 2. act, accept or refuse
+     */
     public function deleting($model)
     {
 		$errors 						= new MessageBag();

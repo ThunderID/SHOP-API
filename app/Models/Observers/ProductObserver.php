@@ -10,14 +10,19 @@ use App\Models\ProductLabel;
 use App\Models\Image;
 use App\Models\Price;
 
-/* ----------------------------------------------------------------------
- * Event:
- * saving
- * deleting
- * ---------------------------------------------------------------------- */
-
+/**
+ * Used in Product model
+ *
+ * @author cmooy
+ */
 class ProductObserver 
 {
+    /** 
+     * observe product event saving
+     * 1. check unique slug
+     * 2. check unique upc
+     * 3. act, accept or refuse
+     */
 	public function saving($model)
     {
 		$errors 						= new MessageBag();
@@ -50,6 +55,15 @@ class ProductObserver
         return true;
     }
 
+    /** 
+     * observe product event deleting
+     * 1. delete varian
+     * 2. delete price
+     * 3. delete category(and tag)
+     * 4. delete label
+     * 5. delete image
+     * 6. act, accept or refuse
+     */
     public function deleting($model)
     {
 		$errors 						= new MessageBag();
@@ -66,7 +80,18 @@ class ProductObserver
             }                     
         }
 
-        //2. delete product's categories
+        //2. delete product's price
+        $prices                        = Price::where('product_id', $model->id)->get();
+
+        foreach ($prices as $price) 
+        {
+            if(!$price->delete())
+            {
+                $errors->add('price', $price->getError());
+            }                     
+        }
+
+        //3. delete product's categories
         $categories                     = CategoryProduct::where('product_id', $model->id)->get();
 
         foreach ($categories as $category) 
@@ -77,18 +102,18 @@ class ProductObserver
             }                     
         }
 
-        //3. delete product's lable
-        $lables                        = ProductLabel::where('product_id', $model->id)->get();
+        //4. delete product's label
+        $labels                        = ProductLabel::where('product_id', $model->id)->get();
 
-        foreach ($lables as $lable) 
+        foreach ($labels as $label) 
         {
-            if(!$lable->delete())
+            if(!$label->delete())
             {
-                $errors->add('lable', $lable->getError());
+                $errors->add('label', $label->getError());
             }                     
         }
 
-        //4. delete product's image
+        //5. delete product's image
         $images                        = Image::where('imageable_type','App\Models\Product')->where('imageable_id', $model->id)->get();
 
         foreach ($images as $image) 
@@ -96,17 +121,6 @@ class ProductObserver
             if(!$image->delete())
             {
                 $errors->add('image', $image->getError());
-            }                     
-        }
-
-        //5. delete product's price
-        $prices                        = Price::where('product_id', $model->id)->get();
-
-        foreach ($prices as $price) 
-        {
-            if(!$price->delete())
-            {
-                $errors->add('price', $price->getError());
             }                     
         }
 

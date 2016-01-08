@@ -7,16 +7,21 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use  Illuminate\Support\Facades\Log;
 
+/**
+ * Handle Protected Resource of product
+ * 
+ * @author cmooy
+ */
 class ProductController extends Controller
 {
     /**
      * Display all products
      *
-     * @return JSend Response
      * @param search, skip, take
+     * @return JSend Response
      */
-
     public function index()
     {
         $result                     = new \App\Models\Product;
@@ -62,9 +67,9 @@ class ProductController extends Controller
     /**
      * Display a product
      *
+     * @param product id
      * @return Response
      */
-
     public function detail($id = null)
     {
         //
@@ -81,6 +86,14 @@ class ProductController extends Controller
     /**
      * Store a product
      *
+     * 1. Save Product
+     * 2. Save Varian
+     * 3. Save Price
+     * 4. Save Category
+     * 5. Save Tag
+     * 6. Save Label
+     * 7. Save Image
+     * 
      * @return Response
      */
     public function store()
@@ -267,7 +280,7 @@ class ProductController extends Controller
                     if($price_data)
                     {
                         $price_rules   =   [
-                                                'product_id'                => 'required|numeric|'.($is_new ? '' : 'in:'.$product_data['id']),
+                                                // 'product_id'                => 'required|numeric|'.($is_new ? '' : 'in:'.$product_data['id']),
                                                 'price'                     => 'required|numeric|in:'.$price_data['price'],
                                                 'promo_price'               => 'required|numeric|in:'.$price_data['promo_price'],
                                                 'started_at'                => 'required|date_format:"Y-m-d H:i:s"',
@@ -278,7 +291,7 @@ class ProductController extends Controller
                     else
                     {
                         $price_rules   =   [
-                                                'product_id'                => 'numeric|'.($is_new ? '' : 'in:'.$product_data['id']),
+                                                // 'product_id'                => 'numeric|'.($is_new ? '' : 'in:'.$product_data['id']),
                                                 'price'                     => 'required|numeric',
                                                 'promo_price'               => 'required|numeric',
                                                 'started_at'                => 'required|date_format:"Y-m-d H:i:s"',
@@ -685,6 +698,7 @@ class ProductController extends Controller
     /**
      * Delete a product
      *
+     * @param product id
      * @return Response
      */
     public function delete($id = null)

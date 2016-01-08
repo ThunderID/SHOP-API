@@ -5,6 +5,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Scope to count current stock of product/varian
+ *
+ * @return current_stock
+ * @author cmooy
+ */
+
 class CurrentStockScope implements ScopeInterface  
 {
 	/**

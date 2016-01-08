@@ -5,6 +5,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Scope to get default image (is_default is true)
+ *
+ * @return thumbnail, image_xs, image_sm, image_md, image_lg
+ * @author cmooy
+ */
+
 class DefaultImageScope implements ScopeInterface  
 {
 	

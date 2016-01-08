@@ -1,22 +1,27 @@
 <?php namespace App\Models\Traits\hasMany;
 
+/**
+ * Trait for models has many varians.
+ *
+ * @author cmooy
+ */
+
 trait HasVariansTrait 
 {
-
 	/**
 	 * boot
 	 *
 	 * @return void
-	 * @author 
 	 **/
-
 	function HasVariansTraitConstructor()
 	{
 		//
 	}
 
-	/* ------------------------------------------------------------------- RELATIONSHIP TO SERVICE -------------------------------------------------------------------*/
-
+	/**
+	 * call has many relationship
+	 *
+	 **/
 	public function Varians()
 	{
 		return $this->hasMany('App\Models\Varian');

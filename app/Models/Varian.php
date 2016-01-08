@@ -12,16 +12,30 @@ use App\Models\Observers\VarianObserver;
 
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Used for Varian Models
+ * 
+ * @author cmooy
+ */
 class Varian extends BaseModel
 {
-	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	/**
+	 * Relationship Traits.
+	 *
+	 */
 	use \App\Models\Traits\belongsTo\HasProductTrait;
 	use \App\Models\Traits\belongsToMany\HasTransactionsTrait;
 	
-	/* ---------------------------------------------------------------------------- GLOBAL SCOPE TRAITS ---------------------------------------------------------------------*/
+	/**
+	 * Global traits used as query builder (global scope).
+	 *
+	 */
 	use HasCurrentStockTrait;
 
-	/* ---------------------------------------------------------------------------- GLOBAL PLUG SCOPE TRAITS ---------------------------------------------------------------------*/
+	/**
+	 * Global traits used as scope (plugged scope).
+	 *
+	 */
 	use HasStockTrait;
 	use HasTransactionStatusTrait;
 
@@ -32,10 +46,15 @@ class Varian extends BaseModel
 	 */
 	protected $table				= 'varians';
 
-	// protected $timestamps			= true;
-
 	/**
 	 * Timestamp field
+	 *
+	 * @var array
+	 */
+	// protected $timestamps			= true;
+	
+	/**
+	 * Date will be returned as carbon
 	 *
 	 * @var array
 	 */
@@ -87,6 +106,11 @@ class Varian extends BaseModel
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
 		
+	/**
+	 * boot
+	 * observing model
+	 *
+	 */
 	public static function boot() 
 	{
         parent::boot();
@@ -96,24 +120,21 @@ class Varian extends BaseModel
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
 	
+	/**
+	 * scope to find sku of product varian
+	 *
+	 * @param string of sku
+	 */
 	public function scopeSKU($query, $variable)
 	{
 		return 	$query->where('sku', $variable);
 	}
-	
-	public function scopeStockMovement($query, $variable)
-	{
-		return 	$query->selectraw('varians.*')
-					->selectraw('transactions.transact_at')
-					->selectraw('sum(if(transactions.type = "buy", quantity, 0)) as stock_in')
-					->selectraw('sum(if(transactions.type = "sell", quantity, 0)) as stock_out')
-					// ->TransactionStockOn(['wait', 'paid', 'packed', 'shipping', 'delivered'])
-					->groupby('transactions.id')
-					->orderByRaw(DB::raw('varian_id asc, transactions.transact_at asc'))
-					;
-		;
-	}
 
+	/**
+	 * scope to find varian who hath current stock
+	 *
+	 * @param threshold
+	 */
 	public function scopeCritical($query, $variable)
 	{
 		return 	$query

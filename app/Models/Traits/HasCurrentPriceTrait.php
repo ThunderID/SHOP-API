@@ -4,10 +4,15 @@ namespace App\Models\Traits;
 
 use App\Models\Scopes\CurrentPriceScope;
 
+/**
+ * Apply scope to get current price
+ *
+ * @author cmooy
+ */
 trait HasCurrentPriceTrait 
 {
     /**
-     * Boot the Has CurrentPrice trait for a model (used for morph/inherit table).
+     * Boot the Has CurrentPrice trait for a model has price.
      *
      * @return void
      */
