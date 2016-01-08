@@ -139,7 +139,7 @@ class Varian extends BaseModel
 	{
 		return 	$query
 				->HavingCurrentStock($variable)
-				->orderby('current_stock', 'asc')
+				// ->orderby('current_stock', 'asc')
 				;
 	}
 }

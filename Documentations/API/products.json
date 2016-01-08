@@ -233,7 +233,7 @@ definitions:
           slug:
             type: string
           description:
-            type: json
+            type: array
           current_stock:
             type: number
           on_hold_stock:
@@ -274,7 +274,7 @@ definitions:
       slug:
         type: string
       description:
-        type: json
+        type: array
       current_stock:
         type: number
       on_hold_stock:
@@ -336,7 +336,7 @@ definitions:
       promo_price:
         type: number
       started_at:
-        type: datetime
+        type: string
   categories:
     type: array
     properties:
@@ -375,9 +375,9 @@ definitions:
       value:
         type: string
       started_at:
-        type: datetime
+        type: string
       ended_at:
-        type: datetime
+        type: string
   images:
     type: array
     properties:

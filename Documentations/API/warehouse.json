@@ -1,0 +1,217 @@
+swagger: '2.0'
+info:
+  title: Warehouse API
+  description: Move your app forward with the Warehouse API
+  version: 1.0.0
+host: localhost:8800
+schemes:
+  - https
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /product/stock/card/{id}:
+    get:
+      summary: Get a product varian stock card Lists
+      description: |
+        The Warehouses endpoint returns information about the *BALIN* varian stock movement information today.
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: number
+          format: integer
+        - name: id
+          in: query
+          description: varian id.
+          required: true
+          type: number
+          format: integer
+        - name: skip
+          in: query
+          description: How many records are going to be skipped
+          required: false
+          type: number
+          format: integer
+        - name: take
+          in: query
+          description: How many records are going to be taken from resource
+          required: false
+          type: number
+          format: integer
+      tags:
+        - Warehouse
+      responses:
+        '200':
+          description: An array of Warehouses' data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/stockcard'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /products/stock/critical:
+    get:
+      summary: Lists of critical varian stock
+      description: 'Getting lists of critical product stocked in warehouse today.'
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: number
+          format: integer
+        - name: skip
+          in: query
+          description: How many records are going to be skipped
+          required: false
+          type: number
+          format: integer
+        - name: take
+          in: query
+          description: How many records are going to be taken from resource
+          required: false
+          type: number
+          format: integer
+      tags:
+        - Warehouse
+      responses:
+        '200':
+          description: Warehouse rich data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/varians'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /products/stock/opname:
+    get:
+      summary: Get varian stock opname
+      description: 'Getting lists of varian stocks on warehouse today.'
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: number
+          format: integer
+        - name: skip
+          in: query
+          description: How many records are going to be skipped
+          required: false
+          type: number
+          format: integer
+        - name: take
+          in: query
+          description: How many records are going to be taken from resource
+          required: false
+          type: number
+          format: integer
+      tags:
+        - Warehouse
+      responses:
+        '200':
+          description: Warehouse rich data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/varians'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  products:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      upc:
+        type: string
+      slug:
+        type: string
+      description:
+        type: json
+      current_stock:
+        type: number
+      on_hold_stock:
+        type: number
+      inventory_stock:
+        type: number
+      reserved_stock:
+        type: number
+      packed_stock:
+        type: number
+      price:
+        type: number
+      promo_price:
+        type: number
+      thumbnail:
+        type: string
+      image_xs:
+        type: string
+      image_sm:
+        type: string
+      image_md:
+        type: string
+      image_lg:
+        type: string
+  varians:
+    type: array
+    properties:
+      id:
+        type: string
+      Warehouse_id:
+        type: string
+      sku:
+        type: string
+      size:
+        type: string
+      current_stock:
+        type: number
+      on_hold_stock:
+        type: number
+      inventory_stock:
+        type: number
+      reserved_stock:
+        type: number
+      packed_stock:
+        type: number
+      products:
+        type: array
+        items:
+          $ref: '#/definitions/products'
+  stockcard:
+    type: array
+    properties:
+      varian_id:
+        type: string
+      transact_at:
+        type: string
+      stock_in:
+        type: number
+      stock_out:
+        type: number
+      varians:
+        type: array
+        items:
+          $ref: '#/definitions/varians'
+  Error:
+    type: object
+    properties:
+      status:
+        type: string
+      data:
+        type: array
+      message:
+        type: string
+      code:
+        type: integer
+        format: int32
