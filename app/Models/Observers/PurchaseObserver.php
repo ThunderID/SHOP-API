@@ -1,32 +1,30 @@
 <?php namespace App\Models\Observers;
 
 use Illuminate\Support\MessageBag;
+use Carbon\Carbon;
 
-use App\Jobs\ChangeStatus;
-use App\Jobs\GenerateTransactionRefNumber;
-
-/* ----------------------------------------------------------------------
- * Event:
- * creating
- * created
- * deleting
- * ---------------------------------------------------------------------- */
-
+/**
+ * Used in Purchase model
+ *
+ * @author cmooy
+ */
 class PurchaseObserver 
 {
+    /** 
+     * observe purchase event creating
+     * 1. generate transaction date
+     * 2. generate transaction ref_number
+     * 3. execute it there was no error
+     */
 	public function creating($model)
 	{
 		$errors 							= new MessageBag();
 
+        //1. generate transaction date
         $model->transact_at  				= Carbon::now()->format('Y-m-d H:i:s');
 
-		//generate ref number of transaction
-        $result                             = $this->dispatch(new GenerateTransactionRefNumber($model));
-
-        if($result->getStatus()=='error')
-        {
-            $errors->add('Log', $result->getErrorMessage());
-        }
+        //2. generate transaction ref_number
+        $model->ref_number                  = $this->generateRefNumber($model);
 
 		if($errors->count())
         {
@@ -38,16 +36,21 @@ class PurchaseObserver
         return true;
 	}
 
+    /** 
+     * observe purchase event created
+     * 1. change status to delivered
+     * 2. execute it there was no error
+     */
 	public function created($model)
 	{
 		$errors 							= new MessageBag();
 
-		//change status to delivered
-        $result                             = $this->dispatch(new ChangeStatus($model, 'delivered', 'stock'));
+		//1. change status to delivered
+        $result                             = $this->ChangeStatus($model, 'delivered', 'stock');
 
-        if($result->getStatus()=='error')
+        if(!$result)
         {
-            $errors->add('Log', $result->getErrorMessage());
+            return false;
         }
 
 		if($errors->count())
@@ -60,6 +63,12 @@ class PurchaseObserver
         return true;
 	}
 
+    /** 
+     * observe purchase event deleting
+     * 1. remove transaction details
+     * 2. remove transaction logs
+     * 3. execute it there was no error
+     */
 	public function deleting($model)
     {
 		$errors 							= new MessageBag();

@@ -168,8 +168,6 @@ definitions:
     properties:
       id:
         type: string
-      Warehouse_id:
-        type: string
       sku:
         type: string
       size:

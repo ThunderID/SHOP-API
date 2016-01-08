@@ -10,11 +10,10 @@ use App\Models\Traits\HasNameTrait;
 use App\Models\Traits\HasTransactionStatusTrait;
 
 /**
- * Used for Category and Term Models
+ * Used for Category and Tag Models
  * 
  * @author cmooy
  */
-
 class Cluster extends BaseModel
 {
 	/**

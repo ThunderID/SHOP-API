@@ -1,0 +1,314 @@
+swagger: '2.0'
+info:
+  title: Purchase API
+  description: Move your app forward with the Purchase API
+  version: 1.0.0
+host: localhost:8800
+schemes:
+  - https
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /purchases:
+    get:
+      summary: Purchase Lists
+      description: |
+        The Purchases endpoint returns information about the *BALIN* Purchases
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+        - name: search
+          in: query
+          description: search parameter.
+          required: false
+          type: array
+          items:
+            $ref: '#/definitions/search'
+        - name: skip
+          in: query
+          description: How many records are going to be skipped
+          required: false
+          type: number
+          format: integer
+        - name: take
+          in: query
+          description: How many records are going to be taken from resource
+          required: false
+          type: number
+          format: integer
+      tags:
+        - Purchases
+      responses:
+        '200':
+          description: An array of Purchases' data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/purchases'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /purchases/store:
+    post:
+      summary: Store a Purchase
+      description: >
+        Store a Purchase with details those are varians, prices, categories, tags, labels, images
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+        - name: id
+          in: query
+          description: Let it null for new.
+          required: true
+          type: number
+          format: double
+        - name: supplier_id
+          in: query
+          description: supplier id.
+          required: true
+          type: string
+          format: string
+        - name: transactiondetails
+          in: query
+          description: Must be array of details transaction.
+          required: true
+          type: array
+          items:
+            $ref: '#/definitions/details'
+        - name: transactionlogs
+          in: query
+          description: Must be array of logs' transaction.
+          required: true
+          type: array
+          items:
+            $ref: '#/definitions/logs'
+      tags:
+        - Purchases
+      responses:
+        '200':
+          description: An array of Purchase
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/purchase'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /purchase/{id}:
+    get:
+      summary: Purchase Detail
+      description: 'Get Purchase detail information.'
+      parameters:
+        - name: id
+          in: query
+          description: Purchase id.
+          required: true
+          type: number
+          format: integer
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+      tags:
+        - Purchases
+      responses:
+        '200':
+          description: Purchase rich data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/purchase'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /purchase/delete/{id}:
+    delete:
+      summary: Delete a Purchase
+      description: 'Get Purchase detail information.'
+      parameters:
+        - name: id
+          in: query
+          description: Purchase id.
+          required: true
+          type: number
+          format: integer
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+      tags:
+        - Purchases
+      responses:
+        '200':
+          description: Purchase rich data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/purchase'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  search:
+    type: array
+    properties:
+      name:
+        type: string
+        description: 'Search Purchase that hath certain name'
+  purchases:
+    type: object
+    properties:
+      count:
+        type: number
+        description: 'Total Purchases.'
+      data:
+        type: array
+        properties:
+          id:
+            type: string
+          ref_number:
+            type: string
+          transact_at:
+            type: string
+          status:
+            type: string
+          amount:
+            type: number
+          supplier:
+            type: array
+            items:
+              $ref: '#/definitions/supplier'
+  purchase:
+    type: object
+    properties:
+      id:
+        type: string
+      ref_number:
+        type: string
+      transact_at:
+        type: string
+      status:
+        type: string
+      amount:
+        type: number
+      supplier:
+        type: array
+        items:
+          $ref: '#/definitions/supplier'
+      transactiondetails:
+        type: array
+        items:
+          $ref: '#/definitions/details'
+      transactionlogs:
+        type: array
+        items:
+          $ref: '#/definitions/logs'
+  supplier:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+  details:
+    type: object
+    properties:
+      id:
+        type: string
+      quantity:
+        type: number
+      price:
+        type: number
+      discount:
+        type: number
+      varian:
+        type: array
+        items:
+          $ref: '#/definitions/varian'
+  logs:
+    type: object
+    properties:
+      id:
+        type: string
+      status:
+        type: string
+      changed_at:
+        type: string
+      notes:
+        type: string
+  varian:
+    type: array
+    properties:
+      id:
+        type: string
+      sku:
+        type: string
+      size:
+        type: string
+      current_stock:
+        type: number
+      on_hold_stock:
+        type: number
+      inventory_stock:
+        type: number
+      reserved_stock:
+        type: number
+      packed_stock:
+        type: number
+      product:
+        type: array
+        items:
+          $ref: '#/definitions/product'
+  product:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      upc:
+        type: string
+      slug:
+        type: string
+      description:
+        type: json
+      current_stock:
+        type: number
+      on_hold_stock:
+        type: number
+      inventory_stock:
+        type: number
+      reserved_stock:
+        type: number
+      packed_stock:
+        type: number
+      price:
+        type: number
+      promo_price:
+        type: number
+      thumbnail:
+        type: string
+      image_xs:
+        type: string
+      image_sm:
+        type: string
+      image_md:
+        type: string
+      image_lg:
+        type: string

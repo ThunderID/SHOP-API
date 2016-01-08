@@ -4,6 +4,12 @@ use Illuminate\Database\Eloquent\ScopeInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Scope to count total amount of transaction
+ *
+ * @return amount
+ * @author cmooy
+ */
 class AmountScope implements ScopeInterface  
 {
 	

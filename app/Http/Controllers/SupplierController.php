@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\DB;
 class SupplierController extends Controller
 {
     /**
-     * Display all products
+     * Display all suppliers
      *
-     * @param type, search, skip, take
+     * @param search, skip, take
      * @return Response
      */
     public function index()

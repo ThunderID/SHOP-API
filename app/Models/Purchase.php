@@ -1,17 +1,20 @@
 <?php
 
-/** 
-	* Inheritance Transaction Model
-	* For every inheritance model, allowed to have only $type, fillable, rules, and available function
-*/
 
 namespace App\Models;
 
 use App\Models\Observers\PurchaseObserver;
 
+/** 
+	* Inheritance Transaction Model
+	* For every inheritance model, allowed to have only $type, fillable, rules, and available function
+*/
 class Purchase extends Transaction
 {
-	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	/**
+	 * Relationship Traits.
+	 *
+	 */
 	use \App\Models\Traits\belongsTo\HasSupplierTrait;
 	
 	/**
@@ -19,7 +22,6 @@ class Purchase extends Transaction
 	 *
 	 * @var string
 	 */
-
 	public $type					=	'buy';
 
 	/**
@@ -27,7 +29,6 @@ class Purchase extends Transaction
 	 *
 	 * @var array
 	 */
-
 	protected $fillable				=	[
 											'supplier_id'					,
 											'ref_number'					,
@@ -53,7 +54,12 @@ class Purchase extends Transaction
 	/* ---------------------------------------------------------------------------- ACCESSOR ----------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
-		
+	
+	/**
+	 * boot
+	 * observing model
+	 *
+	 */			
 	public static function boot() 
 	{
         parent::boot();

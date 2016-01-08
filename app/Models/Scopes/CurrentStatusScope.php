@@ -4,9 +4,14 @@ use Illuminate\Database\Eloquent\ScopeInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class StatusScope implements ScopeInterface  
+/**
+ * Scope to get current status of product
+ *
+ * @return status
+ * @author cmooy
+ */
+class CurrentStatusScope implements ScopeInterface  
 {
-	
 	/**
 	 * Apply the scope to a given Eloquent query builder.
 	 *

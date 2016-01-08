@@ -12,7 +12,7 @@ use App\Models\Scopes\CurrentPriceScope;
 trait HasCurrentPriceTrait 
 {
     /**
-     * Boot the Has CurrentPrice trait for a model has price.
+     * Boot the Has CurrentPrice scope for a model has price.
      *
      * @return void
      */

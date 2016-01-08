@@ -65,6 +65,12 @@ paths:
           required: true
           type: string
           format: string
+        - name: id
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: number
+          format: integer
         - name: name
           in: query
           description: suppliers' name.
