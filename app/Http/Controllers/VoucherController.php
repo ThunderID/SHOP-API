@@ -8,11 +8,17 @@ use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Handle Protected Resource of voucher
+ * 
+ * @author cmooy
+ */
 class VoucherController extends Controller
 {
     /**
-     * Display all products
+     * Display all vouchers
      *
+     * @param search, skip, take
      * @return Response
      */
     public function index()
@@ -34,14 +40,29 @@ class VoucherController extends Controller
             }
         }
 
+        $count                      = $result->count();
+
+        if(Input::has('skip'))
+        {
+            $skip                   = Input::get('skip');
+            $result                 = $result->skip($skip);
+        }
+
+        if(Input::has('take'))
+        {
+            $take                   = Input::get('take');
+            $result                 = $result->take($take);
+        }
+
         $result                     = $result->with(['quotalogs'])->get()->toArray();
 
-        return new JSend('success', (array)$result);
+        return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
 
     /**
-     * Display a product
+     * Display a voucher
      *
+     * @param voucher id
      * @return Response
      */
     public function detail($id = null)
@@ -56,7 +77,10 @@ class VoucherController extends Controller
     }
 
     /**
-     * Store a product
+     * Store a Voucher
+     *
+     * 1. Save Vouchers
+     * 2. Save Quota Logs
      *
      * @return Response
      */
@@ -113,7 +137,7 @@ class VoucherController extends Controller
             }
         }
 
-        //2. Validate Voucher Detail Parameter
+        //2. Validate Voucher Logs Parameter
         if(!$errors->count())
         {
             $log_current_ids         = [];
@@ -196,30 +220,30 @@ class VoucherController extends Controller
                         }
                     }
                 }
+            }
 
-                //if there was no error, check if there were things need to be delete
-                if(!$errors->count())
+            //if there was no error, check if there were things need to be delete
+            if(!$errors->count())
+            {
+                $logs                            = \App\Models\QuotaLog::voucherid($voucher['id'])->get()->toArray();
+                
+                $log_should_be_ids               = [];
+                foreach ($logs as $key => $value) 
                 {
-                    $logs                            = \App\Models\QuotaLog::voucherid($voucher['id'])->get()->toArray();
-                    
-                    $log_should_be_ids               = [];
-                    foreach ($logs as $key => $value) 
-                    {
-                        $log_should_be_ids[]         = $value['id'];
-                    }
+                    $log_should_be_ids[]         = $value['id'];
+                }
 
-                    $difference_log_ids              = array_diff($log_should_be_ids, $log_current_ids);
+                $difference_log_ids              = array_diff($log_should_be_ids, $log_current_ids);
 
-                    if($difference_log_ids)
+                if($difference_log_ids)
+                {
+                    foreach ($difference_log_ids as $key => $value) 
                     {
-                        foreach ($difference_log_ids as $key => $value) 
+                        $log_data                = \App\Models\QuotaLog::find($value);
+
+                        if(!$log_data->delete())
                         {
-                            $log_data                = \App\Models\QuotaLog::find($value);
-
-                            if(!$log_data->delete())
-                            {
-                                $errors->add('Log', $log_data->getError());
-                            }
+                            $errors->add('Log', $log_data->getError());
                         }
                     }
                 }
@@ -243,6 +267,7 @@ class VoucherController extends Controller
     /**
      * Delete a voucher
      *
+     * @param product id
      * @return Response
      */
     public function delete($id = null)

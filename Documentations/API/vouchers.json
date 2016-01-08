@@ -1,0 +1,255 @@
+swagger: '2.0'
+info:
+  title: Voucher API
+  description: Move your app forward with the Voucher API
+  version: 1.0.0
+host: localhost:8800
+schemes:
+  - https
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /vouchers:
+    get:
+      summary: voucher Lists
+      description: |
+        The vouchers endpoint returns information about the *BALIN* vouchers
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+        - name: search
+          in: query
+          description: search parameter.
+          required: false
+          type: array
+          items:
+            $ref: '#/definitions/search'
+        - name: skip
+          in: query
+          description: How many records are going to be skipped
+          required: false
+          type: number
+          format: integer
+        - name: take
+          in: query
+          description: How many records are going to be taken from resource
+          required: false
+          type: number
+          format: integer
+      tags:
+        - vouchers
+      responses:
+        '200':
+          description: An array of vouchers' data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/vouchers'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /vouchers/store:
+    post:
+      summary: Store a voucher
+      description: >
+        Store a voucher with details those are varians, prices, categories, tags, labels, images
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+        - name: id
+          in: query
+          description: Let it null for new.
+          required: true
+          type: number
+          format: double
+        - name: code
+          in: query
+          description: code must be unique.
+          required: true
+          type: string
+          format: string
+        - name: type
+          in: query
+          description: type in debit point, free shipping cost or promo referral.
+          required: true
+          type: string
+          format: string
+        - name: value
+          in: query
+          description: better be amount of voucher let it 0 for free shipping cost.
+          required: true
+          type: number
+          format: integer
+        - name: started_at
+          in: query
+          description: code.
+          required: true
+          type: string
+          format: datetime
+        - name: expired_at
+          in: query
+          description: code.
+          required: true
+          type: string
+          format: datetime
+        - name: quotalogs
+          in: query
+          description: Must be array of logs' quota.
+          required: true
+          type: array
+          items:
+            $ref: '#/definitions/logs'
+      tags:
+        - Vouchers
+      responses:
+        '200':
+          description: An array of voucher
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/voucher'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /voucher/{id}:
+    get:
+      summary: voucher Detail
+      description: 'Get voucher detail information.'
+      parameters:
+        - name: id
+          in: query
+          description: voucher id.
+          required: true
+          type: number
+          format: integer
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+      tags:
+        - vouchers
+      responses:
+        '200':
+          description: voucher rich data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/voucher'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /voucher/delete/{id}:
+    delete:
+      summary: Delete a voucher
+      description: 'Get voucher detail information.'
+      parameters:
+        - name: id
+          in: query
+          description: voucher id.
+          required: true
+          type: number
+          format: integer
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: number
+          format: integer
+      tags:
+        - Vouchers
+      responses:
+        '200':
+          description: voucher rich data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/voucher'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  search:
+    type: array
+    properties:
+      name:
+        type: string
+        description: 'Search voucher that hath certain name'
+  vouchers:
+    type: object
+    properties:
+      count:
+        type: number
+        description: 'Total vouchers.'
+      data:
+        type: array
+        properties:
+          id:
+            type: string
+          code:
+            type: string
+          type:
+            type: string
+          quota:
+            type: number
+          started_at:
+            type: string
+          expired_at:
+            type: number
+          quotalogs:
+            type: array
+            items:
+              $ref: '#/definitions/quotalogs'
+  voucher:
+    type: object
+    properties:
+      id:
+        type: string
+      code:
+        type: string
+      type:
+        type: string
+      quota:
+        type: number
+      started_at:
+        type: string
+      expired_at:
+        type: number
+      quotalogs:
+        type: array
+        items:
+          $ref: '#/definitions/quotalogs'
+  logs:
+    type: object
+    properties:
+      id:
+        type: string
+      amount:
+        type: string
+      notes:
+        type: string
+  Error:
+    type: object
+    properties:
+      status:
+        type: string
+      data:
+        type: array
+      message:
+        type: string
+      code:
+        type: integer
+        format: int32

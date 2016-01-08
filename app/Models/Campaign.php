@@ -6,13 +6,24 @@ use App\Models\Traits\HasTypeTrait;
 use App\Models\Traits\HasQuotaTrait;
 // use App\Models\Observers\CampaignObserver;
 
+/**
+ * Used for Voucher and Referral Models
+ * 
+ * @author cmooy
+ */
 class Campaign extends BaseModel
 {
-	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	/**
+	 * Relationship Traits.
+	 *
+	 */
 	use \App\Models\Traits\hasMany\HasQuotaLogsTrait;
 	use \App\Models\Traits\hasMany\HasTransactionsTrait;
-
-	/* ---------------------------------------------------------------------------- GLOBAL SCOPE TRAITS ---------------------------------------------------------------------*/
+	
+	/**
+	 * Global traits used as query builder (global scope).
+	 *
+	 */
 	use HasQuotaTrait;
 
 	use HasTypeTrait;
@@ -24,10 +35,15 @@ class Campaign extends BaseModel
 	 */
 	protected $table				= 'tmp_vouchers';
 
-	// protected $timestamps			= true;
-
 	/**
 	 * Timestamp field
+	 *
+	 * @var array
+	 */
+	// protected $timestamps			= true;
+	
+	/**
+	 * Date will be returned as carbon
 	 *
 	 * @var array
 	 */
@@ -56,7 +72,11 @@ class Campaign extends BaseModel
 	/* ---------------------------------------------------------------------------- ACCESSOR ----------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
-	
+		
+	/**
+	 * boot
+	 *
+	 */	
 	public static function boot() 
 	{
         parent::boot();

@@ -18,7 +18,6 @@ trait HasTransactionsTrait
 		//
 	}
 
-
 	/**
 	 * call has many relationship
 	 *

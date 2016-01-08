@@ -1,14 +1,14 @@
 <?php
 
-/** 
-	* Inheritance Campaign Model
-	* For every inheritance model, allowed to have only $type, fillable, rules, and available function
-*/
 
 namespace App\Models;
 
 use App\Models\Observers\VoucherObserver;
 
+/** 
+	* Inheritance Campaign Model
+	* For every inheritance model, allowed to have only $type, fillable, rules, and available function
+*/
 class Voucher extends Campaign
 {
 	/**
@@ -56,7 +56,12 @@ class Voucher extends Campaign
 	/* ---------------------------------------------------------------------------- ACCESSOR ----------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
-		
+	
+	/**
+	 * boot
+	 * observing model
+	 *
+	 */			
 	public static function boot() 
 	{
         parent::boot();
@@ -66,17 +71,28 @@ class Voucher extends Campaign
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
 
+	/**
+	 * scope to find code of voucher
+	 *
+	 * @param string of code
+	 */
 	public function scopeCode($query, $variable)
 	{
 		return 	$query->where('code', $variable);
 	}
 
+	/**
+	 * scope to find history of date
+	 *
+	 * @param string of history
+	 */
 	public function scopeOnDate($query, $variable)
 	{
 		if(is_array($variable))
 		{
 			$started_at 	= date('Y-m-d H:i:s', strtotime($variable[0]));
 			$expired_at 	= date('Y-m-d H:i:s', strtotime($variable[1]));
+
 			return $query->where('started_at', '<=', $started_at)
 						->where('expired_at', '>=', $expired_at)
 						;
@@ -90,6 +106,11 @@ class Voucher extends Campaign
 		}
 	}
 	
+	/**
+	 * scope to find type of voucher
+	 *
+	 * @param string of type
+	 */
 	public function scopeType($query, $variable)
 	{
 		if(is_array($variable))

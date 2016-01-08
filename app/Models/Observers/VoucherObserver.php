@@ -2,20 +2,23 @@
 
 use Illuminate\Support\MessageBag;
 
-use App\Jobs\Auditors\SaveAuditVoucher;
-
-/* ----------------------------------------------------------------------
- * Event:
- * saving
- * saved
- * ---------------------------------------------------------------------- */
-
+/**
+ * Used in Voucher model
+ *
+ * @author cmooy
+ */
 class VoucherObserver 
 {
+    /** 
+     * observe voucher event saving
+     * 1. check is voucher used
+     * 2. execute it there was no error
+     */
 	public function saving($model)
 	{
 		$errors 							= new MessageBag();
 
+        //1. check is voucher used
         if($model->transactions->count())
         {
             $errors->add('Voucher', 'Tidak dapat mengubah voucher yang telah digunakan dalam transaksi.');
@@ -31,17 +34,13 @@ class VoucherObserver
         return true;
 	}
 
+    /** 
+     * observe voucher event saved
+     * 1. execute it there was no error
+     */
 	public function saved($model)
 	{
 		$errors 							= new MessageBag();
-
-		//store audit
-        $result                             = $this->dispatch(new SaveAuditVoucher($model));
-
-        if($result->getStatus()=='error')
-        {
-            $errors->add('Voucher', $result->getErrorMessage());
-        }
 
 		if($errors->count())
         {
@@ -53,6 +52,12 @@ class VoucherObserver
         return true;
 	}
 
+    /** 
+     * observe voucher event deleting
+     * 1. Check transaction used this voucher
+     * 2. Delete quota logs
+     * 3. execute it there was no error
+     */
 	public function deleting($model)
     {
 		$errors 							= new MessageBag();
@@ -64,6 +69,7 @@ class VoucherObserver
             $errors->add('Voucher', 'Tidak dapat menghapus voucher yang telah digunakan dalam transaksi.');
         }
 
+        //2. Delete quota logs
         foreach ($model->quotalogs as $key => $value) 
         {
             if(!$value->delete())

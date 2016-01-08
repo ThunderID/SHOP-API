@@ -240,7 +240,12 @@ $app->group(['middleware' => 'oauth|manager', 'namespace' => 'App\Http\Controlle
 			'uses'				=> 'VoucherController@store'
 		]
 	);
-
+	$app->delete('/voucher/delete/{id}',
+		[
+			'uses'				=> 'VoucherController@delete'
+		]
+	);
+	
 	// ------------------------------------------------------------------------------------
 	// POINTS
 	// ------------------------------------------------------------------------------------
