@@ -1,12 +1,17 @@
 <?php namespace App\Models\Observers;
 
-/* ----------------------------------------------------------------------
- * Event:
- * deleting
- * ---------------------------------------------------------------------- */
-
+/**
+ * Used in Courier model
+ *
+ * @author cmooy
+ */
 class CourierObserver 
 {
+	/** 
+     * observe courier event deleting
+     * 1. check courier relationship
+     * 2. act, accept or refuse
+     */
     public function deleting($model)
     {
         if($this->courier->shipments()->count() || $this->courier->shippingcosts()->count())

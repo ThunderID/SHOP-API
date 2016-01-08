@@ -167,7 +167,7 @@ class SaleController extends Controller
             }
             else
             {
-                $shipping_data   = \App\Models\Shipment::id($sale['shipment']['id'])->first();
+                $shipping_data       = \App\Models\Shipment::id($sale['shipment']['id'])->first();
 
                 if($shipping_data)
                 {
@@ -175,7 +175,7 @@ class SaleController extends Controller
                                             'receipt_number'            => 'required|max:255',
                                         ];
 
-                    $validator   = Validator::make($sale['shipment'], $shipment_rule);
+                    $validator      = Validator::make($sale['shipment'], $shipment_rule);
 
                     //if there was log and validator false
                     if (!$validator->passes())

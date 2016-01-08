@@ -4,9 +4,17 @@ namespace App\Models;
 
 // use App\Models\Observers\ShippingCostObserver;
 
+/**
+ * Used for ShippingCost Models
+ * 
+ * @author cmooy
+ */
 class ShippingCost extends BaseModel
 {
-	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	/**
+	 * Relationship Traits.
+	 *
+	 */
 	use \App\Models\Traits\belongsTo\HasCourierTrait;
 
 	/**
@@ -16,10 +24,15 @@ class ShippingCost extends BaseModel
 	 */
 	protected $table				= 'shipping_costs';
 
-	// protected $timestamps			= true;
-
 	/**
 	 * Timestamp field
+	 *
+	 * @var array
+	 */
+	// protected $timestamps			= true;
+	
+	/**
+	 * Date will be returned as carbon
 	 *
 	 * @var array
 	 */
@@ -74,7 +87,11 @@ class ShippingCost extends BaseModel
 	/* ---------------------------------------------------------------------------- ACCESSOR ----------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
-		
+	
+	/**
+	 * boot
+	 *
+	 */
 	public static function boot() 
 	{
         parent::boot();
@@ -83,4 +100,20 @@ class ShippingCost extends BaseModel
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
+	
+	/**
+	 * scope to find postal code in a range
+	 *
+	 * @param string of postal code
+	 */
+	public function scopePostalCode($query, $variable)
+	{
+		return 	$query->where(function($query) use($variable) 
+							{
+							$query->where('start_postal_code','<=', $variable)
+								->where('end_postal_code','>=', $variable);
+							})
+						->where('started_at', '<=', date('Y-m-d H:i:s'))
+						->orderby('started_at', 'desc');
+	}
 }

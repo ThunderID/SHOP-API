@@ -1,0 +1,183 @@
+swagger: '2.0'
+info:
+  title: Courier API
+  description: Move your app forward with the Courier API
+  version: 1.0.0
+host: localhost:8800
+schemes:
+  - https
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /couriers:
+    get:
+      summary: Courier Lists
+      description: |
+        The couriers endpoint returns information about the *BALIN* couriers
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+        - name: search
+          in: query
+          description: search parameter.
+          required: false
+          type: array
+          items:
+            $ref: '#/definitions/search'
+        - name: skip
+          in: query
+          description: How many records are going to be skipped
+          required: false
+          type: number
+          format: integer
+        - name: take
+          in: query
+          description: How many records are going to be taken from resource
+          required: false
+          type: number
+          format: integer
+      tags:
+        - Couriers
+      responses:
+        '200':
+          description: An array of couriers' data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/couriers'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /courier/store:
+    post:
+      summary: Store a courier
+      description: >
+        Store courier
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+        - name: name
+          in: query
+          description: courier name.
+          required: true
+          type: string
+          format: string
+        - name: shipppingcosts
+          in: query
+          description: Must be array of costs' transaction.
+          required: true
+          type: array
+          items:
+            $ref: '#/definitions/costs'
+      tags:
+        - couriers
+      responses:
+        '200':
+          description: An array of courier
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/courier'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /courier/{id}:
+    get:
+      summary: Courier Detail
+      description: 'Get courier detail information.'
+      parameters:
+        - name: id
+          in: query
+          description: courier id.
+          required: true
+          type: number
+          format: integer
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+      tags:
+        - couriers
+      responses:
+        '200':
+          description: courier rich data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/courier'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  search:
+    type: array
+    properties:
+      name:
+        type: string
+        description: 'Search courier that hath certain name'
+  couriers:
+    type: object
+    properties:
+      count:
+        type: number
+        description: 'Total couriers.'
+      data:
+        type: array
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+          shipppingcosts:
+            type: array
+            items:
+              $ref: '#/definitions/costs'
+  courier:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      shipppingcosts:
+        type: array
+          items:
+            $ref: '#/definitions/costs'
+  costs:
+    type: object
+    properties:
+      id:
+        type: string
+      start_postal_code:
+        type: string
+      end_postal_code:
+        type: string
+      started_at:
+        type: string
+      cost:
+        type: number
+  Error:
+    type: object
+    properties:
+      status:
+        type: string
+      data:
+        type: array
+      message:
+        type: string
+      code:
+        type: integer
+        format: int32

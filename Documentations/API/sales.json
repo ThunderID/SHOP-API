@@ -53,11 +53,11 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /Sales/store:
+  /sale/update/status:
     post:
       summary: Store a Sale
       description: >
-        Store a Sale with details those are varians, prices, categories, tags, labels, images
+        Update sale for status
       parameters:
         - name: access_token
           in: query
@@ -65,25 +65,12 @@ paths:
           required: true
           type: string
           format: string
-        - name: id
+        - name: status
           in: query
-          description: Let it null for new.
-          required: true
-          type: number
-          format: double
-        - name: supplier_id
-          in: query
-          description: supplier id.
+          description: changed or current status.
           required: true
           type: string
           format: string
-        - name: transactiondetails
-          in: query
-          description: Must be array of details transaction.
-          required: true
-          type: array
-          items:
-            $ref: '#/definitions/details'
         - name: transactionlogs
           in: query
           description: Must be array of logs' transaction.
@@ -129,7 +116,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Sale'
+              $ref: '#/definitions/sale'
         default:
           description: Unexpected error
           schema:
@@ -309,7 +296,7 @@ definitions:
       slug:
         type: string
       description:
-        type: json
+        type: array
       current_stock:
         type: number
       on_hold_stock:

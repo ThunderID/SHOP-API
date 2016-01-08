@@ -1,6 +1,5 @@
 <?php namespace App\Models\Observers;
 
-
 /**
  * Used in Supplier model
  *
@@ -9,7 +8,7 @@
 class SupplierObserver 
 {
     /** 
-     * observe product event deleting
+     * observe supplier event deleting
      * 1. check supplier relationship
      * 2. act, accept or refuse
      */

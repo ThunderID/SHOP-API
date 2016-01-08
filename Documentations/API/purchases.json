@@ -257,7 +257,7 @@ definitions:
       slug:
         type: string
       description:
-        type: json
+        type: array
       current_stock:
         type: number
       on_hold_stock:

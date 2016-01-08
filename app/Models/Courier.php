@@ -3,15 +3,25 @@
 namespace App\Models;
 
 use App\Models\Traits\HasNameTrait;
-
 use App\Models\Observers\CourierObserver;
 
+/**
+ * Used for Courier Models
+ * 
+ * @author cmooy
+ */
 class Courier extends BaseModel
 {
-	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	/**
+	 * Relationship Traits.
+	 *
+	 */
 	use \App\Models\Traits\hasMany\HasShippingCostsTrait;
 
-	/* ---------------------------------------------------------------------------- GLOBAL PLUG SCOPE TRAITS ---------------------------------------------------------------------*/
+	/**
+	 * Global traits used as query builder (global scope).
+	 *
+	 */
 	use HasNameTrait;
 
 	/**
@@ -21,10 +31,15 @@ class Courier extends BaseModel
 	 */
 	protected $table				= 'couriers';
 
-	// protected $timestamps			= true;
-
 	/**
 	 * Timestamp field
+	 *
+	 * @var array
+	 */
+	// protected $timestamps			= true;
+	
+	/**
+	 * Date will be returned as carbon
 	 *
 	 * @var array
 	 */
@@ -72,7 +87,12 @@ class Courier extends BaseModel
 	/* ---------------------------------------------------------------------------- ACCESSOR ----------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
-		
+						
+	/**
+	 * boot
+	 * observing model
+	 *
+	 */
 	public static function boot() 
 	{
         parent::boot();

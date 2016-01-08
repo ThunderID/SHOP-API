@@ -8,11 +8,17 @@ use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Handle Protected Resource of Courier
+ * 
+ * @author cmooy
+ */
 class CourierController extends Controller
 {
     /**
-     * Display all products
+     * Display all couriers
      *
+     * @param search, skip, take
      * @return Response
      */
     public function index()
@@ -38,13 +44,27 @@ class CourierController extends Controller
             }
         }
 
+        $count                      = $result->count();
+
+        if(Input::has('skip'))
+        {
+            $skip                   = Input::get('skip');
+            $result                 = $result->skip($skip);
+        }
+
+        if(Input::has('take'))
+        {
+            $take                   = Input::get('take');
+            $result                 = $result->take($take);
+        }
+
         $result                     = $result->with(['shippingcosts'])->get()->toArray();
 
-        return new JSend('success', (array)$result);
+        return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
 
     /**
-     * Display a product
+     * Display a courier
      *
      * @return Response
      */
@@ -62,8 +82,11 @@ class CourierController extends Controller
     }
 
     /**
-     * Store a product
+     * Store a courier
      *
+     * 1. Save Courier
+     * 2. Save Shipping Cost
+     * 
      * @return Response
      */
     public function store()
@@ -202,30 +225,29 @@ class CourierController extends Controller
                         }
                     }
                 }
-
-                //if there was no error, check if there were things need to be delete
-                if(!$errors->count())
+            }
+            //if there was no error, check if there were things need to be delete
+            if(!$errors->count())
+            {
+                $costs                            = \App\Models\ShippingCost::courierid($courier['id'])->get()->toArray();
+                
+                $cost_should_be_ids               = [];
+                foreach ($costs as $key => $value) 
                 {
-                    $costs                            = \App\Models\ShippingCost::courierid($courier['id'])->get()->toArray();
-                    
-                    $cost_should_be_ids               = [];
-                    foreach ($costs as $key => $value) 
-                    {
-                        $cost_should_be_ids[]         = $value['id'];
-                    }
+                    $cost_should_be_ids[]         = $value['id'];
+                }
 
-                    $difference_cost_ids              = array_diff($cost_should_be_ids, $cost_current_ids);
+                $difference_cost_ids              = array_diff($cost_should_be_ids, $cost_current_ids);
 
-                    if($difference_cost_ids)
+                if($difference_cost_ids)
+                {
+                    foreach ($difference_cost_ids as $key => $value) 
                     {
-                        foreach ($difference_cost_ids as $key => $value) 
+                        $cost_data                = \App\Models\ShippingCost::find($value);
+
+                        if(!$cost_data->delete())
                         {
-                            $cost_data                = \App\Models\ShippingCost::find($value);
-
-                            if(!$cost_data->delete())
-                            {
-                                $errors->add('Cost', $cost_data->getError());
-                            }
+                            $errors->add('Cost', $cost_data->getError());
                         }
                     }
                 }
@@ -247,7 +269,7 @@ class CourierController extends Controller
     }
 
     /**
-     * Delete a product
+     * Delete a courier
      *
      * @return Response
      */
