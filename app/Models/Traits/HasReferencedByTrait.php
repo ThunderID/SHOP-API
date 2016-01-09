@@ -4,6 +4,11 @@ namespace App\Models\Traits;
 
 use App\Models\Scopes\ReferencedByScope;
 
+/**
+ * Apply scope to get reference name of user
+ *
+ * @author cmooy
+ */
 trait HasReferencedByTrait 
 {
     /**

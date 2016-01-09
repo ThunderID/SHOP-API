@@ -4,6 +4,11 @@ namespace App\Models\Traits;
 
 use App\Models\Scopes\TotalPointScope;
 
+/**
+ * Apply scope to get total point of user
+ *
+ * @author cmooy
+ */
 trait HasTotalPointTrait 
 {
     /**

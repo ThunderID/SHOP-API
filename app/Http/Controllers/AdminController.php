@@ -11,9 +11,10 @@ use Illuminate\Support\Facades\DB;
 class AdminController extends Controller
 {
     /**
-     * Display all products
+     * Display all admins
      *
-     * @return Response
+     * @param search, skip, take
+     * @return JSend Response
      */
     public function index()
     {
@@ -34,14 +35,29 @@ class AdminController extends Controller
             }
         }
 
+        $count                      = $result->count();
+
+        if(Input::has('skip'))
+        {
+            $skip                   = Input::get('skip');
+            $result                 = $result->skip($skip);
+        }
+
+        if(Input::has('take'))
+        {
+            $take                   = Input::get('take');
+            $result                 = $result->take($take);
+        }
+
         $result                     = $result->with(['audits'])->get()->toArray();
 
-        return new JSend('success', (array)$result);
+        return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
 
     /**
-     * Display a product
+     * Display an admin
      *
+     * @param admin id
      * @return Response
      */
     public function detail($id = null)
@@ -57,7 +73,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Store a product
+     * Store an admin
      *
      * @return Response
      */

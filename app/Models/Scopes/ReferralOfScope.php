@@ -5,6 +5,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Scope to count total downline of users
+ *
+ * @return total_reference
+ * @author cmooy
+ */
 class ReferralOfScope implements ScopeInterface  
 {
 	

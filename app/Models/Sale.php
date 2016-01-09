@@ -92,7 +92,7 @@ class Sale extends Transaction
 	 * @param model of sale
 	 * @return unique_number
 	 */	
-    public function generateRefNumber($sale)
+    public function generateUniqueNumber($sale)
 	{
 		if(!is_null($sale->unique_number))
         {

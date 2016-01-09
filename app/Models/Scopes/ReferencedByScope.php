@@ -5,6 +5,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Scope to get reference name of user
+ *
+ * @return reference_name
+ * @author cmooy
+ */
 class ReferencedByScope implements ScopeInterface  
 {
 	

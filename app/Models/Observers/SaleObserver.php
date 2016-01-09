@@ -51,7 +51,7 @@ class SaleObserver
         //2. Generate unique number
         if($model->status=='cart' || $model->status=='na')
         {
-            $model->unique_number           = $this->generateUniqeNumber($model);
+            $model->unique_number           = $this->generateUniqueNumber($model);
         }
 
         if($errors->count())

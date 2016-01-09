@@ -1,14 +1,13 @@
 <?php
 
-/** 
-	* Inheritance User Model
-	* For every inheritance model, allowed to have only $type, fillable, rules, and available function
-*/
-
 namespace App\Models;
 
 use App\Models\Observers\UserObserver;
 
+/** 
+	* Inheritance User Model
+	* For every inheritance model, allowed to have only $type, fillable, rules, and available function
+*/
 class Customer extends User
 {
 	/**
@@ -16,7 +15,6 @@ class Customer extends User
 	 *
 	 * @var string
 	 */
-
 	public $type_field				=	'users.role';
 
 	public $type					=	'customer';

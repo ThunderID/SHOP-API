@@ -5,6 +5,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Scope to count total point of user
+ *
+ * @return total_point
+ * @author cmooy
+ */
 class TotalPointScope implements ScopeInterface  
 {
 	

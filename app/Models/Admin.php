@@ -1,14 +1,13 @@
 <?php
 
-/** 
-	* Inheritance User Model
-	* For every inheritance model, allowed to have only $type, fillable, rules, and available function
-*/
-
 namespace App\Models;
 
 use App\Models\Observers\UserObserver;
 
+/** 
+	* Inheritance User Model
+	* For every inheritance model, allowed to have only $type, fillable, rules, and available function
+*/
 class Admin extends User
 {
 	/**
@@ -16,7 +15,6 @@ class Admin extends User
 	 *
 	 * @var string
 	 */
-
 	public $type_field				=	'users.role';
 
 	public $type					=	['staff', 'store_manager', 'admin'];
@@ -64,7 +62,12 @@ class Admin extends User
 	/* ---------------------------------------------------------------------------- ACCESSOR ----------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
-		
+			
+	/**
+	 * boot
+	 * observing model
+	 *
+	 */		
 	public static function boot() 
 	{
         parent::boot();

@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 use App\Models\Cluster;
 
 /**
- * Used in Cluster model
+ * Used in Cluster, Tag, Category model
  *
  * @author cmooy
  */

@@ -1,0 +1,256 @@
+swagger: '2.0'
+info:
+  title: Admin API
+  description: Move your app forward with the Admin API
+  version: 1.0.0
+host: localhost:8800
+schemes:
+  - https
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /admins:
+    get:
+      summary: Admin Lists
+      description: |
+        The admins endpoint returns information about the *BALIN* admins
+        could be tags or categories.
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+        - name: type
+          in: query
+          description: required in slider, page, store or policy.
+          required: true
+          type: string
+          format: string
+        - name: search
+          in: query
+          description: search parameter (look below).
+          required: false
+          type: array
+          items:
+            type: string
+        - name: skip
+          in: query
+          description: How many records are going to be skipped
+          required: false
+          type: number
+          format: integer
+        - name: take
+          in: query
+          description: How many records are going to be taken from resource
+          required: false
+          type: number
+          format: integer
+      tags:
+        - Admins
+      responses:
+        '200':
+          description: An array of admins' data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/admins'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /admin/store:
+    post:
+      summary: Store a admin
+      description: >
+        Store a admin with details those are varians, prices, categories, tags, labels, images
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+        - name: id
+          in: query
+          description: Let it null for new admin.
+          required: true
+          type: number
+          format: double
+        - name: name
+          in: query
+          description: admin name.
+          required: true
+          type: string
+          format: string
+        - name: email
+          in: query
+          description: must be unique.
+          required: true
+          type: string
+          format: string
+        - name: gender
+          in: query
+          description: between male or female.
+          required: true
+          type: string
+          format: string
+        - name: date_of_birth
+          in: query
+          description: date Y-m-d H:i:s.
+          required: true
+          type: string
+          format: string
+        - name: is_active
+          in: query
+          description: set as false caused inactive user.
+          required: true
+          type: boolean
+      tags:
+        - Admins
+      responses:
+        '200':
+          description: An array of admin
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/admin'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /admin/id/:
+    get:
+      summary: admin Detail
+      description: 'Get admin detail information.'
+      parameters:
+        - name: id
+          in: query
+          description: admin id.
+          required: true
+          type: number
+          format: integer
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: number
+          format: integer
+      tags:
+        - admins
+      responses:
+        '200':
+          description: admin rich data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/admin'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  search:
+    properties:
+      name:
+        type: string
+        description: 'Search admin that hath certain name'
+  admins:
+    properties:
+      count:
+        type: number
+        description: 'Total admins.'
+      data:
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+          role:
+            type: string
+          is_active:
+            type: boolean
+          sso_id:
+            type: string
+          sso_media:
+            type: string
+          sso_data:
+            type: string
+          gender:
+            type: string
+          date_of_birth:
+            type: string
+          last_logged_at:
+            type: string
+          quota_referral:
+            type: number
+          reference_name:
+            type: string
+          total_point:
+            type: number
+          total_reference:
+            type: number
+          audits:
+            type: array
+            items:
+              $ref: '#/definitions/audits'
+  admin:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      role:
+        type: string
+      is_active:
+        type: boolean
+      sso_id:
+        type: string
+      sso_media:
+        type: string
+      sso_data:
+        type: string
+      gender:
+        type: string
+      date_of_birth:
+        type: string
+      last_logged_at:
+        type: string
+      quota_referral:
+        type: number
+      reference_name:
+        type: string
+      total_point:
+        type: number
+      total_reference:
+        type: number
+      audits:
+        type: array
+        items:
+          $ref: '#/definitions/audits'
+  audits:
+    properties:
+      id:
+        type: string
+      ondate:
+        type: string
+      event:
+        type: string
+      type:
+        type: string
+      action:
+        type: string
+  Error:
+    type: object
+    properties:
+      status:
+        type: string
+      data:
+        type: string
+      message:
+        type: string
+      code:
+        type: integer
+        format: int32

@@ -4,6 +4,11 @@ namespace App\Models\Traits;
 
 use App\Models\Scopes\ReferralOfScope;
 
+/**
+ * Apply scope to count total downline of users
+ *
+ * @author cmooy
+ */
 trait HasReferralOfTrait 
 {
     /**
