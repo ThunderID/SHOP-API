@@ -1,0 +1,232 @@
+swagger: '2.0'
+info:
+  title: Setting API
+  description: Move your app forward with the Setting API
+  version: 1.0.0
+host: localhost:8800
+schemes:
+  - https
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /settings/type/:
+    get:
+      summary: Setting Lists
+      description: |
+        The settings endpoint returns information about the *BALIN* settings
+        could be tags or categories.
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+        - name: type
+          in: query
+          description: required in slider, page, store or policy.
+          required: true
+          type: string
+          format: string
+        - name: search
+          in: query
+          description: search parameter (look below).
+          required: false
+          type: array
+          items:
+            type: string
+        - name: skip
+          in: query
+          description: How many records are going to be skipped
+          required: false
+          type: number
+          format: integer
+        - name: take
+          in: query
+          description: How many records are going to be taken from resource
+          required: false
+          type: number
+          format: integer
+      tags:
+        - settings
+      responses:
+        '200':
+          description: An array of settings' data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/settings'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /setting/store:
+    post:
+      summary: Store a setting
+      description: >
+        Store a setting with details those are varians, prices, categories, tags, labels, images
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+        - name: type
+          in: query
+          description: required in slider, page, store or policy.
+          required: true
+          type: string
+          format: string
+        - name: id
+          in: query
+          description: Let it null for new setting.
+          required: true
+          type: number
+          format: double
+        - name: value
+          in: query
+          description: setting value.
+          required: true
+          type: string
+          format: string
+        - name: started_at
+          in: query
+          description: date Y-m-d H:i:s.
+          required: true
+          type: string
+          format: string
+        - name: ended_at
+          in: query
+          description: date Y-m-d H:i:s.
+          required: true
+          type: string
+          format: string
+        - name: images
+          in: query
+          description: only available for slider.
+          required: true
+          type: array
+          items:
+            type: string
+      tags:
+        - Settings
+        - Sliders
+        - Policies
+        - Stores
+        - Pages
+      responses:
+        '200':
+          description: An array of setting
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/setting'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /setting/id/:
+    get:
+      summary: Setting Detail
+      description: 'Get setting detail information.'
+      parameters:
+        - name: id
+          in: query
+          description: setting id.
+          required: true
+          type: number
+          format: integer
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: number
+          format: integer
+      tags:
+        - settings
+      responses:
+        '200':
+          description: setting rich data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/setting'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  search:
+    properties:
+      name:
+        type: string
+        description: 'Search setting that hath certain name'
+  settings:
+    properties:
+      count:
+        type: number
+        description: 'Total settings.'
+      data:
+        properties:
+          id:
+            type: string
+          type:
+            type: string
+          value:
+            type: string
+          started_at:
+            type: string
+          ended_at:
+            type: string
+          images:
+            type: array
+            items:
+              $ref: '#/definitions/images'
+  setting:
+    properties:
+      id:
+        type: string
+      type:
+        type: string
+      value:
+        type: string
+      started_at:
+        type: string
+      ended_at:
+        type: string
+      images:
+        type: array
+        items:
+          $ref: '#/definitions/images'
+  images:
+    properties:
+      id:
+        type: string
+      product_id:
+        type: string
+      thumbnail:
+        type: string
+      image_xs:
+        type: string
+      image_sm:
+        type: string
+      image_md:
+        type: string
+      image_lg:
+        type: string
+      is_default:
+        type: boolean
+  Error:
+    type: object
+    properties:
+      status:
+        type: string
+      data:
+        type: string
+      message:
+        type: string
+      code:
+        type: integer
+        format: int32

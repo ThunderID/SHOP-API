@@ -1,14 +1,13 @@
 <?php
 
-/** 
-	* Inheritance StoreSetting Model
-	* For every inheritance model, allowed to have only $type, fillable, rules, and available function
-*/
-
 namespace App\Models;
 
 use App\Models\Observers\StoreSettingObserver;
 
+/** 
+	* Inheritance StoreSetting Model
+	* For every inheritance model, allowed to have only $type, fillable, rules, and available function
+*/
 class Store extends StoreSetting
 {
 	/**
@@ -16,7 +15,6 @@ class Store extends StoreSetting
 	 *
 	 * @var string
 	 */
-
 	public $type					=	['url', 'logo', 'facebook_url', 'twitter_url', 'instagram_url', 'email', 'phone', 'address', 'bank_information'];
 
 	/**
@@ -47,7 +45,12 @@ class Store extends StoreSetting
 	/* ---------------------------------------------------------------------------- ACCESSOR ----------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
-		
+	
+	/**
+	 * boot
+	 * observing model
+	 *
+	 */	
 	public static function boot() 
 	{
         parent::boot();

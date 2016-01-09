@@ -2,26 +2,20 @@
 
 use Illuminate\Support\MessageBag;
 
-use App\Jobs\Auditors\SaveAuditPolicy;
-
-/* ----------------------------------------------------------------------
- * Event:
- * saving
- * deleting
- * ---------------------------------------------------------------------- */
-
+/**
+ * Used in Product model
+ *
+ * @author cmooy
+ */
 class PolicyObserver 
 {
+    /** 
+     * observe policy saving
+     * 1. act if error or not
+     */
 	public function saving($model)
     {
         $errors                             = new MessageBag();
-
-        $result                             = $this->dispatch(new SaveAuditPolicy($model));
-
-        if($result->getStatus()=='error')
-        {
-            $errors->add('Policy', $result->getErrorMessage());
-        }
 
         if($errors->count())
         {
@@ -33,6 +27,10 @@ class PolicyObserver
         return true;
     }
 
+    /** 
+     * observe policy event deleting
+     * 1. refuse delete
+     */
     public function deleting($model)
     {
 		$model['errors']            = 'Tidak dapat menghapus Pengaturan.';

@@ -5,8 +5,17 @@ namespace App\Models;
 use App\Models\Traits\HasTypeTrait;
 use App\Models\Observers\StoreSettingObserver;
 
+/**
+ * Used for StoreSetting, Policy, Store, Page, Slider Models
+ * 
+ * @author cmooy
+ */
 class StoreSetting extends BaseModel
 {
+	/**
+	 * Global traits used as query builder (global scope).
+	 *
+	 */
 	use HasTypeTrait;
 
 	/**
@@ -16,10 +25,15 @@ class StoreSetting extends BaseModel
 	 */
 	protected $table				= 'tmp_store_settings';
 
-	// protected $timestamps			= true;
-
 	/**
 	 * Timestamp field
+	 *
+	 * @var array
+	 */
+	// protected $timestamps			= true;
+	
+	/**
+	 * Date will be returned as carbon
 	 *
 	 * @var array
 	 */
@@ -49,6 +63,11 @@ class StoreSetting extends BaseModel
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
 	
+	/**
+	 * boot
+	 * observing model
+	 *
+	 */
 	public static function boot() 
 	{
         parent::boot();
@@ -58,6 +77,11 @@ class StoreSetting extends BaseModel
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
 	
+	/**
+	 * scope to find type of store setting
+	 *
+	 * @param string of type
+	 */
 	public function scopeType($query, $variable)
 	{
 		if(is_array($variable))
@@ -68,6 +92,11 @@ class StoreSetting extends BaseModel
 		return 	$query->where('type', $variable);
 	}
 	
+	/**
+	 * scope to find history of date
+	 *
+	 * @param string of history
+	 */
 	public  function scopeOndate($query, $variable)
 	{
 		if(!is_array($variable))

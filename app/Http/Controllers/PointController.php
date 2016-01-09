@@ -8,12 +8,18 @@ use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Handle Protected display and store of point
+ * 
+ * @author cmooy
+ */
 class PointController extends Controller
 {
     /**
      * Display all points
      *
-     * @return Response
+     * @param search, skip, take
+     * @return JSend Response
      */
     public function index()
     {
@@ -49,7 +55,7 @@ class PointController extends Controller
         }
 
         $result                     = $result->with(['user'])->get()->toArray();
-dd($result);
+
         return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
 

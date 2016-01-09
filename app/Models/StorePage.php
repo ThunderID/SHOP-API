@@ -1,14 +1,13 @@
 <?php
 
-/** 
-	* Inheritance StoreSetting Model
-	* For every inheritance model, allowed to have only $type, fillable, rules, and available function
-*/
-
 namespace App\Models;
 
 use App\Models\Observers\StoreSettingObserver;
 
+/** 
+	* Inheritance StoreSetting Model
+	* For every inheritance model, allowed to have only $type, fillable, rules, and available function
+*/
 class StorePage extends StoreSetting
 {
 	/**
@@ -16,7 +15,6 @@ class StorePage extends StoreSetting
 	 *
 	 * @var string
 	 */
-
 	public $type					=	['about_us', 'why_join', 'term_and_condition'];
 
 	/**
@@ -47,7 +45,12 @@ class StorePage extends StoreSetting
 	/* ---------------------------------------------------------------------------- ACCESSOR ----------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
-		
+	
+	/**
+	 * boot
+	 * observing model
+	 *
+	 */		
 	public static function boot() 
 	{
         parent::boot();

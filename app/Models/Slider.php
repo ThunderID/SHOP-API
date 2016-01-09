@@ -1,17 +1,20 @@
 <?php
 
-/** 
-	* Inheritance StoreSetting Model
-	* For every inheritance model, allowed to have only $type, fillable, rules, and available function
-*/
 
 namespace App\Models;
 
 use App\Models\Observers\StoreSettingObserver;
 
+/** 
+	* Inheritance StoreSetting Model
+	* For every inheritance model, allowed to have only $type, fillable, rules, and available function
+*/
 class Slider extends StoreSetting
 {
-	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	/**
+	 * Relationship Traits.
+	 *
+	 */
 	use \App\Models\Traits\morphMany\HasImagesTrait;
 
 	/**
@@ -19,7 +22,6 @@ class Slider extends StoreSetting
 	 *
 	 * @var string
 	 */
-
 	public $type					=	'slider';
 
 	/**
@@ -52,7 +54,12 @@ class Slider extends StoreSetting
 	/* ---------------------------------------------------------------------------- ACCESSOR ----------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
-		
+	
+	/**
+	 * boot
+	 * observing model
+	 *
+	 */
 	public static function boot() 
 	{
         parent::boot();
