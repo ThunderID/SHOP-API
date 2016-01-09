@@ -2,8 +2,6 @@
 
 use Illuminate\Support\MessageBag;
 
-use App\Jobs\Points\CreditQuota;
-
 /**
  * Used in Sale model
  *

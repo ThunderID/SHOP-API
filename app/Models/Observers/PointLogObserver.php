@@ -1,23 +1,24 @@
 <?php namespace App\Models\Observers;
 
 use Illuminate\Support\MessageBag;
-use Illuminate\Support\Str;
 
 use App\Models\PointLog;
 use App\Models\StoreSetting;
 use App\Models\Voucher;
 
-use App\Jobs\Points\CreditQuota;
-use App\Jobs\Auditors\SaveAuditPoint;
-
-/* ----------------------------------------------------------------------
- * Event:
- * saving
- * deleting
- * ---------------------------------------------------------------------- */
-
+/**
+ * Used in PointLog model
+ *
+ * @author cmooy
+ */
 class PointLogObserver 
 {
+    /** 
+     * observe point log event saving
+     * 1. Check if reference were from user
+     * 2. Check if reference were from voucher
+     * 3. act, accept or refuse
+     */
     public function saving($model)
     {
         $errors                         = new MessageBag();
@@ -75,7 +76,11 @@ class PointLogObserver
 
             if(!$errors->count())
             {
-                $result                 = $this->dispatch(new CreditQuota($model->reference->voucher, 'Mereferensikan '.$model->user->name));
+                $result                     = $this->CreditQuota($model->reference->voucher, 'Mereferensikan '.$model->user->name);
+                if(!$result)
+                {
+                    return false;
+                }
             }
 
         }
@@ -87,22 +92,22 @@ class PointLogObserver
             $alreadyhasvoucher              = PointLog::userid($model->user_id)->referencetype('App\Models\Voucher')->first();
             $alreadyhasreferral             = PointLog::userid($model->user_id)->referencetype('App\Models\User')->first();
 
-            //1bi. If user alerady has voucher or referral, refuse
+            //2bi. If user alerady has voucher or referral, refuse
             if($alreadyhasvoucher || $alreadyhasreferral)
             {
                 $errors->add('PointLog', 'Maaf, Anda tidak dapat menambahkan referral code, karena anda sudah menggunakan referral code '.$model->reference->referral_code);
             }
-            //1aii. If referal was referenced by user, refuse
+            //2aii. If referal was referenced by user, refuse
             elseif($reference && $model->user_id == $reference->reference_id)
             {
                 $errors->add('PointLog', 'Tidak dapat memakai referensi dari pemberi referens.');
             }
-            //1aiii. If referal belongs to user, refuse
+            //2aiii. If referal belongs to user, refuse
             elseif($model->user_id == $model->reference->user_id)
             {
                 $errors->add('PointLog', 'Tidak memakai dapat referral code anda sebagai pemberi referens.');
             }
-            //1aiv. If referal quota lower equal to 0, refuse
+            //2aiv. If referal quota lower equal to 0, refuse
             elseif($model->reference->quota <= 0)
             {
                 $errors->add('PointLog', 'Untuk saat ini tidak dapat menggunakan referral code '.$model->reference->name);
@@ -133,14 +138,13 @@ class PointLogObserver
                 
                 if(!$errors->count())
                 {
-                    $result                 = $this->dispatch(new CreditQuota(Voucher::findorfail($prev_reference), 'Mereferensikan '.$model->user->name));
+                    $result                     = $this->CreditQuota(App\Models\Voucher::findorfail($prev_reference), 'Mereferensikan '.$model->user->name);
+                    if(!$result)
+                    {
+                        return false;
+                    }
                 }
             }
-        }
-      
-        if($result->getStatus()=='error')
-        {
-            $errors->add('PointLog', $result->getErrorMessage());
         }
 
         if($errors->count())
@@ -153,6 +157,11 @@ class PointLogObserver
         return true;
     }
 
+    /** 
+     * observe point log event saved
+     * 1. Check if reference were from user
+     * 2. act, accept or refuse
+     */
     public function saved($model)
     {
         $errors                         = new MessageBag();
@@ -191,13 +200,6 @@ class PointLogObserver
                     }
                 }
             }
-        }
-
-        $result                     = $this->dispatch(new SaveAuditPoint($this->pointlog));
-
-        if($result->getStatus()=='error')
-        {
-            $errors->add('PointLog', $result->getErrorMessage());
         }
 
         if($errors->count())

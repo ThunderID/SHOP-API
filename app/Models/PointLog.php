@@ -2,12 +2,27 @@
 
 namespace App\Models;
 
-// use App\Models\Observers\PointLogObserver;
+use App\Models\Observers\PointLogObserver;
+use App\Models\Traits\Calculations\HasVoucherQuotaTrait;
 
+/**
+ * Used for PointLog Models
+ * 
+ * @author cmooy
+ */
 class PointLog extends BaseModel
 {
-	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	/**
+	 * Relationship Traits.
+	 *
+	 */
 	use \App\Models\Traits\belongsTo\HasUserTrait;
+	
+	/**
+	 * Global traits used as query builder (global scope).
+	 *
+	 */	
+	use HasVoucherQuotaTrait;
 
 	/**
 	 * The database table used by the model.
@@ -16,10 +31,15 @@ class PointLog extends BaseModel
 	 */
 	protected $table				= 'point_logs';
 
-	// protected $timestamps			= true;
-
 	/**
 	 * Timestamp field
+	 *
+	 * @var array
+	 */
+	// protected $timestamps			= true;
+	
+	/**
+	 * Date will be returned as carbon
 	 *
 	 * @var array
 	 */
@@ -74,12 +94,17 @@ class PointLog extends BaseModel
 	/* ---------------------------------------------------------------------------- ACCESSOR ----------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
-		
+	
+	/**
+	 * boot
+	 * observing model
+	 *
+	 */	
 	public static function boot() 
 	{
         parent::boot();
  
-        // PointLog::observe(new PointLogObserver());
+        PointLog::observe(new PointLogObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/

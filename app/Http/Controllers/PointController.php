@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 class PointController extends Controller
 {
     /**
-     * Display all products
+     * Display all points
      *
      * @return Response
      */
@@ -33,10 +33,24 @@ class PointController extends Controller
                 }
             }
         }
+        
+        $count                      = $result->count();
+
+        if(Input::has('skip'))
+        {
+            $skip                   = Input::get('skip');
+            $result                 = $result->skip($skip);
+        }
+
+        if(Input::has('take'))
+        {
+            $take                   = Input::get('take');
+            $result                 = $result->take($take);
+        }
 
         $result                     = $result->with(['user'])->get()->toArray();
-
-        return new JSend('success', (array)$result);
+dd($result);
+        return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
 
     /**
@@ -71,7 +85,6 @@ class PointController extends Controller
         //1. Get original data
         $point_data                 = \App\Models\PointLog::findornew($point['id']);
 
-        //2. Check if status = shipping
         if(!$errors->count())
         {
             $point_rules   =   [
