@@ -4,6 +4,11 @@ namespace App\Models;
 
 // use App\Models\Observers\AddressObserver;
 
+/**
+ * Used for Address Models
+ * 
+ * @author cmooy
+ */
 class Address extends BaseModel
 {
 	/**
@@ -13,10 +18,15 @@ class Address extends BaseModel
 	 */
 	protected $table				= 'addresses';
 
-	// protected $timestamps			= true;
-
 	/**
 	 * Timestamp field
+	 *
+	 * @var array
+	 */
+	// protected $timestamps			= true;
+	
+	/**
+	 * Date will be returned as carbon
 	 *
 	 * @var array
 	 */
@@ -68,7 +78,11 @@ class Address extends BaseModel
 	/* ---------------------------------------------------------------------------- ACCESSOR ----------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
-		
+	
+	/**
+	 * boot
+	 *
+	 */
 	public static function boot() 
 	{
         parent::boot();

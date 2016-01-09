@@ -16,6 +16,9 @@ class VarianObserver
      * observe product event saving
      * 1. check unique sku
      * 2. act, accept or refuse
+     * 
+     * @param $model
+     * @return bool
      */
 	public function saving($model)
     {
@@ -43,6 +46,9 @@ class VarianObserver
      * observe product event deleting
      * 1. check varian relationship with transaction
      * 2. act, accept or refuse
+     * 
+     * @param $model
+     * @return bool
      */
     public function deleting($model)
     {

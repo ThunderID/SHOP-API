@@ -13,8 +13,9 @@
 
 include('routes_authorized.php');
 include('routes_protected_resource.php');
-// include('routes_private.php');
+include('routes_private_resource.php');
 // include('routes_public.php');
+
 
 $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], function ($app) 
 {
@@ -70,87 +71,5 @@ $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], fu
 			'uses'				=> 'CustomerController@detail'
 		]
 	);
-
-	$app->group(['middleware' => 'oauth|me', 'namespace' => 'App\Http\Controllers'], function ($app) 
-	{
-	//my area
-	$app->get('/me/{user_id}',
-		[
-			// 'middleware'		=> 'oauth',
-			'uses'				=> 'MyController@detail'
-		]
-	);
-
-	$app->get('/me/{user_id}/points',
-		[
-			// 'middleware'		=> 'oauth',
-			'uses'				=> 'MyController@points'
-		]
-	);
-
-	$app->post('/me/{user_id}/update',
-		[
-			// 'middleware'		=> 'oauth',
-			'uses'				=> 'MyController@store'
-		]
-	);
-
-	$app->post('/me/{user_id}/redeem',
-		[
-			// 'middleware'		=> 'oauth',
-			'uses'				=> 'MyController@redeem'
-		]
-	);
-
-	//my area for products
-	$app->get('/me/{user_id}/products/recommended',
-		[
-			// 'middleware'		=> 'oauth',
-			'uses'				=> 'MyProductController@recommended'
-		]
-	);
-
-	$app->get('/me/{user_id}/products/purchased',
-		[
-			// 'middleware'		=> 'oauth',
-			'uses'				=> 'MyProductController@purchased'
-		]
-	);
-
-	$app->get('/me/{user_id}/products/viewed',
-		[
-			// 'middleware'		=> 'oauth',
-			'uses'				=> 'MyProductController@viewed'
-		]
-	);
-
-	//my area for orders
-	$app->get('/me/{user_id}/orders',
-		[
-			// 'middleware'		=> 'oauth',
-			'uses'				=> 'MyOrderController@index'
-		]
-	);
-
-	$app->get('/me/{user_id}/order/{order_id}',
-		[
-			// 'middleware'		=> 'oauth',
-			'uses'				=> 'MyOrderController@detail'
-		]
-	);
-
-	$app->get('/me/{user_id}/incart',
-		[
-			// 'middleware'		=> 'oauth',
-			'uses'				=> 'MyOrderController@incart'
-		]
-	);
-
-	$app->post('/me/{user_id}/order/store',
-		[
-			// 'middleware'		=> 'oauth',
-			'uses'				=> 'MyOrderController@store'
-		]
-	);
-	});
 });
+

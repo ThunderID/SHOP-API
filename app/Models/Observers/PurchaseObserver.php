@@ -15,6 +15,9 @@ class PurchaseObserver
      * 1. generate transaction date
      * 2. generate transaction ref_number
      * 3. execute it there was no error
+     * 
+     * @param $model
+     * @return bool
      */
 	public function creating($model)
 	{
@@ -40,6 +43,9 @@ class PurchaseObserver
      * observe purchase event created
      * 1. change status to delivered
      * 2. execute it there was no error
+     * 
+     * @param $model
+     * @return bool
      */
 	public function created($model)
 	{
@@ -68,6 +74,9 @@ class PurchaseObserver
      * 1. remove transaction details
      * 2. remove transaction logs
      * 3. execute it there was no error
+     * 
+     * @param $model
+     * @return bool
      */
 	public function deleting($model)
     {

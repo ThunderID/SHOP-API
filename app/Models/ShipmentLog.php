@@ -4,6 +4,11 @@ namespace App\Models;
 
 // use App\Models\Observers\ShipmentLogObserver;
 
+/**
+ * Future Feature of Shipment Log
+ * 
+ * @author cmooy
+ */
 class ShipmentLog extends BaseModel
 {
 	/**
@@ -13,10 +18,15 @@ class ShipmentLog extends BaseModel
 	 */
 	protected $table				= 'shipment_logs';
 
-	// protected $timestamps			= true;
-
 	/**
 	 * Timestamp field
+	 *
+	 * @var array
+	 */
+	// protected $timestamps			= true;
+	
+	/**
+	 * Date will be returned as carbon
 	 *
 	 * @var array
 	 */

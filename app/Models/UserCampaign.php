@@ -4,6 +4,11 @@ namespace App\Models;
 
 // use App\Models\Observers\UserCampaignObserver;
 
+/**
+ * Future Feature of User Campaign
+ * 
+ * @author cmooy
+ */
 class UserCampaign extends BaseModel
 {
 	/**
@@ -13,10 +18,15 @@ class UserCampaign extends BaseModel
 	 */
 	protected $table				= 'user_campaign';
 
-	// protected $timestamps			= true;
-
 	/**
 	 * Timestamp field
+	 *
+	 * @var array
+	 */
+	// protected $timestamps			= true;
+	
+	/**
+	 * Date will be returned as carbon
 	 *
 	 * @var array
 	 */

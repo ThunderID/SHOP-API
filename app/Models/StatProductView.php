@@ -4,6 +4,11 @@ namespace App\Models;
 
 // use App\Models\Observers\StatProductViewObserver;
 
+/**
+ * Future Feature of Stat View
+ * 
+ * @author cmooy
+ */
 class StatProductView extends BaseModel
 {
 	/**
@@ -13,10 +18,15 @@ class StatProductView extends BaseModel
 	 */
 	protected $table				= 'stat_product_views';
 
-	// protected $timestamps			= true;
-
 	/**
 	 * Timestamp field
+	 *
+	 * @var array
+	 */
+	// protected $timestamps			= true;
+	
+	/**
+	 * Date will be returned as carbon
 	 *
 	 * @var array
 	 */

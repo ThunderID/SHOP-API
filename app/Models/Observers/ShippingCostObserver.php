@@ -1,11 +1,12 @@
 <?php namespace App\Models\Observers;
 
-/* ----------------------------------------------------------------------
- * Event:
- * deleting
- * ---------------------------------------------------------------------- */
 
+/**
+ * Future Feature of ShippingCostObserver
+ * 
+ * @author cmooy
+ */
 class ShippingCostObserver 
 {
-	return true;
+	//
 }

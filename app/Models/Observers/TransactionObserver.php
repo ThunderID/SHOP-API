@@ -10,6 +10,9 @@ class TransactionObserver
     /** 
      * observe transaction event saving
      * 1. refuse since modify must goes thru successors' model
+     * 
+     * @param $model
+     * @return bool
      */
 	public function saving($model)
 	{
@@ -21,6 +24,9 @@ class TransactionObserver
 	/** 
      * observe transaction event deleting
      * 1. refuse since modify must goes thru successors' model
+     * 
+     * @param $model
+     * @return bool
      */
 	public function deleting($model)
 	{

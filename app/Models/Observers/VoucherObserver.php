@@ -13,6 +13,9 @@ class VoucherObserver
      * observe voucher event saving
      * 1. check is voucher used
      * 2. execute it there was no error
+     * 
+     * @param $model
+     * @return bool
      */
 	public function saving($model)
 	{
@@ -37,6 +40,9 @@ class VoucherObserver
     /** 
      * observe voucher event saved
      * 1. execute it there was no error
+     * 
+     * @param $model
+     * @return bool
      */
 	public function saved($model)
 	{
@@ -57,6 +63,9 @@ class VoucherObserver
      * 1. Check transaction used this voucher
      * 2. Delete quota logs
      * 3. execute it there was no error
+     * 
+     * @param $model
+     * @return bool
      */
 	public function deleting($model)
     {

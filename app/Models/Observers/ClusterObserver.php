@@ -16,6 +16,9 @@ class ClusterObserver
      * observe cluster event created
      * 1. modify path
      * 2. act, accept or refuse
+     * 
+     * @param $model
+     * @return bool
      */
     public function created($model)
     {
@@ -44,6 +47,9 @@ class ClusterObserver
      * 1. modify path
      * 2. check slug
      * 3. act, accept or refuse
+     * 
+     * @param $model
+     * @return bool
      */
     public function saving($model)
     {
@@ -83,6 +89,9 @@ class ClusterObserver
      * observe cluster event updating
      * 1. updated parent + child path
      * 2. act, accept or refuse
+     * 
+     * @param $model
+     * @return bool
      */
     public function updating($model)
     {
@@ -120,6 +129,9 @@ class ClusterObserver
      * observe cluster event deleting
      * 1. updated parent + child path
      * 2. act, accept or refuse
+     * 
+     * @param $model
+     * @return bool
      */
     public function deleting($model)
     {

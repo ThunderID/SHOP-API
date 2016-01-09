@@ -9,6 +9,7 @@ use App\Models\Traits\HasAmountTrait;
 use App\Models\Traits\HasCurrentStatusTrait;
 use App\Models\Traits\HasTransactionStatusTrait;
 use App\Models\Observers\TransactionObserver;
+use App\Models\Traits\Changes\HasStatusLogTrait;
 
 /**
  * Used for Sale and Purchase Models
@@ -31,6 +32,7 @@ class Transaction extends BaseModel
 	use HasAmountTrait;
 	use HasCurrentStatusTrait;
 	use HasTransactionStatusTrait;
+	use HasStatusLogTrait;
 
 	use HasTypeTrait;
 
@@ -146,36 +148,6 @@ class Transaction extends BaseModel
         {
         	return $transaction->ref_number;
         }
-    }
-
-	/**
-	 * change transaction log (status) of transaction
-	 * 
-	 * @param model of transaction, status, notes
-	 * @return boolean, error message saved to models
-	 */	
-    public function changeStatus($transaction, $status, $notes) 
-	{
-		$logs 					= new TransactionLog;
-		$params 				= 	[
-										'transaction_id' 	=> $transaction['id'],
-										'status' 			=> $status,
-										'notes' 			=> $notes,
-										'changed_at'		=> Carbon::now()->format('Y-m-d H:i:s'),
-									];
-
-		$logs->fill($params);
-
-		if($logs->save())
-		{
-			return true;
-		}
-		else
-		{
-			$this->errors	= $logs->getError();
-			
-			return false;
-		}
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/

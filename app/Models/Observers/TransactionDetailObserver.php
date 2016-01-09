@@ -2,18 +2,27 @@
 
 use Illuminate\Support\MessageBag;
 
-/* ----------------------------------------------------------------------
- * Event:
- * saving
- * ---------------------------------------------------------------------- */
-
+/**
+ * Used in TransactionDetail model
+ *
+ * @author cmooy
+ */
 class TransactionDetailObserver 
 {
+    /** 
+     * observe transaction detail event saving
+     * 1. Check transactions tatus
+     * 2. act, accept or refuse
+     * 
+     * @param $model
+     * @return bool
+     */
     public function saving($model)
     {
         $errors                             = new MessageBag();
 
-       if($model->transaction->status!='cart' && $model->transaction->type=='sell')
+        //1. check transactions tatus
+        if($model->transaction->status!='cart' && $model->transaction->type=='sell')
         {
             $errors->add('Log', 'Tidak dapat menambahkan item baru. Silahkan membuat nota baru.');
         }

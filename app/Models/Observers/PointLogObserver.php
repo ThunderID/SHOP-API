@@ -18,6 +18,9 @@ class PointLogObserver
      * 1. Check if reference were from user
      * 2. Check if reference were from voucher
      * 3. act, accept or refuse
+     * 
+     * @param $model
+     * @return bool
      */
     public function saving($model)
     {
@@ -161,6 +164,9 @@ class PointLogObserver
      * observe point log event saved
      * 1. Check if reference were from user
      * 2. act, accept or refuse
+     * 
+     * @param $model
+     * @return bool
      */
     public function saved($model)
     {

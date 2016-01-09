@@ -4,6 +4,11 @@ namespace App\Models;
 
 // use App\Models\Observers\CategoryProductObserver;
 
+/**
+ * Used for CategoryProduct, Pivot Models
+ * 
+ * @author cmooy
+ */
 class CategoryProduct extends BaseModel
 {
 	/**
@@ -13,10 +18,15 @@ class CategoryProduct extends BaseModel
 	 */
 	protected $table				= 'categories_products';
 
-	// protected $timestamps			= true;
-
 	/**
 	 * Timestamp field
+	 *
+	 * @var array
+	 */
+	// protected $timestamps			= true;
+	
+	/**
+	 * Date will be returned as carbon
 	 *
 	 * @var array
 	 */
@@ -65,6 +75,10 @@ class CategoryProduct extends BaseModel
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
 		
+	/**
+	 * boot
+	 *
+	 */		
 	public static function boot() 
 	{
         parent::boot();

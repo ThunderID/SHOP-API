@@ -16,6 +16,9 @@ class ImageObserver
      * observe image event saving
      * 1. check default image to set init default
      * 2. act, accept or refuse
+     * 
+     * @param $model
+     * @return bool
      */
 	public function saving($model)
     {
@@ -39,6 +42,9 @@ class ImageObserver
      * observe image event saved
      * 1. check default image and make sure it's the only default
      * 2. act, accept or refuse
+     * 
+     * @param $model
+     * @return bool
      */
     public function saved($model)
     {

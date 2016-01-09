@@ -3,9 +3,21 @@
 namespace App\Models;
 
 use App\Models\Observers\TransactionLogObserver;
+use App\Models\Traits\Changes\HasStatusLogTrait;
 
+/**
+ * Used for TransactionLog Models
+ * 
+ * @author cmooy
+ */
 class TransactionLog extends BaseModel
 {
+	/**
+	 * Global traits used as query builder (global scope).
+	 *
+	 */
+	use HasStatusLogTrait;
+
 	/**
 	 * The database table used by the model.
 	 *
@@ -13,10 +25,15 @@ class TransactionLog extends BaseModel
 	 */
 	protected $table				= 'transaction_logs';
 
-	// protected $timestamps			= true;
-
 	/**
 	 * Timestamp field
+	 *
+	 * @var array
+	 */
+	// protected $timestamps			= true;
+	
+	/**
+	 * Date will be returned as carbon
 	 *
 	 * @var array
 	 */
@@ -69,7 +86,12 @@ class TransactionLog extends BaseModel
 	/* ---------------------------------------------------------------------------- ACCESSOR ----------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
-		
+				
+	/**
+	 * boot
+	 * observing model
+	 *
+	 */
 	public static function boot() 
 	{
         parent::boot();

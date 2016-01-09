@@ -13,6 +13,9 @@ class SaleObserver
      * observe sale event created
      * 1. change status to cart
      * 2. execute it there was no error
+     * 
+     * @param $model
+     * @return bool
      */
 	public function created($model)
 	{
@@ -40,6 +43,9 @@ class SaleObserver
      * 1. generate ref number
      * 2. generate unique number
      * 3. execute it there was no error
+     * 
+     * @param $model
+     * @return bool
      */
     public function saving($model)
     {
@@ -68,6 +74,9 @@ class SaleObserver
      * observe sale event saved
      * 1. credit voucher's quota
      * 2. execute it there was no error
+     * 
+     * @param $model
+     * @return bool
      */
     public function saved($model)
     {
@@ -95,6 +104,9 @@ class SaleObserver
     /** 
      * observe sale event deleting
      * 1. disable delete function
+     * 
+     * @param $model
+     * @return bool
      */
     public function deleting($model)
     {

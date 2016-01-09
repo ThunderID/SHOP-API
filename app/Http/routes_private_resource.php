@@ -1,0 +1,93 @@
+<?php
+
+/**
+*
+* Routes For Private User
+*
+*
+* Here is where you can register all of the routes for Private resources who can be accessed only by `me`.
+*
+* MY SUMMARY				: Line 44 - 66 
+*
+* MY PRODUCT 				: Line 57 - 73
+*	
+* MY PURCHASE ORDER 		: Line 78 - 100
+*/
+
+$app->group(['middleware' => 'oauth|me', 'namespace' => 'App\Http\Controllers'], function ($app) 
+{
+	// ------------------------------------------------------------------------------------
+	// MY SUMMARY
+	// ------------------------------------------------------------------------------------
+	$app->get('/me/{user_id}',
+		[
+			'uses'				=> 'MyController@detail'
+		]
+	);
+
+	$app->get('/me/{user_id}/points',
+		[
+			'uses'				=> 'MyController@points'
+		]
+	);
+
+	$app->post('/me/{user_id}/update',
+		[
+			'uses'				=> 'MyController@store'
+		]
+	);
+
+	$app->post('/me/{user_id}/redeem',
+		[
+			'uses'				=> 'MyController@redeem'
+		]
+	);
+
+	// ------------------------------------------------------------------------------------
+	// MY PRODUCT
+	// ------------------------------------------------------------------------------------
+	$app->get('/me/{user_id}/products/recommended',
+		[
+			'uses'				=> 'MyProductController@recommended'
+		]
+	);
+
+	$app->get('/me/{user_id}/products/purchased',
+		[
+			'uses'				=> 'MyProductController@purchased'
+		]
+	);
+
+	$app->get('/me/{user_id}/products/viewed',
+		[
+			'uses'				=> 'MyProductController@viewed'
+		]
+	);
+
+	// ------------------------------------------------------------------------------------
+	// MY PURCHASE ORDER
+	// ------------------------------------------------------------------------------------
+	$app->get('/me/{user_id}/orders',
+		[
+			'uses'				=> 'MyOrderController@index'
+		]
+	);
+
+	$app->get('/me/{user_id}/order/{order_id}',
+		[
+			'uses'				=> 'MyOrderController@detail'
+		]
+	);
+
+	$app->get('/me/{user_id}/incart',
+		[
+			'uses'				=> 'MyOrderController@incart'
+		]
+	);
+
+	$app->post('/me/{user_id}/order/store',
+		[
+			'uses'				=> 'MyOrderController@store'
+		]
+	);
+});

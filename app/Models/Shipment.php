@@ -2,13 +2,30 @@
 
 namespace App\Models;
 
-// use App\Models\Observers\ShipmentObserver;
+use App\Models\Observers\ShipmentObserver;
+use App\Models\Traits\Calculations\HasShipCostTrait;
+use App\Models\Traits\Changes\HasStatusLogTrait;
 
+/**
+ * Used for Shipment Models
+ * 
+ * @author cmooy
+ */
 class Shipment extends BaseModel
 {
-	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	/**
+	 * Relationship Traits.
+	 *
+	 */
 	use \App\Models\Traits\belongsTo\HasAddressTrait;
 	use \App\Models\Traits\belongsTo\HasCourierTrait;
+	use HasStatusLogTrait;
+
+	/**
+	 * Global traits used as query builder (global scope).
+	 *
+	 */
+	use HasShipCostTrait;
 
 	/**
 	 * The database table used by the model.
@@ -17,10 +34,15 @@ class Shipment extends BaseModel
 	 */
 	protected $table				= 'shipments';
 
-	// protected $timestamps			= true;
-
 	/**
 	 * Timestamp field
+	 *
+	 * @var array
+	 */
+	// protected $timestamps			= true;
+	
+	/**
+	 * Date will be returned as carbon
 	 *
 	 * @var array
 	 */
@@ -77,7 +99,7 @@ class Shipment extends BaseModel
 	{
         parent::boot();
  
-        // Shipment::observe(new ShipmentObserver());
+        Shipment::observe(new ShipmentObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/

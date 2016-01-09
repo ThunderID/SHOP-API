@@ -4,6 +4,11 @@ namespace App\Models;
 
 // use App\Models\Observers\StatCategoryViewObserver;
 
+/**
+ * Future Feature of Stat View
+ * 
+ * @author cmooy
+ */
 class StatCategoryView extends BaseModel
 {
 	/**
@@ -13,10 +18,15 @@ class StatCategoryView extends BaseModel
 	 */
 	protected $table				= 'stat_category_views';
 
-	// protected $timestamps			= true;
-
 	/**
 	 * Timestamp field
+	 *
+	 * @var array
+	 */
+	// protected $timestamps			= true;
+	
+	/**
+	 * Date will be returned as carbon
 	 *
 	 * @var array
 	 */

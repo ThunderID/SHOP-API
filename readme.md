@@ -4,7 +4,13 @@ Shop API menggunakan lumen - laravel framework versi ^5.0 dengan fitur oauth2 un
 
 ## Official Documentation
 
-Dokumentasi resource dan authorization [Wiki](hhttps://github.com/ThunderID/SHOP-API/wiki/Routes-Documentation).
+###### Dokumentasi API
+
+Berupa file editor swagger pada folder {root}/Documentations/API/*.json
+Berupa file json inside swagger pada folder {root}/Documentations/swagger/v1/*.json (Please use CORS to this folder)
+
+###### Dokumentasi Class
+Berupa dokumentasi pgp docs pada folder {root}/Models/index.html
 
 ## Security Vulnerabilities
 

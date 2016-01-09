@@ -2,10 +2,24 @@
 
 namespace App\Models;
 
-// use App\Models\Observers\PaymentObserver;
+use App\Models\Observers\PaymentObserver;
+use App\Models\Traits\Calculations\HasPaidTrait;
+use App\Models\Traits\Changes\HasStatusLogTrait;
 
+/**
+ * Used for Payment Models
+ * 
+ * @author cmooy
+ */
 class Payment extends BaseModel
 {
+	/**
+	 * Global traits used as query builder (global scope).
+	 *
+	 */
+	use HasPaidTrait;
+	use HasStatusLogTrait;
+	
 	/**
 	 * The database table used by the model.
 	 *
@@ -13,10 +27,15 @@ class Payment extends BaseModel
 	 */
 	protected $table				= 'payments';
 
-	// protected $timestamps			= true;
-
 	/**
 	 * Timestamp field
+	 *
+	 * @var array
+	 */
+	// protected $timestamps			= true;
+	
+	/**
+	 * Date will be returned as carbon
 	 *
 	 * @var array
 	 */
@@ -76,11 +95,16 @@ class Payment extends BaseModel
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
 		
+	/**
+	 * boot
+	 * observing model
+	 *
+	 */			
 	public static function boot() 
 	{
         parent::boot();
  
-        // Payment::observe(new PaymentObserver());
+        Payment::observe(new PaymentObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/

@@ -4,9 +4,17 @@ namespace App\Models;
 
 // use App\Models\Observers\QuotaLogObserver;
 
+/**
+ * Used for QuotaLog Models
+ * 
+ * @author cmooy
+ */
 class QuotaLog extends BaseModel
 {
-	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	/**
+	 * Relationship Traits.
+	 *
+	 */
 	use \App\Models\Traits\belongsTo\HasVoucherTrait;
 	
 	/**
@@ -16,10 +24,15 @@ class QuotaLog extends BaseModel
 	 */
 	protected $table				= 'quota_logs';
 
-	// protected $timestamps			= true;
-
 	/**
 	 * Timestamp field
+	 *
+	 * @var array
+	 */
+	// protected $timestamps			= true;
+	
+	/**
+	 * Date will be returned as carbon
 	 *
 	 * @var array
 	 */
@@ -69,7 +82,11 @@ class QuotaLog extends BaseModel
 	/* ---------------------------------------------------------------------------- ACCESSOR ----------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
-		
+
+	/**
+	 * boot
+	 *
+	 */			
 	public static function boot() 
 	{
         parent::boot();

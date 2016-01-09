@@ -4,6 +4,11 @@ namespace App\Models;
 
 // use App\Models\Observers\AuditorObserver;
 
+/**
+ * Used for Auditor Models
+ * 
+ * @author cmooy
+ */
 class Auditor extends BaseModel
 {
 	/**
@@ -71,7 +76,11 @@ class Auditor extends BaseModel
 	/* ---------------------------------------------------------------------------- ACCESSOR ----------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
-		
+	
+	/**
+	 * boot
+	 *
+	 */		
 	public static function boot() 
 	{
         parent::boot();

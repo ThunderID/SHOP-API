@@ -3,7 +3,7 @@
 use Illuminate\Support\MessageBag;
 
 /**
- * Used in Product model
+ * Used in Policy model
  *
  * @author cmooy
  */
@@ -12,6 +12,9 @@ class PolicyObserver
     /** 
      * observe policy saving
      * 1. act if error or not
+     * 
+     * @param $model
+     * @return bool
      */
 	public function saving($model)
     {
@@ -30,6 +33,9 @@ class PolicyObserver
     /** 
      * observe policy event deleting
      * 1. refuse delete
+     * 
+     * @param $model
+     * @return bool
      */
     public function deleting($model)
     {

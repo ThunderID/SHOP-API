@@ -8,12 +8,23 @@ use App\Models\Traits\HasStockTrait;
 use App\Models\Traits\HasTransactionStatusTrait;
 use App\Models\Observers\TransactionDetailObserver;
 
+/**
+ * Used for TransactionDetail Models
+ * 
+ * @author cmooy
+ */
 class TransactionDetail extends BaseModel
 {
-	/* ---------------------------------------------------------------------------- RELATIONSHIP TRAITS ---------------------------------------------------------------------*/
+	/**
+	 * Relationship Traits.
+	 *
+	 */
 	use \App\Models\Traits\belongsTo\HasVarianTrait;
 
-	/* ---------------------------------------------------------------------------- GLOBAL PLUG SCOPE TRAITS ---------------------------------------------------------------------*/
+	/**
+	 * Global traits used as query builder (global scope).
+	 *
+	 */
 	use HasStockTrait;
 	use HasTransactionStatusTrait;
 
@@ -24,10 +35,15 @@ class TransactionDetail extends BaseModel
 	 */
 	protected $table				= 'transaction_details';
 
-	// protected $timestamps			= true;
-
 	/**
 	 * Timestamp field
+	 *
+	 * @var array
+	 */
+	// protected $timestamps			= true;
+	
+	/**
+	 * Date will be returned as carbon
 	 *
 	 * @var array
 	 */
@@ -81,7 +97,12 @@ class TransactionDetail extends BaseModel
 	/* ---------------------------------------------------------------------------- ACCESSOR ----------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------------*/
-		
+			
+	/**
+	 * boot
+	 * observing model
+	 *
+	 */			
 	public static function boot() 
 	{
         parent::boot();
@@ -90,7 +111,12 @@ class TransactionDetail extends BaseModel
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
-	
+
+	/**
+	 * scope to check stock movement of varian on certain time
+	 *
+	 * @return stock in, stock out, varian_id, transact_at
+	 */	
 	public function scopeStockMovement($query, $variable)
 	{
 		return 	$query
@@ -105,6 +131,11 @@ class TransactionDetail extends BaseModel
 		;
 	}
 
+	/**
+	 * scope to check critical stock that below margin (current_stock)
+	 *
+	 * @param treshold
+	 */	
 	public function scopeCritical($query, $variable)
 	{
 		return 	$query
@@ -115,16 +146,5 @@ class TransactionDetail extends BaseModel
 				// ->orderby('current_stock', 'asc')
 				->groupBy('varian_id')
 				;
-	}
-
-	public function scopeGlobalStock($query, $variable)
-	{
-		return 	$query
-					->selectraw('transaction_detsls.*')
-					->selectglobalstock(true)
-					->LeftTransactionStockOn(['wait', 'paid', 'packed', 'shipping', 'delivered'])
-					->groupBy('varian_id')
-					;
-		;
 	}
 }

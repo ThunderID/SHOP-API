@@ -22,6 +22,9 @@ class ProductObserver
      * 1. check unique slug
      * 2. check unique upc
      * 3. act, accept or refuse
+     * 
+     * @param $model
+     * @return bool
      */
 	public function saving($model)
     {
@@ -63,6 +66,9 @@ class ProductObserver
      * 4. delete label
      * 5. delete image
      * 6. act, accept or refuse
+     * 
+     * @param $model
+     * @return bool
      */
     public function deleting($model)
     {

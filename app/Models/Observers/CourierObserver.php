@@ -11,6 +11,9 @@ class CourierObserver
      * observe courier event deleting
      * 1. check courier relationship
      * 2. act, accept or refuse
+     * 
+     * @param $model
+     * @return bool
      */
     public function deleting($model)
     {

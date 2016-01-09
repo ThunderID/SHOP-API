@@ -19,6 +19,9 @@ class UserObserver
      * 1. check is active
      * 2. generate activation link
      * 3. act, accept or refuse
+     * 
+     * @param $model
+     * @return bool
      */
     public function creating($model)
     {
@@ -51,6 +54,9 @@ class UserObserver
      * 1. generate referral code
      * 2. give referral code and regist quota
      * 3. act, accept or refuse
+     * 
+     * @param $model
+     * @return bool
      */
     public function created($model)
     {
@@ -81,6 +87,9 @@ class UserObserver
      * 1. Check email
      * 2. Check rehash password
      * 3. act, accept or refuse
+     * 
+     * @param $model
+     * @return bool
      */
     public function saving($model)
     {
@@ -126,6 +135,9 @@ class UserObserver
      * 3. Check quota log relationship
      * 4. Check auditor relationship
      * 5. act, accept or refuse
+     * 
+     * @param $model
+     * @return bool
      */
     public function deleting($model)
     {

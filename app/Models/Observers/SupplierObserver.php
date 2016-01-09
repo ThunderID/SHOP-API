@@ -11,6 +11,9 @@ class SupplierObserver
      * observe supplier event deleting
      * 1. check supplier relationship
      * 2. act, accept or refuse
+     * 
+     * @param $model
+     * @return bool
      */
     public function deleting($model)
     {
