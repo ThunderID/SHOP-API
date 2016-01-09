@@ -10,7 +10,7 @@ basePath: /v1
 produces:
   - application/json
 paths:
-  /clusters/{type}:
+  /clusters/type/:
     get:
       summary: Cluster Lists
       description: |
@@ -31,11 +31,11 @@ paths:
           format: string
         - name: search
           in: query
-          description: search parameter.
+          description: search parameter (look below).
           required: false
           type: array
           items:
-            $ref: '#/definitions/search'
+            type: string
         - name: skip
           in: query
           description: How many records are going to be skipped
@@ -56,12 +56,12 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Clusters'
+              $ref: '#/definitions/clusters'
         default:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /Clusters/store/{type}:
+  /cluster/store/type/:
     post:
       summary: Store a Cluster
       description: >
@@ -112,7 +112,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /Cluster/{type}/{id}:
+  /cluster/type/id/:
     get:
       summary: Cluster Detail
       description: 'Get Cluster detail information.'
@@ -143,12 +143,12 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Cluster'
+              $ref: '#/definitions/cluster'
         default:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /cluster/delete/{type}/{id}:
+  /cluster/delete/type/id/:
     delete:
       summary: Delete a Cluster
       description: 'Get Cluster detail information.'
@@ -186,19 +186,16 @@ paths:
             $ref: '#/definitions/Error'
 definitions:
   search:
-    type: array
     properties:
       name:
         type: string
         description: 'Search Cluster that hath certain name'
   clusters:
-    type: object
     properties:
       count:
         type: number
         description: 'Total Clusters.'
       data:
-        type: array
         properties:
           id:
             type: string
@@ -213,7 +210,6 @@ definitions:
             items:
               $ref: '#/definitions/cluster'
   cluster:
-    type: object
     properties:
       id:
         type: number
@@ -228,13 +224,11 @@ definitions:
         items:
           $ref: '#/definitions/products'
   products:
-    type: object
     properties:
       count:
         type: number
         description: 'Total products.'
       data:
-        type: array
         properties:
           id:
             type: string
@@ -245,7 +239,7 @@ definitions:
           slug:
             type: string
           description:
-            type: array
+            type: string
           current_stock:
             type: number
           on_hold_stock:
@@ -270,3 +264,15 @@ definitions:
             type: string
           image_lg:
             type: string
+  Error:
+    type: object
+    properties:
+      status:
+        type: string
+      data:
+        type: string
+      message:
+        type: string
+      code:
+        type: integer
+        format: int32

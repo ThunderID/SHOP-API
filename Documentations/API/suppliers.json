@@ -23,11 +23,11 @@ paths:
           type: string
         - name: search
           in: query
-          description: search parameter.
+          description: search parameter (see below).
           required: false
           type: array
           items:
-            $ref: '#/definitions/search'
+            type: string
         - name: skip
           in: query
           description: How many records are going to be skipped
@@ -90,7 +90,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /supplier/{id}:
+  /supplier/id:
     get:
       summary: Supplier Detail
       description: 'Get Supplier detail information.'
@@ -120,7 +120,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /supplier/delete/{id}:
+  /supplier/delete/id:
     delete:
       summary: Delete a Supplier
       description: 'Get Supplier detail information.'
@@ -152,28 +152,37 @@ paths:
             $ref: '#/definitions/Error'
 definitions:
   search:
-    type: array
     properties:
       name:
         type: string
         description: 'Search Supplier that hath certain name'
   suppliers:
-    type: object
     properties:
       count:
         type: number
         description: 'Total Suppliers.'
       data:
-        type: array
         properties:
           id:
             type: string
           name:
             type: string
   supplier:
-    type: object
     properties:
       id:
         type: number
       name:
         type: string
+  Error:
+    type: object
+    properties:
+      status:
+        type: string
+      data:
+        type: string
+      message:
+        type: string
+      code:
+        type: integer
+        format: int32
+

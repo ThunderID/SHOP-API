@@ -27,11 +27,11 @@ paths:
           format: integer
         - name: search
           in: query
-          description: search parameter.
+          description: search parameter (look down).
           required: false
           type: array
           items:
-            $ref: '#/definitions/search'
+            type: string
         - name: skip
           in: query
           description: How many records are going to be skipped
@@ -91,50 +91,49 @@ paths:
           in: query
           description: Must be json of array = description and fit.
           required: true
-          type: json
-          format: array
+          type: string
         - name: varians
           in: query
           description: Must be array of products' varian.
           required: true
           type: array
           items:
-            $ref: '#/definitions/varians'
+            type: string
         - name: prices
           in: query
           description: Must be array of products' price.
           required: true
           type: array
           items:
-            $ref: '#/definitions/prices'
+            type: string
         - name: categories
           in: query
           description: Must be array of products' category.
           required: true
           type: array
           items:
-            $ref: '#/definitions/categories'
+            type: string
         - name: tags
           in: query
           description: Must be array of products' tag.
           required: true
           type: array
           items:
-            $ref: '#/definitions/tags'
+            type: string
         - name: labels
           in: query
           description: Must be array of products' label.
           required: true
           type: array
           items:
-            $ref: '#/definitions/labels'
+            type: string
         - name: images
           in: query
           description: Must be array of products' image.
           required: true
           type: array
           items:
-            $ref: '#/definitions/images'
+            type: string
       tags:
         - Products
       responses:
@@ -148,7 +147,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /product/{id}:
+  /product/id/:
     get:
       summary: Product Detail
       description: 'Get product detail information.'
@@ -178,7 +177,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /product/delete/{id}:
+  /product/delete/id/:
     delete:
       summary: Delete a product
       description: 'Get product detail information.'
@@ -210,19 +209,16 @@ paths:
             $ref: '#/definitions/Error'
 definitions:
   search:
-    type: array
     properties:
       labelname:
         type: string
         description: 'Search product that hath certain label'
   products:
-    type: object
     properties:
       count:
         type: number
         description: 'Total products.'
       data:
-        type: array
         properties:
           id:
             type: string
@@ -233,7 +229,7 @@ definitions:
           slug:
             type: string
           description:
-            type: array
+            type: string
           current_stock:
             type: number
           on_hold_stock:
@@ -263,7 +259,6 @@ definitions:
             items:
               $ref: '#/definitions/varians'
   product:
-    type: object
     properties:
       id:
         type: number
@@ -274,7 +269,7 @@ definitions:
       slug:
         type: string
       description:
-        type: array
+        type: string
       current_stock:
         type: number
       on_hold_stock:
@@ -303,8 +298,27 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/varians'
+      prices:
+        type: array
+        items:
+          $ref: '#/definitions/prices'
+      tags:
+        type: array
+        items:
+          $ref: '#/definitions/tags'
+      categories:
+        type: array
+        items:
+          $ref: '#/definitions/categories'
+      labels:
+        type: array
+        items:
+          $ref: '#/definitions/labels'
+      images:
+        type: array
+        items:
+          $ref: '#/definitions/images'
   varians:
-    type: array
     properties:
       id:
         type: string
@@ -325,7 +339,6 @@ definitions:
       packed_stock:
         type: number
   prices:
-    type: array
     properties:
       id:
         type: string
@@ -338,7 +351,6 @@ definitions:
       started_at:
         type: string
   categories:
-    type: array
     properties:
       id:
         type: string
@@ -351,7 +363,6 @@ definitions:
       slug:
         type: string
   tags:
-    type: array
     properties:
       id:
         type: string
@@ -364,7 +375,6 @@ definitions:
       slug:
         type: string
   labels:
-    type: array
     properties:
       id:
         type: string
@@ -379,7 +389,6 @@ definitions:
       ended_at:
         type: string
   images:
-    type: array
     properties:
       id:
         type: string
@@ -403,7 +412,7 @@ definitions:
       status:
         type: string
       data:
-        type: array
+        type: string
       message:
         type: string
       code:

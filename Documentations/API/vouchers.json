@@ -27,7 +27,7 @@ paths:
           required: false
           type: array
           items:
-            $ref: '#/definitions/search'
+            type: string
         - name: skip
           in: query
           description: How many records are going to be skipped
@@ -91,23 +91,23 @@ paths:
           format: integer
         - name: started_at
           in: query
-          description: code.
+          description: date time Y-m-d H:i:s.
           required: true
           type: string
-          format: datetime
+          format: string
         - name: expired_at
           in: query
-          description: code.
+          description: date time Y-m-d H:i:s.
           required: true
           type: string
-          format: datetime
+          format: string
         - name: quotalogs
           in: query
           description: Must be array of logs' quota.
           required: true
           type: array
           items:
-            $ref: '#/definitions/logs'
+            type: string
       tags:
         - Vouchers
       responses:
@@ -121,7 +121,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /voucher/{id}:
+  /voucher/id/:
     get:
       summary: voucher Detail
       description: 'Get voucher detail information.'
@@ -151,7 +151,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /voucher/delete/{id}:
+  /voucher/delete/id:
     delete:
       summary: Delete a voucher
       description: 'Get voucher detail information.'
@@ -183,19 +183,16 @@ paths:
             $ref: '#/definitions/Error'
 definitions:
   search:
-    type: array
     properties:
       name:
         type: string
         description: 'Search voucher that hath certain name'
   vouchers:
-    type: object
     properties:
       count:
         type: number
         description: 'Total vouchers.'
       data:
-        type: array
         properties:
           id:
             type: string
@@ -208,13 +205,12 @@ definitions:
           started_at:
             type: string
           expired_at:
-            type: number
+            type: string
           quotalogs:
             type: array
             items:
-              $ref: '#/definitions/quotalogs'
+              $ref: '#/definitions/logs'
   voucher:
-    type: object
     properties:
       id:
         type: string
@@ -227,13 +223,12 @@ definitions:
       started_at:
         type: string
       expired_at:
-        type: number
+        type: string
       quotalogs:
         type: array
         items:
-          $ref: '#/definitions/quotalogs'
+          $ref: '#/definitions/logs'
   logs:
-    type: object
     properties:
       id:
         type: string
@@ -247,7 +242,7 @@ definitions:
       status:
         type: string
       data:
-        type: array
+        type: string
       message:
         type: string
       code:

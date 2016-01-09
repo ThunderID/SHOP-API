@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
-  title: Courier API
-  description: Move your app forward with the Courier API
+  title: Point API
+  description: Move your app forward with the Point API
   version: 1.0.0
 host: localhost:8800
 schemes:
@@ -10,11 +10,11 @@ basePath: /v1
 produces:
   - application/json
 paths:
-  /couriers:
+  /points:
     get:
-      summary: Courier Lists
+      summary: Point Lists
       description: |
-        The couriers endpoint returns information about the *BALIN* couriers
+        The points endpoint returns information about the *BALIN* points
       parameters:
         - name: access_token
           in: query
@@ -23,7 +23,7 @@ paths:
           type: string
         - name: search
           in: query
-          description: search parameter (see below).
+          description: search parameter.
           required: false
           type: array
           items:
@@ -41,23 +41,23 @@ paths:
           type: number
           format: integer
       tags:
-        - Couriers
+        - points
       responses:
         '200':
-          description: An array of couriers' data
+          description: An array of points' data
           schema:
             type: array
             items:
-              $ref: '#/definitions/couriers'
+              $ref: '#/definitions/points'
         default:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /courier/store:
+  /points/store:
     post:
-      summary: Store a courier
+      summary: Store a point
       description: >
-        Store courier
+        Store a point with details those are varians, prices, categories, tags, labels, images
       parameters:
         - name: access_token
           in: query
@@ -65,58 +65,44 @@ paths:
           required: true
           type: string
           format: string
-        - name: name
-          in: query
-          description: courier name.
-          required: true
-          type: string
-          format: string
-        - name: shipppingcosts
-          in: query
-          description: Must be array of costs' transaction (see below).
-          required: true
-          type: array
-          items:
-            type: string
-      tags:
-        - couriers
-      responses:
-        '200':
-          description: An array of courier
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/courier'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-  /courier/id/:
-    get:
-      summary: Courier Detail
-      description: 'Get courier detail information.'
-      parameters:
         - name: id
           in: query
-          description: courier id.
+          description: Let it null for new.
           required: true
           type: number
-          format: integer
-        - name: access_token
+          format: double
+        - name: user_id
           in: query
-          description: Access token given by apps.
+          description: user_id must be registered user id.
           required: true
           type: string
           format: string
+        - name: amount
+          in: query
+          description: debit point (could be plus or minus).
+          required: true
+          type: number
+          format: double
+        - name: expired_at
+          in: query
+          description: date time Y-m-d H:i:s.
+          required: true
+          type: string
+          format: string
+        - name: notes
+          in: query
+          description: could be null.
+          required: true
+          type: string
       tags:
-        - couriers
+        - points
       responses:
         '200':
-          description: courier rich data
+          description: An array of point
           schema:
             type: array
             items:
-              $ref: '#/definitions/courier'
+              $ref: '#/definitions/point'
         default:
           description: Unexpected error
           schema:
@@ -126,43 +112,69 @@ definitions:
     properties:
       name:
         type: string
-        description: 'Search courier that hath certain name'
-  couriers:
+        description: 'Search point that hath certain name'
+  points:
     properties:
       count:
         type: number
-        description: 'Total couriers.'
+        description: 'Total points.'
       data:
         properties:
           id:
             type: string
-          name:
+          amount:
+            type: number
+          expired_at:
             type: string
-          shipppingcosts:
+          notes:
+            type: string
+          user:
             type: array
             items:
-              $ref: '#/definitions/costs'
-  courier:
+              $ref: '#/definitions/user'
+  point:
+    properties:
+      id:
+        type: string
+      amount:
+        type: number
+      expired_at:
+        type: string
+      notes:
+        type: string
+      user:
+        type: array
+        items:
+          $ref: '#/definitions/user'
+  user:
     properties:
       id:
         type: string
       name:
         type: string
-      shippingcosts:
-        type: array
-        items:
-          $ref: '#/definitions/costs'
-  costs:
-    properties:
-      id:
+      role:
         type: string
-      start_postal_code:
+      is_active:
+        type: boolean
+      sso_id:
         type: string
-      end_postal_code:
+      sso_media:
         type: string
-      started_at:
+      sso_data:
         type: string
-      cost:
+      gender:
+        type: string
+      date_of_birth:
+        type: string
+      last_logged_at:
+        type: string
+      quota_referral:
+        type: number
+      reference_name:
+        type: string
+      total_point:
+        type: number
+      total_reference:
         type: number
   Error:
     type: object

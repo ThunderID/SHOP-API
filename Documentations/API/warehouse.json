@@ -10,7 +10,7 @@ basePath: /v1
 produces:
   - application/json
 paths:
-  /product/stock/card/{id}:
+  /product/stock/card/id:
     get:
       summary: Get a product varian stock card Lists
       description: |
@@ -127,7 +127,6 @@ paths:
             $ref: '#/definitions/Error'
 definitions:
   products:
-    type: object
     properties:
       id:
         type: string
@@ -138,7 +137,7 @@ definitions:
       slug:
         type: string
       description:
-        type: json
+        type: string
       current_stock:
         type: number
       on_hold_stock:
@@ -164,7 +163,6 @@ definitions:
       image_lg:
         type: string
   varians:
-    type: array
     properties:
       id:
         type: string
@@ -187,7 +185,6 @@ definitions:
         items:
           $ref: '#/definitions/products'
   stockcard:
-    type: array
     properties:
       varian_id:
         type: string
@@ -207,7 +204,7 @@ definitions:
       status:
         type: string
       data:
-        type: array
+        type: string
       message:
         type: string
       code:

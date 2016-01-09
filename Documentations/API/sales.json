@@ -23,11 +23,11 @@ paths:
           type: string
         - name: search
           in: query
-          description: search parameter.
+          description: search parameter (see below).
           required: false
           type: array
           items:
-            $ref: '#/definitions/search'
+            type: string
         - name: skip
           in: query
           description: How many records are going to be skipped
@@ -77,7 +77,7 @@ paths:
           required: true
           type: array
           items:
-            $ref: '#/definitions/logs'
+            type: string
       tags:
         - Sales
       responses:
@@ -86,12 +86,12 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Sale'
+              $ref: '#/definitions/sale'
         default:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /sale/{id}:
+  /sale/id/:
     get:
       summary: Sale Detail
       description: 'Get Sale detail information.'
@@ -123,19 +123,16 @@ paths:
             $ref: '#/definitions/Error'
 definitions:
   search:
-    type: array
     properties:
       name:
         type: string
         description: 'Search Sale that hath certain name'
   sales:
-    type: object
     properties:
       count:
         type: number
         description: 'Total Sales.'
       data:
-        type: array
         properties:
           id:
             type: string
@@ -160,7 +157,6 @@ definitions:
             items:
               $ref: '#/definitions/user'
   sale:
-    type: object
     properties:
       id:
         type: string
@@ -205,7 +201,6 @@ definitions:
         items:
           $ref: '#/definitions/shipment'
   user:
-    type: object
     properties:
       id:
         type: string
@@ -236,7 +231,6 @@ definitions:
       total_reference:
         type: number
   details:
-    type: object
     properties:
       id:
         type: string
@@ -251,7 +245,6 @@ definitions:
         items:
           $ref: '#/definitions/varian'
   logs:
-    type: object
     properties:
       id:
         type: string
@@ -262,7 +255,6 @@ definitions:
       notes:
         type: string
   varian:
-    type: array
     properties:
       id:
         type: string
@@ -285,7 +277,6 @@ definitions:
         items:
           $ref: '#/definitions/product'
   product:
-    type: object
     properties:
       id:
         type: string
@@ -296,7 +287,7 @@ definitions:
       slug:
         type: string
       description:
-        type: array
+        type: string
       current_stock:
         type: number
       on_hold_stock:
@@ -322,7 +313,6 @@ definitions:
       image_lg:
         type: string
   points:
-    type: object
     properties:
       id:
         type: string
@@ -333,7 +323,6 @@ definitions:
       notes:
         type: string
   payment:
-    type: object
     properties:
       id:
         type: string
@@ -350,7 +339,6 @@ definitions:
       amount:
         type: number
   shipment:
-    type: object
     properties:
       id:
         type: string
@@ -367,7 +355,6 @@ definitions:
         items:
           $ref: '#/definitions/courier'
   address:
-    type: object
     properties:
       id:
         type: string
@@ -378,7 +365,6 @@ definitions:
       zipcode:
         type: string
   courier:
-    type: object
     properties:
       id:
         type: string
@@ -390,7 +376,7 @@ definitions:
       status:
         type: string
       data:
-        type: array
+        type: string
       message:
         type: string
       code:
