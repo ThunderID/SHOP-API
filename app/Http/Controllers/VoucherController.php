@@ -273,7 +273,7 @@ class VoucherController extends Controller
     public function delete($id = null)
     {
         //
-        $voucher                    = \App\Models\Voucher::id($id)->with(['quotalogs', 'transactions'])->first()->toArray();
+        $voucher                    = \App\Models\Voucher::id($id)->with(['quotalogs', 'transactions'])->first();
 
         $result                     = $voucher;
 

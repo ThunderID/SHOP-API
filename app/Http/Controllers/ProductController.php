@@ -78,8 +78,8 @@ class ProductController extends Controller
         if($result)
         {
             return new JSend('success', (array)$result->toArray());
-
         }
+        
         return new JSend('error', (array)Input::all(), 'ID Tidak Valid.');
     }
 

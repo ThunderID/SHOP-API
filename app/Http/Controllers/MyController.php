@@ -17,9 +17,14 @@ class MyController extends Controller
      */
     public function detail($user_id = null)
     {
-        $result                 = \App\Models\Customer::id($user_id)->with(['myreferrals', 'myreferrals.user'])->first()->toArray();
+        $result                 = \App\Models\Customer::id($user_id)->with(['myreferrals', 'myreferrals.user'])->first();
 
-        return new JSend('success', (array)$result);
+        if($result)
+        {
+            return new JSend('success', (array)$result->toArray());
+        }
+        
+        return new JSend('error', (array)Input::all(), 'ID Tidak Valid.');
     }
 
     /**

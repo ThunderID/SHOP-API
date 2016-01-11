@@ -34,8 +34,13 @@ class CustomerController extends Controller
      */
     public function detail($id = null)
     {
-        $result                 = \App\Models\Customer::id($id)->with(['sales'])->first()->toArray();
+        $result                 = \App\Models\Customer::id($id)->with(['sales'])->first();
 
-        return new JSend('success', (array)$result);
+        if($result)
+        {
+            return new JSend('success', (array)$result->toArray());
+        }
+        
+        return new JSend('error', (array)Input::all(), 'ID Tidak Valid.');
     }
 }
