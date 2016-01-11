@@ -53,7 +53,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /purchases/store:
+  /purchase/store:
     post:
       summary: Store a Purchase
       description: >

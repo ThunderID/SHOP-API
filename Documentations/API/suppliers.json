@@ -53,7 +53,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /suppliers/store:
+  /supplier/store:
     post:
       summary: Store a Supplier
       description: >

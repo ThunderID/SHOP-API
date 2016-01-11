@@ -53,7 +53,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /vouchers/store:
+  /voucher/store:
     post:
       summary: Store a voucher
       description: >

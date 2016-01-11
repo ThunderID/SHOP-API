@@ -57,7 +57,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /products/store:
+  /product/store:
     post:
       summary: Store a Product
       description: >

@@ -53,7 +53,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /points/store:
+  /point/store:
     post:
       summary: Store a point
       description: >
