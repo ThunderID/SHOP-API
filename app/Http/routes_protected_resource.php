@@ -308,4 +308,19 @@ $app->group(['middleware' => 'oauth|admin', 'namespace' => 'App\Http\Controllers
 			'uses'				=> 'AdminController@store'
 		]
 	);
+
+	// ------------------------------------------------------------------------------------
+	// Customers
+	// ------------------------------------------------------------------------------------
+	$app->get('/customers',
+		[
+			'uses'				=> 'CustomerController@index'
+		]
+	);
+
+	$app->get('/customer/{id}',
+		[
+			'uses'				=> 'CustomerController@detail'
+		]
+	);
 });

@@ -14,8 +14,7 @@
 include('routes_authorized.php');
 include('routes_protected_resource.php');
 include('routes_private_resource.php');
-// include('routes_public.php');
-
+include('routes_public.php');
 
 $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], function ($app) 
 {
@@ -29,47 +28,5 @@ $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], fu
 
 		return new \App\Libraries\JSend('success', (array)$user);
 	});
-
-
-	// ------------------------------------------------------------------------------------
-	// CUSTOMERS
-	// ------------------------------------------------------------------------------------
-
-	//authenticate process
-	$app->post('/customer/sign/in',
-		[
-			// 'middleware'		=> 'oauth',
-			'uses'				=> 'AuthController@signin'
-		]
-	);
-
-	$app->post('/customer/sign/up',
-		[
-			// 'middleware'		=> 'oauth',
-			'uses'				=> 'AuthController@signup'
-		]
-	);
-
-	$app->post('/customer/activate',
-		[
-			// 'middleware'		=> 'oauth',
-			'uses'				=> 'AuthController@activate'
-		]
-	);
-
-	//backend area
-	$app->get('/customers',
-		[
-			'middleware'		=> 'oauth|admin',
-			'uses'				=> 'CustomerController@index'
-		]
-	);
-
-	$app->get('/customer/{id}',
-		[
-			'middleware'		=> 'oauth|admin',
-			'uses'				=> 'CustomerController@detail'
-		]
-	);
 });
 

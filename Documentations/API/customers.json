@@ -1,0 +1,198 @@
+swagger: '2.0'
+info:
+  title: Customer API
+  description: Move your app forward with the Customer API
+  version: 1.0.0
+host: localhost:8800
+schemes:
+  - https
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /customers:
+    get:
+      summary: Customer Lists
+      description: |
+        The customers endpoint returns information about the *BALIN* customers.
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: number
+          format: integer
+        - name: search
+          in: query
+          description: search parameter (look down).
+          required: false
+          type: array
+          items:
+            type: string
+        - name: skip
+          in: query
+          description: How many records are going to be skipped
+          required: false
+          type: number
+          format: integer
+        - name: take
+          in: query
+          description: How many records are going to be taken from resource
+          required: false
+          type: number
+          format: integer
+      tags:
+        - customers
+      responses:
+        '200':
+          description: An array of customers' data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/customers'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /customer/id/:
+    get:
+      summary: customer Detail
+      description: 'Get customer detail information.'
+      parameters:
+        - name: id
+          in: query
+          description: customer id.
+          required: true
+          type: number
+          format: integer
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: number
+          format: integer
+      tags:
+        - Customers
+      responses:
+        '200':
+          description: customer rich data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/customer'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  search:
+    properties:
+      name:
+        type: string
+        description: 'Search customer that hath certain label'
+  customers:
+    properties:
+      count:
+        type: number
+        description: 'Total customers.'
+      data:
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+          role:
+            type: string
+          is_active:
+            type: boolean
+          sso_id:
+            type: string
+          sso_media:
+            type: string
+          sso_data:
+            type: string
+          gender:
+            type: string
+          date_of_birth:
+            type: string
+          last_logged_at:
+            type: string
+          quota_referral:
+            type: number
+          reference_name:
+            type: string
+          total_point:
+            type: number
+          total_reference:
+            type: number
+  customer:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      role:
+        type: string
+      is_active:
+        type: boolean
+      sso_id:
+        type: string
+      sso_media:
+        type: string
+      sso_data:
+        type: string
+      gender:
+        type: string
+      date_of_birth:
+        type: string
+      last_logged_at:
+        type: string
+      quota_referral:
+        type: number
+      reference_name:
+        type: string
+      total_point:
+        type: number
+      total_reference:
+        type: number
+      sales:
+        type: array
+        items:
+          $ref: '#/definitions/sales'
+  sales:
+    properties:
+      count:
+        type: number
+        description: 'Total Sales.'
+      data:
+        properties:
+          id:
+            type: string
+          ref_number:
+            type: string
+          transact_at:
+            type: string
+          status:
+            type: string
+          unique_number:
+            type: number
+          shipping_cost:
+            type: number
+          voucher_discount:
+            type: number
+          amount:
+            type: number
+          bills:
+            type: number
+  Error:
+    type: object
+    properties:
+      status:
+        type: string
+      data:
+        type: string
+      message:
+        type: string
+      code:
+        type: integer
+        format: int32
