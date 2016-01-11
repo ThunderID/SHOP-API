@@ -2,14 +2,6 @@
 
 use Illuminate\Support\MessageBag;
 
-//Points Jobs
-use App\Jobs\Points\RevertPoint;
-use App\Jobs\Points\CreditPoint;
-use App\Jobs\Points\AddQuotaForUpline;
-use App\Jobs\Points\AddPointForUpline;
-
-use App\Jobs\ChangeStatus;
-
 /**
  * Used in TransactionLog model
  *
@@ -145,7 +137,7 @@ class TransactionLogObserver
                 case 'cart' :
                 break;
                 case 'wait' :
-                    $result                     = $this->dispatch(new CreditPoint($model->transaction));
+                    $result                     = $this->CreditPoint($model->transaction);
 
                     if($model->transaction->bills==0)
                     {
@@ -158,10 +150,10 @@ class TransactionLogObserver
                     }
                 break;
                 case 'paid' :
-                    $result                     = $this->dispatch(new AddQuotaForUpline($model->transaction));
+                    $result                     = $this->AddQuotaForUpline($model->transaction);
                     if($result->getStatus()=='success')
                     {
-                        $result                 = $this->dispatch(new AddPointForUpline($model->transaction));
+                        $result                 = $this->AddPointForUpline($model->transaction);
                     }
                 break;
                 case 'shipping' :
@@ -169,7 +161,7 @@ class TransactionLogObserver
                 case 'delivered' :
                 break;
                 case 'canceled' :
-                    $result                     = $this->dispatch(new RevertPoint($model->transaction));
+                    $result                     = $this->RevertPoint($model->transaction);
                 break;
             }
 
@@ -189,11 +181,19 @@ class TransactionLogObserver
         return true;
     }
     
+    /** 
+     * observe transaction log event deleting
+     * 1. temporary refuse delete log
+     * 2. act, accept or refuse
+     * 
+     * @param $model
+     * @return bool
+     */
     public function deleting($model)
     {
 		$errors 						= new MessageBag();
 
-        $errors->add('lable', 'Tidak dapat menghapus log transaksi.');
+        $errors->add('log', 'Tidak dapat menghapus log transaksi.');
 
         if($errors->count())
         {

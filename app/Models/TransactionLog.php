@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Observers\TransactionLogObserver;
 use App\Models\Traits\Changes\HasStatusLogTrait;
+use App\Models\Traits\Calculations\HasPaidTrait;
 
 /**
  * Used for TransactionLog Models
@@ -17,6 +18,7 @@ class TransactionLog extends BaseModel
 	 *
 	 */
 	use HasStatusLogTrait;
+	use HasPaidTrait;
 
 	/**
 	 * The database table used by the model.
