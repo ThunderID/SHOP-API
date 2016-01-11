@@ -111,11 +111,11 @@ trait HasStockTrait
 	/**
 	 * combine all stocks' scope calculation
 	 *
-	 * @return current_stock, on_hold_stock, inventory_stock, reserved_stock, packed_stock
+	 * @return current_stock, on_hold_stock, inventory_stock, reserved_stock, packed_stock, cart item, sold item
 	 **/
 	public function scopeSelectGlobalStock($query, $variable)
 	{
-		return $query->selectcurrentstock(true)->selectonholdstock(true)->selectinventorystock(true)->selectreservedstock(true)->selectpackedstock(true);
+		return $query->selectcurrentstock(true)->selectonholdstock(true)->selectinventorystock(true)->selectreservedstock(true)->selectpackedstock(true)->selectsolditem(true)->selectstockincart(true);
 		;
 	}
 

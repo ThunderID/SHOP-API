@@ -240,6 +240,10 @@ definitions:
             type: number
           packed_stock:
             type: number
+          cart_item:
+            type: number
+          sold_item:
+            type: number
           price:
             type: number
           promo_price:
@@ -279,6 +283,10 @@ definitions:
       reserved_stock:
         type: number
       packed_stock:
+        type: number
+      cart_item:
+        type: number
+      sold_item:
         type: number
       price:
         type: number
