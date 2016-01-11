@@ -1,0 +1,177 @@
+swagger: '2.0'
+info:
+  title: Product API
+  description: Move your app forward with the Product API
+  version: 1.0.0
+host: localhost:8800
+schemes:
+  - https
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /balin/store/products:
+    get:
+      summary: Product Lists
+      description: |
+        The Products endpoint returns information about the *BALIN* sellable products
+        offered at a given location. The response includes the display name
+        and other details about each product, and lists the products in the
+        proper display order.
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: number
+          format: integer
+        - name: search
+          in: query
+          description: search parameter (look down).
+          required: false
+          type: array
+          items:
+            type: string
+        - name: skip
+          in: query
+          description: How many records are going to be skipped
+          required: false
+          type: number
+          format: integer
+        - name: take
+          in: query
+          description: How many records are going to be taken from resource
+          required: false
+          type: number
+          format: integer
+      tags:
+        - Products
+      responses:
+        '200':
+          description: An array of products' data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/products'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  search:
+    properties:
+      labelname:
+        type: string
+        description: 'Search product that hath certain label'
+  products:
+    properties:
+      id:
+        type: number
+      name:
+        type: string
+      upc:
+        type: string
+      slug:
+        type: string
+      description:
+        type: string
+      current_stock:
+        type: number
+      on_hold_stock:
+        type: number
+      inventory_stock:
+        type: number
+      reserved_stock:
+        type: number
+      packed_stock:
+        type: number
+      price:
+        type: number
+      promo_price:
+        type: number
+      thumbnail:
+        type: string
+      image_xs:
+        type: string
+      image_sm:
+        type: string
+      image_md:
+        type: string
+      image_lg:
+        type: string
+      varians:
+        type: array
+        items:
+          $ref: '#/definitions/varians'
+      labels:
+        type: array
+        items:
+          $ref: '#/definitions/labels'
+      images:
+        type: array
+        items:
+          $ref: '#/definitions/images'
+  varians:
+    properties:
+      id:
+        type: string
+      product_id:
+        type: string
+      sku:
+        type: string
+      size:
+        type: string
+      current_stock:
+        type: number
+      on_hold_stock:
+        type: number
+      inventory_stock:
+        type: number
+      reserved_stock:
+        type: number
+      packed_stock:
+        type: number
+  labels:
+    properties:
+      id:
+        type: string
+      product_id:
+        type: string
+      lable:
+        type: string
+      value:
+        type: string
+      started_at:
+        type: string
+      ended_at:
+        type: string
+  images:
+    properties:
+      id:
+        type: string
+      product_id:
+        type: string
+      thumbnail:
+        type: string
+      image_xs:
+        type: string
+      image_sm:
+        type: string
+      image_md:
+        type: string
+      image_lg:
+        type: string
+      is_default:
+        type: boolean
+  Error:
+    type: object
+    properties:
+      status:
+        type: string
+      data:
+        type: string
+      message:
+        type: string
+      code:
+        type: integer
+        format: int32

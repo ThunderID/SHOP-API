@@ -7,6 +7,7 @@ use App\Models\Traits\HasCurrentStockTrait;
 use App\Models\Traits\HasDefaultImageTrait;
 
 use App\Models\Traits\HasStockTrait;
+use App\Models\Traits\HasSellableTrait;
 use App\Models\Traits\HasTransactionStatusTrait;
 use App\Models\Observers\ProductObserver;
 
@@ -42,6 +43,7 @@ class Product extends BaseModel
 	 *
 	 */
 	use HasStockTrait;
+	use HasSellableTrait;
 	use HasTransactionStatusTrait;
 
 	/**
