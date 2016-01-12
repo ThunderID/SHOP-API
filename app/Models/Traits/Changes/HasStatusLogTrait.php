@@ -1,6 +1,6 @@
 <?php 
 
-namespace App\Models\Changes\Calculations;
+namespace App\Models\Traits\Changes;
 
 /**
  * Function to do change transaction log status
