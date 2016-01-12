@@ -103,7 +103,7 @@ class ClusterController extends Controller
      */
     public function store($type = null)
     {
-        if(!Input::has('category') || !Input::has('tag'))
+        if(!Input::has('category') && !Input::has('tag'))
         {
             return new JSend('error', (array)Input::all(), 'Tidak ada data cluster.');
         }
