@@ -65,52 +65,56 @@ definitions:
         description: 'Search product that hath certain label'
   products:
     properties:
-      id:
+      count:
         type: number
-      name:
-        type: string
-      upc:
-        type: string
-      slug:
-        type: string
-      description:
-        type: string
-      current_stock:
-        type: number
-      on_hold_stock:
-        type: number
-      inventory_stock:
-        type: number
-      reserved_stock:
-        type: number
-      packed_stock:
-        type: number
-      price:
-        type: number
-      promo_price:
-        type: number
-      thumbnail:
-        type: string
-      image_xs:
-        type: string
-      image_sm:
-        type: string
-      image_md:
-        type: string
-      image_lg:
-        type: string
-      varians:
-        type: array
-        items:
-          $ref: '#/definitions/varians'
-      labels:
-        type: array
-        items:
-          $ref: '#/definitions/labels'
-      images:
-        type: array
-        items:
-          $ref: '#/definitions/images'
+        description: 'Total products.'
+      data:
+        id:
+          type: number
+        name:
+          type: string
+        upc:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        current_stock:
+          type: number
+        on_hold_stock:
+          type: number
+        inventory_stock:
+          type: number
+        reserved_stock:
+          type: number
+        packed_stock:
+          type: number
+        price:
+          type: number
+        promo_price:
+          type: number
+        thumbnail:
+          type: string
+        image_xs:
+          type: string
+        image_sm:
+          type: string
+        image_md:
+          type: string
+        image_lg:
+          type: string
+        varians:
+          type: array
+          items:
+            $ref: '#/definitions/varians'
+        labels:
+          type: array
+          items:
+            $ref: '#/definitions/labels'
+        images:
+          type: array
+          items:
+            $ref: '#/definitions/images'
   varians:
     properties:
       id:

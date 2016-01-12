@@ -61,7 +61,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /cluster/store/type/:
+  /cluster/{type}/store/:
     post:
       summary: Store a Cluster
       description: >

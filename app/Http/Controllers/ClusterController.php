@@ -122,12 +122,15 @@ class ClusterController extends Controller
             $cluster                    = Input::get('tag');
         }
 
+        //1a. Get original data
         if(is_null($cluster['id']))
         {
+            $cluster_data           = new \App\Models\Cluster;
             $is_new                 = true;
         }
         else
         {
+            $cluster_data           = \App\Models\Cluster::findornew($cluster['id']);
             $is_new                 = false;
         }
 
@@ -136,11 +139,8 @@ class ClusterController extends Controller
                                             // 'type'                      => 'required|in:category,id',
                                             // 'path'                      => 'required|max:255',
                                             'name'                      => 'required|max:255',
-                                            'slug'                      => 'required|max:255|unique:categories,slug,'.(!is_null($cluster['id']) ? $cluster['id'] : ''),
+                                            'slug'                      => 'max:255|unique:categories,slug,'.(!is_null($cluster['id']) ? $cluster['id'] : ''),
                                         ];
-
-        //1a. Get original data
-        $cluster_data              = \App\Models\Cluster::findornew($cluster['id']);
 
         //1b. Validate Basic Cluster Parameter
         $validator                  = Validator::make($cluster, $cluster_rules);
@@ -152,7 +152,7 @@ class ClusterController extends Controller
         else
         {
             //if validator passed, save cluster
-            $cluster_data           = $cluster_data->fill($cluster);
+            $cluster_data           = $cluster_data->fill(['name' => $cluster['name']]);
 
             if(!$cluster_data->save())
             {

@@ -109,12 +109,16 @@ class ProductController extends Controller
 
         //1. Validate Product Parameter
         $product                    = Input::get('product');
+ 
+        //1a. Get original data
         if(is_null($product['id']))
         {
+            $product_data           = new \App\Models\Product;
             $is_new                 = true;
         }
         else
         {
+            $product_data           = \App\Models\Product::findornew($product['id']);
             $is_new                 = false;
         }
 
@@ -127,9 +131,6 @@ class ProductController extends Controller
                                             'description.description'   => 'required|max:512',
                                             'description.fit'           => 'required|max:512',
                                         ];
-
-        //1a. Get original data
-        $product_data               = \App\Models\Product::findornew($product['id']);
 
         //1b. Validate Basic Product Parameter
         $validator                  = Validator::make($product, $product_rules);
