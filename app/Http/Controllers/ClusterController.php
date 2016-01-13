@@ -116,23 +116,24 @@ class ClusterController extends Controller
         if($type=='category')
         {
             $cluster                    = Input::get('category');
+            $cluster_data               = \App\Models\Category::findornew($cluster['id']);
         }
         else
         {
             $cluster                    = Input::get('tag');
+            $cluster_data               = \App\Models\Tag::findornew($cluster['id']);
         }
 
         //1a. Get original data
         if(is_null($cluster['id']))
         {
-            $cluster_data           = new \App\Models\Cluster;
             $is_new                 = true;
         }
         else
         {
-            $cluster_data           = \App\Models\Cluster::findornew($cluster['id']);
             $is_new                 = false;
         }
+
 
         $cluster_rules             =   [
                                             'category_id'               => 'numeric',
