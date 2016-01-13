@@ -108,10 +108,10 @@ class AdminController extends Controller
         $admin_rules                =   [
                                             'name'                          => 'required|max:255',
                                             'email'                         => 'required|max:255|unique:users,email,'.(!is_null($admin['id']) ? $admin['id'] : ''),
-                                            // 'role'                          => 'required|max:255',
+                                            'role'                          => 'required|in:admin,store_manager,staff',
                                             'is_active'                     => 'boolean',
                                             'gender'                        => 'required|in:male,female',
-                                            'date_of_birth'                 => 'required|date_format:"Y-m-d H:i:s"',
+                                            'date_of_birth'                 => 'date_format:"Y-m-d H:i:s"',
                                         ];
 
         //1a. Get original data

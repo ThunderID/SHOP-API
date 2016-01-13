@@ -1,11 +1,9 @@
 <?php namespace App\Models\Observers;
 
 use Illuminate\Support\MessageBag;
+use Hash;
 
 use App\Models\User;
-
-use App\Jobs\Points\AddRefferalCode;
-use App\Jobs\Points\AddQuotaRegistration;
 
 /**
  * Used in User, Customer, Admin Model
@@ -63,10 +61,10 @@ class UserObserver
         $errors                             = new MessageBag();
 
         //1. generate referral_code
-        $referral_code                      = $this->generateReferralCode($model);
+        $referral_code                      = $model->generateReferralCode($model);
         
         //2. give referral code and regist quota
-        $result                             = $this->giveReferralCode($model, $referral_code);
+        $result                             = $model->giveReferralCode($model, $referral_code);
         if(!$result)
         {
             return false;

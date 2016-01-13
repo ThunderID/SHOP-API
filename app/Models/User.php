@@ -33,6 +33,7 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
 	use \App\Models\Traits\hasMany\HasTransactionsTrait;
 	use \App\Models\Traits\hasMany\HasPointLogsTrait;
 	use \App\Models\Traits\hasMany\HasAuditorsTrait;
+	use \App\Models\Traits\hasOne\HasReferralTrait;
 
 	/**
 	 * Global traits used as query builder (global scope).
@@ -110,6 +111,8 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
 	 */	
     public function generateReferralCode($user)
 	{
+		$letters 							= 'abcefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+		
 		if(!is_null($user->referral_code))
         {
         	return $user->referral_code;
@@ -238,5 +241,16 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
 
 		return true;
 	}
+
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
+
+	/**
+	 * find email
+	 * 
+	 * @param email
+	 */	
+	public function scopeEmail($query, $variable)
+	{
+		return $query->where('email', $variable);
+	}
 }

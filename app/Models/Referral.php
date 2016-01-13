@@ -27,6 +27,7 @@ class Referral extends Campaign
 
 	protected $fillable				=	[
 											'user_id'						,
+											'type'							,
 											'code'							,
 											'value'							,
 											'started_at'					,

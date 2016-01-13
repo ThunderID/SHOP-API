@@ -85,4 +85,14 @@ class Campaign extends BaseModel
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
+
+	/**
+	 * find code
+	 * 
+	 * @param code
+	 */	
+	public function scopeCode($query, $variable)
+	{
+		return $query->where('code', $variable);
+	}
 }

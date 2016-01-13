@@ -38,6 +38,7 @@ class QuotaScope implements ScopeInterface
 		{
 			$builder->selectraw('users.*')
 						->selectraw('IFNULL(sum(quota_logs.amount),0) as quota_referral')
+						->selectraw('IF(tmp_vouchers.type="referral", tmp_vouchers.code, "BALIN") as code_referral')
 						->leftjoin('tmp_vouchers', function($join)
 						{
 							$join->on('tmp_vouchers.user_id', '=', 'users.id')
