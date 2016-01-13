@@ -23,6 +23,7 @@ class StorePage extends StoreSetting
 	 * @var array
 	 */
 	protected $fillable				=	[
+											'type'								,
 											'value'								,
 											'started_at'						,
 										];

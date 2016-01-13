@@ -188,7 +188,7 @@ class StoreSettingController extends Controller
         }
 
         //3. save image for slider
-        if(!$errors->count() && $setting_data['type']=='slider')
+        if(!$errors->count() && isset($setting['images']) && is_array($setting['images']) && $setting_data['type']=='slider')
         {
             $image_current_ids         = [];
             foreach ($setting['images'] as $key => $value) 

@@ -17,7 +17,7 @@
 *	
 * Supplier Resources 		: Line 123 - 145
 *	
-* Purhcase Resources 		: Line 151 - 168
+* Purchase Resources 		: Line 151 - 168
 *	
 * Sale Resources 			: Line 173 - 189
 *	
@@ -36,7 +36,7 @@
 * Administrator Resources	: Line 289 - 3016
 */
 
-$app->group(['middleware' => 'oauth|staff','namespace' => 'App\Http\Controllers'], function ($app) 
+$app->group(['middleware' => 'oauth|staff', 'namespace' => 'App\Http\Controllers'], function ($app) 
 {
 	// ------------------------------------------------------------------------------------
 	// PRODUCTS

@@ -30,6 +30,7 @@ class Slider extends StoreSetting
 	 * @var array
 	 */
 	protected $fillable				=	[
+											'type'								,
 											'value'								,
 											'started_at'						,
 											'ended_at'							,
