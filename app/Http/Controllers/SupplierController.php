@@ -134,7 +134,6 @@ class SupplierController extends Controller
         }
         //End of validate supplier
 
-
         if($errors->count())
         {
             DB::rollback();
@@ -144,7 +143,7 @@ class SupplierController extends Controller
 
         DB::commit();
         
-        $final_supplier              = \App\Models\Supplier::id($supplier_data['id'])->with(['category', 'products'])->first()->toArray();
+        $final_supplier              = \App\Models\Supplier::id($supplier_data['id'])->first()->toArray();
 
         return new JSend('success', (array)$final_supplier);
     }
@@ -159,7 +158,12 @@ class SupplierController extends Controller
         //
         $supplier                   = \App\Models\Supplier::id($id)->first();
 
-        $result                     = $supplier;
+        if(!$supplier)
+        {
+            return new JSend('error', (array)Input::all(), 'Supplier tidak ditemukan.');
+        }
+
+        $result                     = $supplier->toArray();
 
         if($supplier->delete())
         {
