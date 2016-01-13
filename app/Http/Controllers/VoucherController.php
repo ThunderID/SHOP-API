@@ -108,8 +108,8 @@ class VoucherController extends Controller
         }
 
         $voucher_rules             =   [
-                                            'user_id'                       => 'required|exists:users,id',
-                                            'code'                          => 'required|max:255|unique:vouchers,upc,'.(!is_null($voucher['id']) ? $voucher['id'] : ''),
+                                            'user_id'                       => 'exists:users,id',
+                                            'code'                          => 'required|max:255|unique:tmp_vouchers,code,'.(!is_null($voucher['id']) ? $voucher['id'] : ''),
                                             'type'                          => 'required|in:debit_point,free_shipping_cost',
                                             'value'                         => 'required|numeric',
                                             'started_at'                    => 'date_format:"Y-m-d H:i:s"',
@@ -138,7 +138,7 @@ class VoucherController extends Controller
         }
 
         //2. Validate Voucher Logs Parameter
-        if(!$errors->count())
+        if(!$errors->count() && isset($voucher['quotalogs']) && is_array($voucher['quotalogs']))
         {
             $log_current_ids         = [];
             foreach ($voucher['quotalogs'] as $key => $value) 
@@ -151,8 +151,8 @@ class VoucherController extends Controller
                     {
                         $log_rules   =   [
                                                 'voucher_id'                    => 'required|numeric|'.($is_new ? '' : 'in:'.$voucher_data['id']),
-                                                'amount'                        => 'required|numeric|in:'.$log_data['amount'],
-                                                'notes'                         => 'required|max:512|in:'.$log_data['notes'],
+                                                'amount'                        => 'required|numeric',
+                                                'notes'                         => 'required|max:512',
                                             ];
 
                         $validator      = Validator::make($log_data['attributes'], $log_rules);
@@ -275,7 +275,12 @@ class VoucherController extends Controller
         //
         $voucher                    = \App\Models\Voucher::id($id)->with(['quotalogs', 'transactions'])->first();
 
-        $result                     = $voucher;
+        if(!$voucher)
+        {
+            return new JSend('error', (array)Input::all(), 'Produk tidak ditemukan.');
+        }
+
+        $result                     = $voucher->toArray();
 
         if($voucher->delete())
         {
