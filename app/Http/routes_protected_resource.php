@@ -36,7 +36,7 @@
 * Administrator Resources	: Line 289 - 3016
 */
 
-$app->group(['middleware' => 'oauth|staff', 'namespace' => 'App\Http\Controllers'], function ($app) 
+$app->group(['middleware' => 'oauth|staff','namespace' => 'App\Http\Controllers'], function ($app) 
 {
 	// ------------------------------------------------------------------------------------
 	// PRODUCTS
@@ -60,7 +60,7 @@ $app->group(['middleware' => 'oauth|staff', 'namespace' => 'App\Http\Controllers
 		]
 	);
 
-	$app->get('/product/delete/{id}',
+	$app->delete('/product/delete/{id}',
 		[
 			'uses'				=> 'ProductController@delete'
 		]

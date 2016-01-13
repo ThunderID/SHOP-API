@@ -195,6 +195,11 @@ class ClusterController extends Controller
             $cluster                = \App\Models\Tag::id($id)->orderby('path', 'asc')->with(['tag', 'products'])->first();
         }
 
+        if(!$cluster)
+        {
+            return new JSend('error', (array)Input::all(), 'Category/Tag tidak ditemukan.');
+        }
+
         $result                     = $cluster;
 
         if($cluster->delete())
