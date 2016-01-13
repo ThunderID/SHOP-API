@@ -58,7 +58,7 @@ class TransactionLogObserver
                         }
                     }
 
-                    if(!$errors->count() && !$model->transaction()->shipment()->address()->count())
+                    if(!$errors->count() && $model->type=='sell' && !$model->transaction->shipment->address()->count())
                     {
                         $errors->add('Log', 'Tidak dapat checkout tanpa alamat pengiriman.');
                     }
@@ -80,19 +80,19 @@ class TransactionLogObserver
                         $errors->add('Log', 'Pembayaran masih kurang sebesar '.$model->transaction->bills.'.');
                     }
 
-                    if(!$model->transaction()->shipment()->count() || is_null($model->transaction->shipment->receipt_number))
+                    if($model->type=='sell' && (!$model->transaction->shipment()->count() || is_null($model->transaction->shipment->receipt_number)))
                     {
                         $errors->add('Log', 'Tidak dapat checkout tanpa resi pengiriman.');
                     }
                 break;
                 case 'canceled' :
-                    if($model->transaction->bills==0)
+                    if($model->transaction->status!='wait')
+                    {
+                        $errors->add('Log', 'Tidak dapat mengabaikan transaksi yang belum di checkout.');
+                    }
+                    elseif($model->transaction->bills==0)
                     {
                         $errors->add('Log', 'Tidak dapat membatalkan transaksi yang sudah dibayar.');
-                    }
-                    elseif($model->transaction->status!='wait')
-                    {
-                        $errors->add('Log', 'Tidak dapat mengabaikan transaksi yang bukan belum di checkout.');
                     }
                 break;
             }

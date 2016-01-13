@@ -52,12 +52,12 @@ class SaleObserver
         $errors                             = new MessageBag();
 
         //1. Generate ref number
-        $model->ref_number                  = $this->generateRefNumber($model);
+        $model->ref_number                  = $model->generateRefNumber($model);
         
         //2. Generate unique number
         if($model->status=='cart' || $model->status=='na')
         {
-            $model->unique_number           = $this->generateUniqueNumber($model);
+            $model->unique_number           = $model->generateUniqueNumber($model);
         }
 
         if($errors->count())
@@ -80,10 +80,12 @@ class SaleObserver
      */
     public function saved($model)
     {
+        $errors                             = new MessageBag();
+        
         //1. credit voucher's quota
         if($model->voucher()->count())
         {
-            $result                         = $this->CreditQuota($model->voucher, 'Penggunaan voucher untuk transaksi #'.$model->ref_number);
+            $result                         = $model->CreditQuota($model->voucher, 'Penggunaan voucher untuk transaksi #'.$model->ref_number);
         
             if(!$result)
             {

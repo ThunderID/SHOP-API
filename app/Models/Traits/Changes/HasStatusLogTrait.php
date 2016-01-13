@@ -2,6 +2,8 @@
 
 namespace App\Models\Traits\Changes;
 
+use App\Models\TransactionLog;
+use Carbon\Carbon;
 /**
  * Function to do change transaction log status
  *
@@ -15,7 +17,7 @@ trait HasStatusLogTrait
      * @param model of transaction, status, notes
      * @return boolean, error message saved to models
      */ 
-    public function ChangeStatus($transaction, $status, $notes) 
+    public function ChangeStatus($transaction, $status, $notes = '') 
     {
         $logs                   = new TransactionLog;
         $params                 =   [

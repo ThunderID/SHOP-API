@@ -2,7 +2,7 @@
 
 namespace App\Models\Traits\Calculations;
 
-User App\Models\StoreSetting;
+Use App\Models\StoreSetting;
 
 /**
  * Function to do calculations for shipping cost
@@ -29,9 +29,13 @@ trait HasShipCostTrait
 
         if(!$default)
         {
-            $default->value                     = 1;
+            $max_item                           = 1;
+        }
+        else
+        {
+            $max_item                           = $default['value'];
         }
 
-        return $cost * ceil($qty/$default->value);
+        return $cost * ceil($qty/$max_item);
     }
 }

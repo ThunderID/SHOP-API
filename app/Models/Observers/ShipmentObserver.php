@@ -3,7 +3,7 @@
 use Illuminate\Support\MessageBag;
 
 use App\Models\ShippingCost;
-use App\Models\Transaction;
+use App\Models\Sale;
 
 /**
  * Used in Shipment model
@@ -27,11 +27,11 @@ class ShipmentObserver
         //1. recalculate shipping_cost
         $shippingcost                       = ShippingCost::courierid($model->courier_id)->postalcode($model->address->zipcode)->first();
 
-        if($shippingcost)
+        if($shippingcost && $model->transaction()->count() && $model->transaction->transactiondetails()->count())
         {
-            $shipping_cost                  = $this->CountShippingCost($model->transaction->transactiondetails, $shippingcost['cost']);
+            $shipping_cost                  = $model->CountShippingCost($model->transaction->transactiondetails, $shippingcost['cost']);
            
-            $transaction                    = Transaction::findorfail($model->transaction_id);
+            $transaction                    = Sale::findorfail($model->transaction_id);
 
             $transaction->fill(['shipping_cost' => $shipping_cost]);
             
@@ -68,9 +68,10 @@ class ShipmentObserver
         $errors                             = new MessageBag();
 
         //1. check receipt_number
-        if(!is_null($model->receipt_number))
+        if(!is_null($model->receipt_number) && $model->transaction()->count())
         {
-            $result                             = $this->ChangeStatus($model->transaction, 'shipping', null);
+            $result                             = $model->ChangeStatus($model->transaction, 'shipping');
+
             if(!$result)
             {
                 return false;

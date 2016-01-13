@@ -58,6 +58,7 @@ class PaymentObserver
         if($model->transaction()->count())
         {
             $result                             = $this->ChangeStatus($model->transaction, 'paid', null);
+            
             if(!$result)
             {
                 return false;
@@ -87,7 +88,7 @@ class PaymentObserver
         $errors                             = new MessageBag();
 
         //1. check relationship with transaction
-        if($model->transaction->count())
+        if($model->transaction()->count())
         {
             $errors->add('Payment', 'Tidak bisa menghapus data payment yang sudah divalidasi.');
         }

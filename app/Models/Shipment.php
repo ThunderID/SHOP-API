@@ -19,6 +19,7 @@ class Shipment extends BaseModel
 	 */
 	use \App\Models\Traits\belongsTo\HasAddressTrait;
 	use \App\Models\Traits\belongsTo\HasCourierTrait;
+	use \App\Models\Traits\belongsTo\HasTransactionTrait;
 	use HasStatusLogTrait;
 
 	/**

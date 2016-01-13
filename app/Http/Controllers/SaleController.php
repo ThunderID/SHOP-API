@@ -121,14 +121,14 @@ class SaleController extends Controller
         //2. Check if status = paid
         if(!$errors->count() && in_array($sale['status'], ['paid']))
         {
-            if(is_null($sale['payment']))
+            if(!isset($sale['payment']) || is_null($sale['payment']))
             {
                 $errors->add('Sale', 'Tidak ada data pembayaran.');
             }
             else
             {
                 $payment_rule   =   [
-                                    'transaction_id'            => 'required|numeric|in:'.$sale_data['id'],
+                                    'transaction_id'            => 'numeric|in:'.$sale_data['id'],
                                     'method'                    => 'required|max:255',
                                     'destination'               => 'required|max:255',
                                     'account_name'              => 'required|max:255',
@@ -142,7 +142,8 @@ class SaleController extends Controller
                 //if there was log and validator false
                 if (!$validator->passes())
                 {
-                    $errors->add('Log', 'Payment tidak valid.');
+                    $errors->add('Log', $validator->errors());
+                    // $errors->add('Log', 'Payment tidak valid.');
                 }
                 else
                 {
@@ -207,10 +208,10 @@ class SaleController extends Controller
                                     'status'                    => 'required|max:255|in:cart,wait,paid,packed,shipping,delivered,canceled,abandoned',
                                 ];
 
-            $validator   = Validator::make($value, $log_rules);
+            $validator   = Validator::make($sale, $log_rules);
 
             //if there was log and validator false
-            if ($log_data && !$validator->passes())
+            if (!$validator->passes())
             {
                 $errors->add('Log', 'Status dari Log Tidak Valid.');
             }
@@ -237,7 +238,7 @@ class SaleController extends Controller
 
         DB::commit();
         
-        $final_sale                 = \App\Models\Sale::id($sale_data['id'])->with(['transactionlogs', 'user', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product'])->first();
+        $final_sale                 = \App\Models\Sale::id($sale_data['id'])->with(['transactionlogs', 'user', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product'])->first()->toArray();
 
         return new JSend('success', (array)$final_sale);
     }
