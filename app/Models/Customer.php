@@ -71,7 +71,12 @@ class Customer extends User
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
-	
+
+	/**
+	 * scope to find activation link of user
+	 *
+	 * @param string of activation_link
+	 */	
 	public function scopeActivationLink($query, $variable)
 	{
 		return 	$query->where('activation_link', $variable);

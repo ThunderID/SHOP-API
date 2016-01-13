@@ -21,7 +21,7 @@ class CurrentStatusScope implements ScopeInterface
 	 */
 	public function apply(Builder $builder, Model $model)
 	{
-		$builder->selectraw('transaction_logs.status as status')
+		$builder->selectraw('IFNULL(transaction_logs.status, "na") as status')
 				->lefttransactionlogstatus(['cart','wait','paid','shipping','delivered','canceled','abandoned'])
 				->groupby('transactions.id')
 				;

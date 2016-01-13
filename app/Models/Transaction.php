@@ -151,4 +151,15 @@ class Transaction extends BaseModel
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
+
+	
+	/**
+	 * scope to find ref number of transaction
+	 *
+	 * @param string of ref_number
+	 */
+	public function scopeRefNumber($query, $variable)
+	{
+		return 	$query->where('ref_number', $variable);
+	}
 }

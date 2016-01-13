@@ -22,7 +22,7 @@ class SaleObserver
 		$errors 							= new MessageBag();
 
 		//1. change status to cart
-        $result                             = $this->ChangeStatus($model, 'cart', null);
+        $result                             = $model->ChangeStatus($model, 'cart');
         if(!$result)
         {
             return false;

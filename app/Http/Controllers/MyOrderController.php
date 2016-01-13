@@ -8,6 +8,8 @@ use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
+use Request;
+
 class MyOrderController extends Controller
 {
     /**
@@ -53,7 +55,7 @@ class MyOrderController extends Controller
             return new JSend('success', (array)$result->toArray());
         }
         
-        return new JSend('error', (array)Input::all(), 'ID Tidak Valid.');
+        return new JSend('error', (array)Input::all(), 'Tidak ada cart.');
     }
 
 
@@ -75,6 +77,8 @@ class MyOrderController extends Controller
 
         DB::beginTransaction();
 
+        $user_id                    = Request::route()[2]['user_id'];
+
         $order                      = Input::get('order');
 
         if(is_null($order['id']))
@@ -87,8 +91,8 @@ class MyOrderController extends Controller
         }
 
         $order_rules             =  [
-        'user_id'                   => 'required|exists:users,id',
-        'voucher_id'                => 'numeric',
+            // 'user_id'                   => 'required|exists:users,id',
+            'voucher_id'                => 'numeric',
         ];
 
         //1a. Get original data
@@ -104,7 +108,7 @@ class MyOrderController extends Controller
         else
         {
             //if validator passed, save order
-            $order_data           = $order_data->fill(['user_id' => $order['user_id'], 'voucher_id' => $order['voucher_id']]);
+            $order_data           = $order_data->fill(['user_id' => $user_id, 'voucher_id' => (isset($order['voucher_id']) ? $order['voucher_id'] : '0')]);
 
             if(!$order_data->save())
             {
