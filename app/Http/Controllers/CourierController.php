@@ -68,7 +68,7 @@ class CourierController extends Controller
      *
      * @return Response
      */
-    public function cost($id = null)
+    public function detail($id = null)
     {
         $result                 = \App\Models\Courier::id($id)->with(['shippingcosts'])->first();
        
@@ -139,7 +139,7 @@ class CourierController extends Controller
         //End of validate courier
 
         //2. Validate Shipping Cost Parameter
-        if(!$errors->count())
+        if(!$errors->count() && isset($courier['shippingcosts']) && is_array($courier['shippingcosts']))
         {
             $cost_current_ids         = [];
             foreach ($courier['shippingcosts'] as $key => $value) 
@@ -152,9 +152,9 @@ class CourierController extends Controller
                     {
                         $cost_rules   =   [
                                                 'courier_id'            => 'required|numeric|'.($is_new ? '' : 'in:'.$courier_data['courier_id']),
-                                                'start_postal_code'     => 'required|max:255|in:'.$cost_data['start_postal_code'],
-                                                'end_postal_code'       => 'required|max:255|in:'.$cost_data['end_postal_code'],
-                                                'started_at'            => 'required|max:255|in:'.$cost_data['started_at'],
+                                                'start_postal_code'     => 'required|max:255',
+                                                'end_postal_code'       => 'required|max:255',
+                                                'started_at'            => 'required|date_format:"Y-m-d H:i:s"',
                                                 'cost'                  => 'required|max:255|in:'.$cost_data['cost'],
                                             ];
 
@@ -165,8 +165,8 @@ class CourierController extends Controller
                         $cost_rules   =   [
                                                 'courier_id'            => 'numeric|'.($is_new ? '' : 'in:'.$courier_data['courier_id']),
                                                 'start_postal_code'     => 'required|max:255|',
-                                                'end_postal_code'       => 'required|numeric|',
-                                                'started_at'            => 'required|numeric|',
+                                                'end_postal_code'       => 'required|max:255',
+                                                'started_at'            => 'required|date_format:"Y-m-d H:i:s"',
                                                 'cost'                  => 'required|numeric|',
                                             ];
 
@@ -276,9 +276,14 @@ class CourierController extends Controller
     public function delete($id = null)
     {
         //
-        $courier                    = \App\Models\Courier::id($id)->first();
+        $courier                    = \App\Models\Courier::id($id)->with(['shippingcosts'])->first();
 
-        $result                     = $courier;
+        if(!$courier)
+        {
+            return new JSend('error', (array)Input::all(), 'Kurir tidak ditemukan.');
+        }
+
+        $result                     = $courier->toArray();
 
         if($courier->delete())
         {

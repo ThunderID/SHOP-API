@@ -17,11 +17,21 @@ class CourierObserver
      */
     public function deleting($model)
     {
-        if($this->courier->shipments()->count() || $this->courier->shippingcosts()->count())
+        if($model->shipments()->count())
         {
             $model['errors']            = 'Tidak dapat menghapus Kurir yang pernah melakukan transaksi.';
 
             return false;
+        }
+        
+        foreach ($model->shippingcosts as $key => $value) 
+        {
+            if(!$value->delete())
+            {
+                $model['errors']            = $value->getError();
+
+                return false;
+            }        
         }
 
         return true;

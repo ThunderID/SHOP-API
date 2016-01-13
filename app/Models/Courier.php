@@ -16,6 +16,7 @@ class Courier extends BaseModel
 	 * Relationship Traits.
 	 *
 	 */
+	use \App\Models\Traits\hasMany\HasShipmentsTrait;
 	use \App\Models\Traits\hasMany\HasShippingCostsTrait;
 
 	/**
