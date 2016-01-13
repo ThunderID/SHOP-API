@@ -14,6 +14,12 @@ use App\Models\Traits\Calculations\HasPaidTrait;
 class TransactionLog extends BaseModel
 {
 	/**
+	 * Relationship Traits.
+	 *
+	 */
+	use \App\Models\Traits\belongsTo\HasTransactionTrait;
+
+	/**
 	 * Global traits used as query builder (global scope).
 	 *
 	 */

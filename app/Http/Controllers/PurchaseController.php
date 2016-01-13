@@ -135,7 +135,7 @@ class PurchaseController extends Controller
         }
 
         //2. Validate Purchase Detail Parameter
-        if(!$errors->count())
+        if(!$errors->count() && isset($purchase['transactiondetails']) && is_array($purchase['transactiondetails']))
         {
             $detail_current_ids         = [];
             foreach ($purchase['transactiondetails'] as $key => $value) 
@@ -252,7 +252,7 @@ class PurchaseController extends Controller
         }
 
         //3. Validate Purchase Status Parameter
-        if(!$errors->count())
+        if(!$errors->count() && isset($purchase['transactionlogs']) && is_array($purchase['transactionlogs']))
         {
             $log_current_ids         = [];
             foreach ($purchase['transactionlogs'] as $key => $value) 
