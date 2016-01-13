@@ -117,7 +117,7 @@ class MyOrderController extends Controller
         }
 
         //2. Validate Order Detail Parameter
-        if(!$errors->count())
+        if(!$errors->count() && isset($order['transactiondetails']) && is_array($order['transactiondetails']))
         {
             $detail_current_ids         = [];
             foreach ($order['transactiondetails'] as $key => $value) 
@@ -301,7 +301,7 @@ class MyOrderController extends Controller
         }
 
         //3. yupdate status
-        if(!$errors->count() && $order_data['status'] != $order['status'])
+        if(!$errors->count() && isset($order_data['status']) && $order_data['status'] != $order['status'])
         {
             $log_data                    = new \App\Models\TransactionLog;
 
@@ -322,7 +322,7 @@ class MyOrderController extends Controller
 
 		DB::commit();
         
-        $final_order                 = \App\Models\Sale::userid($user_id)->id($order_id)->status(['cart', 'wait', 'canceled', 'paid', 'shipping', 'packed', 'delivered'])->with(['orderlogs', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product'])->first();
+        $final_order                 = \App\Models\Sale::userid($user_id)->id($order_data['id'])->status(['cart', 'wait', 'canceled', 'paid', 'shipping', 'packed', 'delivered'])->with(['orderlogs', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product'])->first()->toArray();
 
         return new JSend('success', (array)$final_order);
     }
