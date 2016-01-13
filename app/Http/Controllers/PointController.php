@@ -94,7 +94,7 @@ class PointController extends Controller
         if(!$errors->count())
         {
             $point_rules   =   [
-                                                'user_id'                   => 'required|numeric|'.($is_new ? '' : 'in:'.$point_data['user_id']),
+                                                'user_id'                   => 'required|exists:users,id',
                                                 'amount'                    => 'required|numeric',
                                                 'expired_at'                => 'required|date_format:"Y-m-d H:i:s"',
                                                 'notes'                     => 'required',
@@ -128,7 +128,7 @@ class PointController extends Controller
 
         DB::commit();
         
-        $final_point                 = \App\Models\PointLog::id($point_data['id'])->with(['user'])->first();
+        $final_point                 = \App\Models\PointLog::id($point_data['id'])->with(['user'])->first()->toArray();
 
         return new JSend('success', (array)$final_point);
     }

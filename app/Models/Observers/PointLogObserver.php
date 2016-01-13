@@ -173,7 +173,7 @@ class PointLogObserver
         $errors                         = new MessageBag();
 
         //1. Check if reference were from user
-        if($this->pointlog->reference_type=='App\Models\User')
+        if($model->reference_type=='App\Models\User')
         {
             $gift                       = StoreSetting::type('referral_royalty')->Ondate('now')->first();
 
@@ -185,20 +185,20 @@ class PointLogObserver
             else
             {
                 //give royalti to referral
-                $voucher                = Voucher::userid($this->pointlog->reference_id)->first();
+                $voucher                = Voucher::userid($model->reference_id)->first();
 
                 if($voucher && $voucher['type']=='referral' && $voucher['value']==0)
                 {
                     $referee            = new PointLog;
 
                     $referee->fill([
-                            'user_id'       => $this->pointlog->reference_id,
+                            'user_id'       => $model->reference_id,
                             'amount'        => $gift->value,
-                            'expired_at'    => $this->pointlog->expired_at,
-                            'notes'         => 'Mereferensikan '.$this->pointlog->user->name,
+                            'expired_at'    => $model->expired_at,
+                            'notes'         => 'Mereferensikan '.$model->user->name,
                         ]);
 
-                    $referee->reference()->associate($this->pointlog);
+                    $referee->reference()->associate($model);
 
                     if(!$referee->save())
                     {

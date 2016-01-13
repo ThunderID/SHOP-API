@@ -17,6 +17,7 @@ class PointLog extends BaseModel
 	 *
 	 */
 	use \App\Models\Traits\belongsTo\HasUserTrait;
+	use \App\Models\Traits\morphTo\HasReferenceTrait;
 	
 	/**
 	 * Global traits used as query builder (global scope).
