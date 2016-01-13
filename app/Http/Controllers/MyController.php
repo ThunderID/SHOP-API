@@ -69,7 +69,7 @@ class MyController extends Controller
 
         $customer_rules             =   [
                                             'name'                          => 'required|max:255',
-                                            'email'                         => 'required|max:255|unique:customers,email,'.(!is_null($customer['id']) ? $customer['id'] : ''),
+                                            'email'                         => 'max:255|unique:customers,email,'.(!is_null($customer['id']) ? $customer['id'] : ''),
                                             'password'                      => 'max:255',
                                             'sso_id'                        => '',
                                             'sso_media'                     => 'in:facebook',
@@ -132,7 +132,7 @@ class MyController extends Controller
         DB::beginTransaction();
 
         //1. Check Link
-        $voucher_data              = \App\Models\Voucher::code($code)->ondate('now')->type(['referral', 'promo_referral'])->first();
+        $voucher_data              = \App\Models\Campaign::code($code)->ondate('now')->type(['referral', 'promo_referral'])->first();
 
         if(!$voucher_data)
         {
