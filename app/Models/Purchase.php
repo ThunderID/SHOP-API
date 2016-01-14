@@ -31,6 +31,7 @@ class Purchase extends Transaction
 	 */
 	protected $fillable				=	[
 											'supplier_id'					,
+											'type'							,
 											'ref_number'					,
 											'transact_at'					,
 										];

@@ -27,7 +27,7 @@ class PurchaseObserver
         $model->transact_at  				= Carbon::now()->format('Y-m-d H:i:s');
 
         //2. generate transaction ref_number
-        $model->ref_number                  = $this->generateRefNumber($model);
+        $model->ref_number                  = $model->generateRefNumber($model);
 
 		if($errors->count())
         {
@@ -52,7 +52,7 @@ class PurchaseObserver
 		$errors 							= new MessageBag();
 
 		//1. change status to delivered
-        $result                             = $this->ChangeStatus($model, 'delivered', 'stock');
+        $result                             = $model->ChangeStatus($model, 'delivered', 'stock');
 
         if(!$result)
         {

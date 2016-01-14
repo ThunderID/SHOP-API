@@ -1,6 +1,7 @@
 <?php namespace App\Models\Observers;
 
 use Illuminate\Support\MessageBag;
+use Carbon\Carbon;
 
 /**
  * Used in TransactionLog model
@@ -9,6 +10,23 @@ use Illuminate\Support\MessageBag;
  */
 class TransactionLogObserver 
 {
+    /** 
+     * observe transaction log event creating
+     * 1. modify changed at
+     * 2. act, accept or refuse
+     * 
+     * @param $model
+     * @return bool
+     */
+    public function creating($model)
+    {
+        $errors                         = new MessageBag();
+
+        //1. modify changed at
+        $model->changed_at              = Carbon::now()->format('Y-m-d H:i:s');
+
+        return true;
+    }
     /** 
      * observe transaction log event saving
      * 1. Check if transaction is sale

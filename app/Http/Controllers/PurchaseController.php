@@ -126,7 +126,7 @@ class PurchaseController extends Controller
         else
         {
             //if validator passed, save purchase
-            $purchase_data           = $purchase_data->fill(['supplier_id' => $purchase['supplier_id']]);
+            $purchase_data           = $purchase_data->fill(['supplier_id' => $purchase['supplier_id'], 'type' => 'buy']);
 
             if(!$purchase_data->save())
             {
@@ -148,10 +148,10 @@ class PurchaseController extends Controller
                     {
                         $detail_rules   =   [
                                                 'transaction_id'            => 'required|numeric|'.($is_new ? '' : 'in:'.$purchase_data['id']),
-                                                'varian_id'                 => 'required|max:255|in:'.$detail_data['varian_id'],
-                                                'quantity'                  => 'required|max:255|in:'.$detail_data['quantity'],
-                                                'price'                     => 'required|max:255|in:'.$detail_data['price'],
-                                                'discount'                  => 'required|max:255|in:'.$detail_data['discount'],
+                                                'varian_id'                 => 'required|max:255|exists:varians,id|in:'.$detail_data['varian_id'],
+                                                'quantity'                  => 'required|numeric',
+                                                'price'                     => 'required|numeric',
+                                                'discount'                  => 'numeric',
                                             ];
 
                         $validator      = Validator::make($detail_data['attributes'], $detail_rules);
@@ -160,10 +160,10 @@ class PurchaseController extends Controller
                     {
                         $detail_rules   =   [
                                                 'transaction_id'            => 'numeric|'.($is_new ? '' : 'in:'.$purchase_data['id']),
-                                                'varian_id'                 => 'required|max:255|',
-                                                'quantity'                  => 'required|numeric|',
-                                                'price'                     => 'required|numeric|',
-                                                'discount'                  => 'required|numeric|',
+                                                'varian_id'                 => 'required|max:255|exists:varians,id',
+                                                'quantity'                  => 'required|numeric',
+                                                'price'                     => 'required|numeric',
+                                                'discount'                  => 'numeric|',
                                             ];
 
                         $validator      = Validator::make($value, $detail_rules);
@@ -172,7 +172,7 @@ class PurchaseController extends Controller
                     //if there was detail and validator false
                     if ($detail_data && !$validator->passes())
                     {
-                        if($value['transaction_id']!=$purchase['id'])
+                        if(isset($value['transaction_id']) && $value['transaction_id']!=$purchase['id'])
                         {
                             $errors->add('Detail', 'Produk dari Detail Tidak Valid.');
                         }
@@ -362,6 +362,34 @@ class PurchaseController extends Controller
             }
         }
 
+        //4. Compare status
+        if(isset($purchase['status']) && $purchase_data['status']!=$purchase['status'])
+        {
+            $log_rules   =   [
+                                    'transaction_id'            => 'numeric|'.($is_new ? '' : 'in:'.$purchase_data['id']),
+                                    'status'                    => 'required|max:255|in:cart,wait,paid,packed,shipping,delivered,canceled,abandoned',
+                                ];
+
+            $validator   = Validator::make($purchase, $log_rules);
+
+            //if there was log and validator false
+            if (!$validator->passes())
+            {
+                $errors->add('Log', 'Status Tidak Valid.');
+            }
+            else
+            {
+                $log_data                    = new \App\Models\TransactionLog;
+
+                $log_data                    = $log_data->fill(['status' => $purchase['status'], 'transaction_id' => $purchase_data['id']]);
+
+                if(!$log_data->save())
+                {
+                    $errors->add('Log', $log_data->getError());
+                }
+            }
+        }
+
         if($errors->count())
         {
             DB::rollback();
@@ -371,7 +399,7 @@ class PurchaseController extends Controller
 
         DB::commit();
         
-        $final_purchase                 = \App\Models\Purchase::id($purchase_data['id'])->with(['transactionlogs', 'supplier', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product'])->first();
+        $final_purchase                 = \App\Models\Purchase::id($purchase_data['id'])->with(['transactionlogs', 'supplier', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product'])->first()->toArray();
 
         return new JSend('success', (array)$final_purchase);
     }

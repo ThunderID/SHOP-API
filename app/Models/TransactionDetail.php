@@ -20,6 +20,7 @@ class TransactionDetail extends BaseModel
 	 *
 	 */
 	use \App\Models\Traits\belongsTo\HasVarianTrait;
+	use \App\Models\Traits\belongsTo\HasTransactionTrait;
 
 	/**
 	 * Global traits used as query builder (global scope).
