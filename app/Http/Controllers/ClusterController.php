@@ -65,7 +65,7 @@ class ClusterController extends Controller
             $result                 = $result->take($take);
         }
 
-        $result                     = $result->with(['category'])->get()->toArray();
+        $result                     = $result->get()->toArray();
 
         return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
@@ -153,7 +153,7 @@ class ClusterController extends Controller
         else
         {
             //if validator passed, save cluster
-            $cluster_data           = $cluster_data->fill(['name' => $cluster['name'], 'category_id' => (isset($cluster['category_id']) ? $cluster['category_id'] : 0)]);
+            $cluster_data           = $cluster_data->fill(['name' => $cluster['name'], 'type' => $cluster_data->type, 'category_id' => (isset($cluster['category_id']) ? $cluster['category_id'] : 0)]);
 
             if(!$cluster_data->save())
             {
