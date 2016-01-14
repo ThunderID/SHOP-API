@@ -21,14 +21,19 @@ trait HasNameTrait
 	/**
 	 * scope to get condition where name
 	 *
-	 * @param string name
+	 * @param string or array of products' name
 	 **/
 	public function scopeName($query, $variable)
 	{
-		// if(is_array($variable))
-		// {
-		// 	return 	$query->whereIn($query->getModel()->table.'.name', 'like', $variable);
-		// }
-		return 	$query->where($query->getModel()->table.'.name', 'like', $variable);
+		if(is_array($variable))
+		{
+			foreach ($variable as $key => $value) 
+			{
+				$query = $query->where($query->getModel()->table.'.name', 'like', '%'.$value.'%');
+			}
+
+			return $query;
+		}
+		return 	$query->where($query->getModel()->table.'.name', 'like', '%'.$variable.'%');
 	}
 }
