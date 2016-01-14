@@ -82,8 +82,8 @@ class UIController extends Controller
             }
         }
 
-        $count                      = $result->count();
-
+        $count                      = count($result->get());
+        
         if(Input::has('skip'))
         {
             $skip                   = Input::get('skip');
