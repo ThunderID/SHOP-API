@@ -210,9 +210,32 @@ paths:
 definitions:
   search:
     properties:
+      name:
+        type: string
+        description: 'Search product with precise name'
+      slug:
+        type: string
+        description: 'Search product with precise slug'
+      categories:
+        type: string
+        description: 'Search product with precise categories,value must be slug of category or array of categories` slug'
+      tags:
+        type: string
+        description: 'Search product with precise tags,value must be slug of tag or array of tags` slug'
       labelname:
         type: string
         description: 'Search product that hath certain label'
+  sort:
+    properties:
+      name:
+        type: string
+        description: 'sort by product name, value must be asc or desc'
+      price:
+        type: string
+        description: 'sort by products` current price name, value must be asc or desc'
+      newest:
+        type: string
+        description: 'sort by products` created at, value must be asc or desc'
   products:
     properties:
       count:
