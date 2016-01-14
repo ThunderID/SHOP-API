@@ -65,7 +65,7 @@ class ClusterController extends Controller
             $result                 = $result->take($take);
         }
 
-        $result                     = $result->get()->toArray();
+        $result                     = $result->with(['category'])->get()->toArray();
 
         return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
