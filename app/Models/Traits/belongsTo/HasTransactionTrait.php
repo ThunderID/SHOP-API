@@ -55,4 +55,13 @@ trait HasTransactionTrait
 	{
 		return $query->whereHas('transaction', function($q)use($variable){$q->name($variable);});
 	}
+
+	/**
+	 * call belongsto relationship with sale transaction
+	 *
+	 **/
+	public function Sale()
+	{
+		return $this->belongsTo('App\Models\Sale', 'transaction_id');
+	}
 }

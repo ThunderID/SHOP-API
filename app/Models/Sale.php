@@ -94,14 +94,14 @@ class Sale extends Transaction
 	 */	
     public function generateUniqueNumber($sale)
 	{
-		if(!is_null($sale->unique_number))
+		if(!is_null($sale['unique_number']))
         {
             $i                          = 0;
             $amount                     = true;
 
             while($amount)
             {
-                $prev_number            = Transaction::orderBy('id', 'DESC')->status('wait')->type('sell')->first();
+                $prev_number            = Sale::orderBy('id', 'DESC')->status('wait')->first();
 
                 $limit                  = StoreSetting::type('limit_unique_number')->ondate('now')->first();
 
@@ -114,7 +114,7 @@ class Sale extends Transaction
                     $unique_number      = $i+ 1;
                 }
 
-                $amount                 = Transaction::amount($sale->amount - $unique_number)->status('wait')->notid($sale->id)->first();
+                $amount                 = Sale::amount($sale->amount - $unique_number)->status('wait')->notid($sale->id)->first();
                 $i                      = $i+1;
             }
 
@@ -122,7 +122,7 @@ class Sale extends Transaction
         }
         else
         {
-        	return $sale->unique_number;
+        	return $sale['unique_number'];
         }
     }
 

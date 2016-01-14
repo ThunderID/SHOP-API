@@ -18,6 +18,7 @@ class PointLog extends BaseModel
 	 */
 	use \App\Models\Traits\belongsTo\HasUserTrait;
 	use \App\Models\Traits\morphTo\HasReferenceTrait;
+	use \App\Models\Traits\hasMany\HasPointLogsTrait;
 	
 	/**
 	 * Global traits used as query builder (global scope).
@@ -109,4 +110,31 @@ class PointLog extends BaseModel
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
+
+
+	/**
+	 * scope to find not expired point
+	 *
+	 * @param string or array of expired
+	 */
+	public  function scopeOnActive($query, $variable)
+	{
+		if(!is_array($variable))
+		{
+			return $query->where('expired_at', '>=', date('Y-m-d H:i:s', strtotime($variable)));
+		}
+
+		return $query->where('expired_at', '>=', date('Y-m-d H:i:s', strtotime($variable[0])))->where('expired_at', '<=', date('Y-m-d H:i:s', strtotime($variable[1])));
+	}
+
+
+	/**
+	 * scope to find debit amount for user
+	 *
+	 * @param none
+	 */
+	public  function scopeDebit($query, $variable)
+	{
+		return $query->where('amount', '>', 0);
+	}
 }

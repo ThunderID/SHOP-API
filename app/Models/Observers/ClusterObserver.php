@@ -23,9 +23,9 @@ class ClusterObserver
     public function created($model)
     {
         //1.modify path
-        if($model->category()->count())
+        if($model->cluster()->count())
         {
-            $model->path           = $model->category->path.','.$model->id;
+            $model->path           = $model->cluster->path.','.$model->id;
         }
         else
         {
@@ -56,7 +56,7 @@ class ClusterObserver
         //1.modify slug
         if(isset($model->category_id) && $model->category_id != 0 )
         {
-            $model->slug                = Str::slug($model->category->name.' '.$model->name);
+            $model->slug                = Str::slug($model->cluster->name.' '.$model->name);
         }
         else
         {
@@ -99,9 +99,9 @@ class ClusterObserver
         if(isset($model->getDirty()['category_id']) || !isset($model ->getDirty()['path']))
         {
             //1a. mengganti path
-            if($model->category()->count())
+            if($model->cluster()->count())
             {
-                $model->path = $model->category->path . "," . $model ->id;
+                $model->path = $model->cluster->path . "," . $model ->id;
             }
             else
             {
@@ -138,7 +138,7 @@ class ClusterObserver
 		$errors 						= new MessageBag();
 
         //1. Check varian relationship with transaction
-        if($model->products()->varians()->transactions()->count())
+        if($model->products->varians->transactions()->count())
         {
             $errors->add('varian', 'Tidak dapat menghapus kategori yang berhubungan dengan produk varian yang pernah di stok &/ order.');
         }

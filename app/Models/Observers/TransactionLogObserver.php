@@ -40,7 +40,7 @@ class TransactionLogObserver
 		$errors 						= new MessageBag();
 
 		//A. Check if transaction is sale
-        if($model->transaction()->count() && $model->transaction->type=='sell')
+        if($model->sale()->count())
         {
             /** 
             * Switch scheme
@@ -54,19 +54,19 @@ class TransactionLogObserver
             switch($model->status)
             {
                 case 'abandoned' :
-                    if($model->transaction->status!='cart')
+                    if($model->sale->status!='cart')
                     {
                         $errors->add('Log', 'Tidak dapat mengabaikan transaksi yang bukan di keranjang.');
                     }
                 break;
                 case 'cart' :
-                    if($model->transaction->status!='cart' && $model->transaction->status!='na')
+                    if($model->sale->status!='cart' && $model->sale->status!='na')
                     {
                         $errors->add('Log', 'Tidak dapat mengabaikan transaksi yang sudah checkout.');
                     }
                 break;
                 case 'wait' :
-                    $details                = $model->transaction->transactiondetails;
+                    $details                = $model->sale->transactiondetails;
 
                     foreach ($details as $key => $value) 
                     {
@@ -75,40 +75,39 @@ class TransactionLogObserver
                             $errors->add('Log', 'Stok '.$value['varian']['product']['name'].' ukuran '.$value['varian']['size']. ' tidak mencukupi');
                         }
                     }
-
-                    if(!$errors->count() && $model->type=='sell' && !$model->transaction->shipment->address()->count())
+                    if(!$errors->count() && (!$model->sale->shipment()->count() || !$model->sale->shipment->address()->count()))
                     {
                         $errors->add('Log', 'Tidak dapat checkout tanpa alamat pengiriman.');
                     }
                 break;
                 case 'paid' : case 'packed' :
-                    if(in_array($model->transaction->status, ['cart']))
+                    if(in_array($model->sale->status, ['cart']))
                     {
                         $errors->add('Log', 'Tidak dapat memvalidasi/packing transaksi yang bukan belum di checkout.');
                     }
 
-                    if($model->transaction->bills!=0)
+                    if($model->sale->bills!=0)
                     {
-                        $errors->add('Log', 'Pembayaran masih kurang sebesar '.$model->transaction->bills.'.');
+                        $errors->add('Log', 'Pembayaran masih kurang sebesar '.$model->sale->bills.'.');
                     }
                 break;
                 case 'shipping': case 'delivered' :
-                    if($model->transaction->bills!=0)
+                    if($model->sale->bills!=0)
                     {
-                        $errors->add('Log', 'Pembayaran masih kurang sebesar '.$model->transaction->bills.'.');
+                        $errors->add('Log', 'Pembayaran masih kurang sebesar '.$model->sale->bills.'.');
                     }
 
-                    if($model->type=='sell' && (!$model->transaction->shipment()->count() || is_null($model->transaction->shipment->receipt_number)))
+                    if($model->type=='sell' && (!$model->sale->shipment()->count() || is_null($model->sale->shipment->receipt_number)))
                     {
                         $errors->add('Log', 'Tidak dapat checkout tanpa resi pengiriman.');
                     }
                 break;
                 case 'canceled' :
-                    if($model->transaction->status!='wait')
+                    if($model->sale->status!='wait')
                     {
                         $errors->add('Log', 'Tidak dapat mengabaikan transaksi yang belum di checkout.');
                     }
-                    elseif($model->transaction->bills==0)
+                    elseif($model->sale->bills==0)
                     {
                         $errors->add('Log', 'Tidak dapat membatalkan transaksi yang sudah dibayar.');
                     }
@@ -155,37 +154,40 @@ class TransactionLogObserver
                 case 'cart' :
                 break;
                 case 'wait' :
-                    $result                     = $this->CreditPoint($model->transaction);
+                    $result                     = $model->CreditPoint($model->sale);
 
-                    if($model->transaction->bills==0)
+                    if(!$result)
                     {
-                        $result                 = $this->ChangeStatus($model->transaction, 'paid');
+                        return false;
+                    }
 
-                        if(!$result)
-                        {
-                            return false;
-                        }
+                    if($model->sale->bills==0)
+                    {
+                        $result                 = $model->ChangeStatus($model->sale, 'paid');
                     }
                 break;
                 case 'paid' :
-                    $result                     = $this->AddQuotaForUpline($model->transaction);
-                    if($result->getStatus()=='success')
+                    $result                     = $model->AddQuotaForUpline($model->sale);
+
+                    if(!$result)
                     {
-                        $result                 = $this->AddPointForUpline($model->transaction);
+                        return false;
                     }
+
+                    $result                 = $model->AddPointForUpline($model->sale);
                 break;
                 case 'shipping' :
                 break;
                 case 'delivered' :
                 break;
                 case 'canceled' :
-                    $result                     = $this->RevertPoint($model->transaction);
+                    $result                     = $model->RevertPoint($model->sale);
                 break;
             }
 
-            if(isset($result) && $result->getStatus()=='error')
+            if(isset($result) && !$result)
             {
-                $errors->add('Log', $result->getErrorMessage());
+                return false;
             }
         }
 

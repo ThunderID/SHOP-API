@@ -1,6 +1,7 @@
 <?php namespace App\Models\Observers;
 
 use Illuminate\Support\MessageBag;
+use Carbon\Carbon;
 
 /**
  * Used in Sale model
@@ -42,7 +43,9 @@ class SaleObserver
      * observe sale event saving
      * 1. generate ref number
      * 2. generate unique number
-     * 3. execute it there was no error
+     * 3. create transact_at
+     * 4. check voucher
+     * 5. execute it there was no error
      * 
      * @param $model
      * @return bool
@@ -58,6 +61,31 @@ class SaleObserver
         if($model->status=='cart' || $model->status=='na')
         {
             $model->unique_number           = $model->generateUniqueNumber($model);
+        }
+
+        //3. create transact_at
+        if($model->status=='wait')
+        {
+            $model->transact_at             = Carbon::now()->format('Y-m-d H:i:s');
+        }
+
+        //4. check voucher
+        if($model->voucher_id != 0 && (!$model->voucher()->count() || $model->voucher->type=='promo_referral'))
+        {
+            $errors->add('Voucher', 'Voucher tidak valid.');
+        }
+        elseif($model->voucher()->count())
+        {
+            $result                         = $model->CountVoucherDiscount($model);
+
+            if(!$result)
+            {
+                return false;
+            }
+            else
+            {
+                $model->voucher_discount    = $result;
+            }
         }
 
         if($errors->count())

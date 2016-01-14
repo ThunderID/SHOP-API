@@ -4,6 +4,7 @@ namespace App\Models\Traits\Calculations;
 
 use App\Models\PointLog;
 use App\Models\StoreSetting;
+use App\Models\QuotaLog;
 
 /**
  * Function to do calculations for payment
@@ -91,7 +92,7 @@ trait HasPaidTrait
 
         if($upline && $upline->reference()->count())
         {
-            $whoisupline                    = $upline->reference->voucher->value;
+            $whoisupline                    = $upline->reference->referral->value;
         }
 
         if($upline && $quota && $whoisupline == 0)

@@ -130,10 +130,10 @@ class MyOrderController extends Controller
                     {
                         $detail_rules   =   [
                         'transaction_id'            => 'required|numeric|'.($is_new ? '' : 'in:'.$order_data['id']),
-                        'varian_id'                 => 'required|max:255|in:'.$detail_data['varian_id'],
-                        'quantity'                  => 'required|max:255|in:'.$detail_data['quantity'],
-                        'price'                     => 'required|max:255|in:'.$detail_data['price'],
-                        'discount'                  => 'required|max:255|in:'.$detail_data['discount'],
+                        'varian_id'                 => 'required|max:255|exists:varians,id',
+                        'quantity'                  => 'required|numeric',
+                        'price'                     => 'required|numeric',
+                        'discount'                  => 'numeric',
                         ];
 
                         $validator      = Validator::make($detail_data['attributes'], $detail_rules);
@@ -142,10 +142,10 @@ class MyOrderController extends Controller
                     {
                         $detail_rules   =   [
                         'transaction_id'            => 'numeric|'.($is_new ? '' : 'in:'.$order_data['id']),
-                        'varian_id'                 => 'required|max:255|',
-                        'quantity'                  => 'required|numeric|',
-                        'price'                     => 'required|numeric|',
-                        'discount'                  => 'required|numeric|',
+                        'varian_id'                 => 'required|max:255|exists:varians,id',
+                        'quantity'                  => 'required|numeric',
+                        'price'                     => 'required|numeric',
+                        'discount'                  => 'numeric',
                         ];
 
                         $validator      = Validator::make($value, $detail_rules);
@@ -156,11 +156,11 @@ class MyOrderController extends Controller
                     {
                         if($value['transaction_id']!=$order['id'])
                         {
-                            $errors->add('Detail', 'Produk dari Detail Tidak Valid.');
+                            $errors->add('Detail', 'Produk di keranjang Tidak Valid.');
                         }
                         elseif($is_new)
                         {
-                            $errors->add('Detail', 'Produk Detail Tidak Valid.');
+                            $errors->add('Detail', 'Produk di keranjang Tidak Valid.');
                         }
                         else
                         {
@@ -239,9 +239,9 @@ class MyOrderController extends Controller
             $address_data        = \App\Models\Address::findornew($order['shipment']['address']['id']);
 
             $address_rules      =   [
-            'phone'                         => 'required|numeric',
+            'phone'                         => 'required|max:255',
             'address'                       => 'required',
-            'zipcode'                       => 'required|numeric',
+            'zipcode'                       => 'required|max:255',
             ];
 
             $validator          = Validator::make($order['shipment']['address'], $address_rules);
@@ -255,7 +255,7 @@ class MyOrderController extends Controller
             else
             {
                 //if validator passed, save address
-                $order['shipment']['address']['owner_id']          = $order['user_id'];
+                $order['shipment']['address']['owner_id']          = $user_id;
                 $order['shipment']['address']['owner_type']        = 'App\Models\Customer';
 
                 $address_data       = $address_data->fill($order['shipment']['address']);
@@ -301,11 +301,11 @@ class MyOrderController extends Controller
         }
 
         //3. yupdate status
-        if(!$errors->count() && isset($order_data['status']) && $order_data['status'] != $order['status'])
+        if(!$errors->count() && isset($order['status']) && $order_data['status'] != $order['status'])
         {
             $log_data                    = new \App\Models\TransactionLog;
 
-            $log_data                    = $log_data->fill(['status' => $order_data['status'], 'transaction_id' => $order_data['id']]);
+            $log_data                    = $log_data->fill(['status' => $order['status'], 'transaction_id' => $order_data['id']]);
 
             if(!$log_data->save())
             {
