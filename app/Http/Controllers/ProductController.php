@@ -26,7 +26,6 @@ class ProductController extends Controller
     {
         $result                     = new \App\Models\Product;
 
-
         if(Input::has('search'))
         {
             $search                 = Input::get('search');
@@ -56,8 +55,6 @@ class ProductController extends Controller
                 }
             }
         }
-
-        $result                     = $result->sellable(true);
 
         if(Input::has('sort'))
         {
@@ -165,14 +162,17 @@ class ProductController extends Controller
             $is_new                 = false;
         }
 
-        $product['description']     = json_decode($product['description'], true);
+        if(isset($product['description']))
+        {
+            $product['description'] = json_decode($product['description'], true);
+        }
 
         $product_rules              =   [
                                             'name'                      => 'required|max:255',
                                             'upc'                       => 'required|max:255|unique:products,upc,'.(!is_null($product['id']) ? $product['id'] : ''),
                                             'slug'                      => 'max:255|unique:products,slug,'.(!is_null($product['id']) ? $product['id'] : ''),
-                                            'description.description'   => 'required|max:512',
-                                            'description.fit'           => 'required|max:512',
+                                            'description.description'   => 'max:512',
+                                            'description.fit'           => 'max:512',
                                         ];
 
         //1b. Validate Basic Product Parameter
@@ -185,7 +185,14 @@ class ProductController extends Controller
         else
         {
             //if validator passed, save product
-            $product['description'] = json_encode($product['description']);
+            if(isset($product['description']))
+            {
+                $product['description'] = json_encode($product['description']);
+            }
+            else
+            {
+                $product['description'] = json_encode(['description' => '', 'fit' => '']);
+            }
 
             $product_data           = $product_data->fill($product);
 
@@ -230,7 +237,7 @@ class ProductController extends Controller
                     //if there was varian and validator false
                     if ($varian_data && !$validator->passes())
                     {
-                        if($value['product_id']!=$product['id'])
+                        if(isset($value['product_id']) && $value['product_id']!=$product['id'])
                         {
                             $errors->add('Varian', 'Produk dari Varian Tidak Valid.');
                         }
@@ -347,7 +354,7 @@ class ProductController extends Controller
                     //if there was price and validator false
                     if ($price_data && !$validator->passes())
                     {
-                        if($value['product_id']!=$product['id'])
+                        if(isset($value['product_id']) && $value['product_id']!=$product['id'])
                         {
                             $errors->add('Price', 'Produk dari Price Tidak Valid.');
                         }
@@ -442,11 +449,21 @@ class ProductController extends Controller
                 }
                 else
                 {
-                    $errors->add('Category', 'Kategori tidak valid.');
+                    $category_data              = new \App\Models\Category;
+                    $category_data              = $category_data->fill(['name' => $value['name']]);
+
+                    if(!$category_data->save())
+                    {
+                        $errors->add('Category', $category_data->getError());
+                    }
+                    else
+                    {
+                        $category_current_ids[]     = $category_data['id'];
+                    }
                 }
             }
 
-            if($errors->count())
+            if(!$errors->count())
             {
                 if(!$product_data->categories()->sync($category_current_ids))
                 {
@@ -471,7 +488,17 @@ class ProductController extends Controller
                 }
                 else
                 {
-                    $errors->add('Tag', 'Tag tidak valid.');
+                    $tag_data               = new \App\Models\Tag;
+                    $tag_data               = $tag_data->fill(['name' => $value['name']]);
+
+                    if(!$tag_data->save())
+                    {
+                        $errors->add('Tag', $tag_data->getError());
+                    }
+                    else
+                    {
+                        $tag_current_ids[]  = $tag_data['id'];
+                    }
                 }
             }
 
@@ -523,13 +550,13 @@ class ProductController extends Controller
                     //if there was label and validator false
                     if ($label_data && !$validator->passes())
                     {
-                        if($value['product_id']!=$product['id'])
+                        if(isset($value['product_id']) && $value['product_id']!=$product['id'])
                         {
-                            $errors->add('ProductLabel', 'Produk dari ProductLabel Tidak Valid.');
+                            $errors->add('ProductLabel', 'Label dari Produk Tidak Valid.');
                         }
                         elseif($is_new)
                         {
-                            $errors->add('ProductLabel', 'Produk ProductLabel Tidak Valid.');
+                            $errors->add('ProductLabel', 'Label dari Produk Tidak Valid.');
                         }
                         else
                         {
@@ -616,12 +643,12 @@ class ProductController extends Controller
                     {
                         $image_rules   =   [
                                                 'imageable_id'              => 'required|numeric|'.($is_new ? '' : 'in:'.$product_data['id']),
-                                                'imageable_type'            => 'required|max:255|in:'.$image_data['imageable_type'],
-                                                'thumbnail'                 => 'required|max:255|in:'.$image_data['thumbnail'],
-                                                'image_xs'                  => 'required|max:255|in:'.$image_data['image_xs'],
-                                                'image_sm'                  => 'required|max:255|in:'.$image_data['image_sm'],
-                                                'image_md'                  => 'required|max:255|in:'.$image_data['image_md'],
-                                                'image_lg'                  => 'required|max:255|in:'.$image_data['image_lg'],
+                                                'imageable_type'            => 'required|max:255',
+                                                'thumbnail'                 => 'required|max:255',
+                                                'image_xs'                  => 'required|max:255',
+                                                'image_sm'                  => 'required|max:255',
+                                                'image_md'                  => 'required|max:255',
+                                                'image_lg'                  => 'required|max:255',
                                                 'is_default'                => 'boolean|in:'.$image_data['is_default'],
                                             ];
 
@@ -645,7 +672,7 @@ class ProductController extends Controller
                     //if there was image and validator false
                     if ($image_data && !$validator->passes())
                     {
-                        if($value['imageable_id']!=$product['id'])
+                        if(isset($value['imageable_id']) && $value['imageable_id']!=$product['id'])
                         {
                             $errors->add('Image', 'Produk dari Image Tidak Valid.');
                         }
