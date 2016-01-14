@@ -86,7 +86,7 @@ class TransactionDetail extends BaseModel
 	protected $rules				=	[
 											'quantity'						=> 'required|numeric',
 											'price'							=> 'required|numeric',
-											'discount'						=> 'required|numeric',
+											'discount'						=> 'numeric',
 										];
 	
 	/* ---------------------------------------------------------------------------- RELATIONSHIP ----------------------------------------------------------------------------*/
