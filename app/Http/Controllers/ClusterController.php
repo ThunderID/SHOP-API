@@ -153,7 +153,7 @@ class ClusterController extends Controller
         else
         {
             //if validator passed, save cluster
-            $cluster_data           = $cluster_data->fill(['name' => $cluster['name'], ['category_id' => (isset($cluster['category_id']) ? $cluster['category_id'] : 0)]);
+            $cluster_data           = $cluster_data->fill(['name' => $cluster['name'], 'category_id' => (isset($cluster['category_id']) ? $cluster['category_id'] : 0)]);
 
             if(!$cluster_data->save())
             {
