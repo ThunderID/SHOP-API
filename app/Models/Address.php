@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use App\Models\Observers\AddressObserver;
+use App\Models\Observers\AddressObserver;
 
 /**
  * Used for Address Models
@@ -11,6 +11,12 @@ namespace App\Models;
  */
 class Address extends BaseModel
 {
+	/**
+	 * Relationship Traits.
+	 *
+	 */
+	use \App\Models\Traits\hasMany\HasShipmentsTrait;
+
 	/**
 	 * The database table used by the model.
 	 *
@@ -87,7 +93,7 @@ class Address extends BaseModel
 	{
         parent::boot();
  
-        // Address::observe(new AddressObserver());
+        Address::observe(new AddressObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/

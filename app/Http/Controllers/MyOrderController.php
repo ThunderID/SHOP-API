@@ -31,7 +31,7 @@ class MyOrderController extends Controller
      */
     public function detail($user_id = null, $order_id = null)
     {
-        $result                 = \App\Models\Sale::userid($user_id)->id($order_id)->status(['wait', 'canceled', 'paid', 'shipping', 'packed', 'delivered'])->with(['orderlogs', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'shipment', 'shipment.address'])->first();
+        $result                 = \App\Models\Sale::userid($user_id)->id($order_id)->status(['wait', 'canceled', 'paid', 'shipping', 'packed', 'delivered'])->with(['orderlogs', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'shipment', 'shipment.courier', 'shipment.address'])->first();
 
         if($result)
         {
@@ -269,11 +269,18 @@ class MyOrderController extends Controller
             //2b. save shipment
             if(!$errors->count())
             {
-                $shipment_data      = \App\Models\Shipment::findornew($order['shipment']['id']);
+                if($order_data->shipment->count())
+                {
+                    $shipment_data      = \App\Models\Shipment::findorfail($order_data->shipment->id);
+                }
+                else
+                {
+                    $shipment_data      = \App\Models\Shipment::findornew($order['shipment']['id']);
+                }
 
                 $shipment_rules     =   [
-                'courier_id'                        => 'required|numeric',
-                'receiver_name'                     => 'required|max:255',
+                    'courier_id'                        => 'required|numeric|exists:couriers,id',
+                    'receiver_name'                     => 'required|max:255',
                 ];
 
                 $validator          = Validator::make($order['shipment'], $shipment_rules);
@@ -300,7 +307,7 @@ class MyOrderController extends Controller
             }
         }
 
-        //3. yupdate status
+        //3. update status
         if(!$errors->count() && isset($order['status']) && $order_data['status'] != $order['status'])
         {
             $log_data                    = new \App\Models\TransactionLog;
@@ -322,7 +329,7 @@ class MyOrderController extends Controller
 
 		DB::commit();
         
-        $final_order                 = \App\Models\Sale::userid($user_id)->id($order_data['id'])->status(['cart', 'wait', 'canceled', 'paid', 'shipping', 'packed', 'delivered'])->with(['orderlogs', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product'])->first()->toArray();
+        $final_order                 = \App\Models\Sale::userid($user_id)->id($order_data['id'])->status(['cart', 'wait', 'canceled', 'paid', 'shipping', 'packed', 'delivered'])->with(['orderlogs', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'shipment', 'shipment.courier', 'shipment.address'])->first()->toArray();
 
         return new JSend('success', (array)$final_order);
     }

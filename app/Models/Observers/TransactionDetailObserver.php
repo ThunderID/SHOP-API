@@ -22,7 +22,7 @@ class TransactionDetailObserver
         $errors                             = new MessageBag();
 
         //1. check transactions tatus
-        if($model->transaction()->count() && $model->transaction->status!='cart' && $model->transaction->type=='sell')
+        if($model->sale()->count() && $model->sale->status!='cart')
         {
             $errors->add('Log', 'Tidak dapat menambahkan item baru. Silahkan membuat nota baru.');
         }

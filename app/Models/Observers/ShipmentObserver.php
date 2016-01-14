@@ -14,8 +14,9 @@ class ShipmentObserver
 {
     /** 
      * observe payment event saving
-     * 1. recalculate shipping_cost
-     * 2. act, accept or refuse
+     * 1. check haven't been paid
+     * 2. recalculate shipping_cost
+     * 3. act, accept or refuse
      * 
      * @param $model
      * @return bool
@@ -24,7 +25,13 @@ class ShipmentObserver
     {
         $errors                             = new MessageBag();
 
-        //1. recalculate shipping_cost
+        //1. check haven't been paid
+        if($model->sale()->count() && !in_array($model->sale->status, ['na', 'cart', 'wait']))
+        {
+            $errors->add('Shipment', 'Tidak dapat mengubah destinasi pengiriman.');
+        }
+
+        //2. recalculate shipping_cost
         $shippingcost                       = ShippingCost::courierid($model->courier_id)->postalcode($model->address->zipcode)->first();
 
         if($shippingcost && $model->transaction()->count() && $model->transaction->transactiondetails()->count())
