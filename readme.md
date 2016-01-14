@@ -10,7 +10,7 @@ Berupa file editor swagger pada folder {root}/Documentations/API/*.json
 Berupa file json inside swagger pada folder {root}/Documentations/swagger/v1/*.json (Please use CORS to this folder)
 
 ###### Dokumentasi Class
-Berupa dokumentasi pgp docs pada folder {root}/Models/index.html
+Berupa dokumentasi php docs pada folder {root}/Models/index.html
 
 ## Security Vulnerabilities
 

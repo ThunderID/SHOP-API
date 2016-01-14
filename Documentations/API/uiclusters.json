@@ -66,7 +66,7 @@ definitions:
     properties:
       name:
         type: string
-        description: 'Search Cluster that hath certain name'
+        description: 'Search Cluster that hath likely name'
   clusters:
     properties:
       count:
