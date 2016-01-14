@@ -37,6 +37,26 @@ trait HasClustersTrait
 	}
 
 	/**
+	 * check if model has category in certain slug
+	 *
+	 * @var array or singular slug
+	 **/
+	public function scopeCategoriesSlug($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			foreach ($variable as $key => $value) 
+			{
+				$query = $query->whereHas('categories', function($q)use($value){$q->slug($value);});
+			}
+
+			return $query;
+		}
+
+		return $query->whereHas('categories', function($q)use($variable){$q->slug($variable);});
+	}
+
+	/**
 	 * call belongsto many relationship tag's type
 	 *
 	 **/
@@ -53,5 +73,25 @@ trait HasClustersTrait
 	public function scopeTagsID($query, $variable)
 	{
 		return $query->whereHas('tags', function($q)use($variable){$q->id($variable);});
+	}
+
+	/**
+	 * check if model has tag in certain slug
+	 *
+	 * @var array or singular slug
+	 **/
+	public function scopeTagsSlug($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			foreach ($variable as $key => $value) 
+			{
+				$query = $query->whereHas('tags', function($q)use($value){$q->slug($value);});
+			}
+
+			return $query;
+		}
+
+		return $query->whereHas('tags', function($q)use($variable){$q->slug($variable);});
 	}
 }

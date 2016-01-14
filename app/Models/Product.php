@@ -6,6 +6,9 @@ use App\Models\Traits\HasCurrentPriceTrait;
 use App\Models\Traits\HasCurrentStockTrait;
 use App\Models\Traits\HasDefaultImageTrait;
 
+use App\Models\Traits\HasSlugTrait;
+use App\Models\Traits\HasNameTrait;
+
 use App\Models\Traits\HasStockTrait;
 use App\Models\Traits\HasSellableTrait;
 use App\Models\Traits\HasTransactionStatusTrait;
@@ -45,6 +48,8 @@ class Product extends BaseModel
 	use HasStockTrait;
 	use HasSellableTrait;
 	use HasTransactionStatusTrait;
+	use HasSlugTrait;
+	use HasNameTrait;
 
 	/**
 	 * The database table used by the model.

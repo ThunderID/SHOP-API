@@ -32,10 +32,18 @@ class UIController extends Controller
             {
                 switch (strtolower($key)) 
                 {
-                    case 'labelname':
-                        $result     = $result->labelsname($value);
+                    case 'name':
+                        $result     = $result->name($value);
                         break;
-                    
+                    case 'slug':
+                        $result     = $result->slug($value);
+                        break;
+                    case 'categories':
+                        $result     = $result->categoriesslug($value);
+                        break;
+                    case 'tags':
+                        $result     = $result->tagsslug($value);
+                        break;
                     default:
                         # code...
                         break;
@@ -44,6 +52,35 @@ class UIController extends Controller
         }
 
         $result                     = $result->sellable(true);
+
+        if(Input::has('sort'))
+        {
+            $sort                 = Input::get('sort');
+
+            foreach ($sort as $key => $value) 
+            {
+                if(!in_array($value, ['asc', 'desc']))
+                {
+                    return new JSend('error', (array)Input::all(), $key.' harus bernilai asc atau desc.');
+                }
+                switch (strtolower($key)) 
+                {
+                    case 'name':
+                        $result     = $result->orderby($value, $key);
+                        break;
+                    case 'price':
+                        $result     = $result->orderby($value, $key);
+                        break;
+                    case 'newest':
+                        $result     = $result->orderby('created_at', $key);
+                        break;
+                    
+                    default:
+                        # code...
+                        break;
+                }
+            }
+        }
 
         $count                      = $result->count();
 

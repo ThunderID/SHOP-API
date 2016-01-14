@@ -32,6 +32,13 @@ paths:
           type: array
           items:
             type: string
+        - name: sort
+          in: query
+          description: sort parameter (look down).
+          required: false
+          type: array
+          items:
+            type: string
         - name: skip
           in: query
           description: How many records are going to be skipped
@@ -60,61 +67,82 @@ paths:
 definitions:
   search:
     properties:
-      labelname:
+      name:
         type: string
-        description: 'Search product that hath certain label'
+        description: 'Search product with precise name'
+      slug:
+        type: string
+        description: 'Search product with precise slug'
+      categories:
+        type: string
+        description: 'Search product with precise categories,value must be slug of category or array of categories` slug'
+      tags:
+        type: string
+        description: 'Search product with precise tags,value must be slug of tag or array of tags` slug'
+  sort:
+    properties:
+      name:
+        type: string
+        description: 'sort by product name, value must be asc or desc'
+      price:
+        type: string
+        description: 'sort by products` current price name, value must be asc or desc'
+      newest:
+        type: string
+        description: 'sort by products` created at, value must be asc or desc'
   products:
     properties:
       count:
         type: number
         description: 'Total products.'
       data:
-        id:
-          type: number
-        name:
-          type: string
-        upc:
-          type: string
-        slug:
-          type: string
-        description:
-          type: string
-        current_stock:
-          type: number
-        on_hold_stock:
-          type: number
-        inventory_stock:
-          type: number
-        reserved_stock:
-          type: number
-        packed_stock:
-          type: number
-        price:
-          type: number
-        promo_price:
-          type: number
-        thumbnail:
-          type: string
-        image_xs:
-          type: string
-        image_sm:
-          type: string
-        image_md:
-          type: string
-        image_lg:
-          type: string
-        varians:
-          type: array
-          items:
-            $ref: '#/definitions/varians'
-        labels:
-          type: array
-          items:
-            $ref: '#/definitions/labels'
-        images:
-          type: array
-          items:
-            $ref: '#/definitions/images'
+        properties:
+          id:
+            type: number
+          name:
+            type: string
+          upc:
+            type: string
+          slug:
+            type: string
+          description:
+            type: string
+          current_stock:
+            type: number
+          on_hold_stock:
+            type: number
+          inventory_stock:
+            type: number
+          reserved_stock:
+            type: number
+          packed_stock:
+            type: number
+          price:
+            type: number
+          promo_price:
+            type: number
+          thumbnail:
+            type: string
+          image_xs:
+            type: string
+          image_sm:
+            type: string
+          image_md:
+            type: string
+          image_lg:
+            type: string
+          varians:
+            type: array
+            items:
+              $ref: '#/definitions/varians'
+          labels:
+            type: array
+            items:
+              $ref: '#/definitions/labels'
+          images:
+            type: array
+            items:
+              $ref: '#/definitions/images'
   varians:
     properties:
       id:
