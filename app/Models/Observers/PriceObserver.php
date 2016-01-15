@@ -14,7 +14,7 @@ use App\Events\AuditStore;
 class PriceObserver 
 {
     /** 
-     * observe Price event saving
+     * observe Price event saved
      * 1. Audit
      * 2. act, accept or refuse
      * 

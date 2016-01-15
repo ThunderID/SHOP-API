@@ -5,6 +5,7 @@ use Illuminate\Support\MessageBag;
 use App\Models\PointLog;
 use App\Models\StoreSetting;
 use App\Models\Voucher;
+use App\Events\AuditStore;
 
 /**
  * Used in PointLog model
@@ -13,6 +14,34 @@ use App\Models\Voucher;
  */
 class PointLogObserver 
 {
+    /** 
+     * observe Point Log event created
+     * 1. Audit
+     * 2. act, accept or refuse
+     * 
+     * @param $model
+     * @return bool
+     */
+    public function created($model)
+    {
+        $errors                             = new MessageBag();
+
+        //1. audit
+        if($model->user()->count())
+        {
+            event(new AuditStore($model, 'point_added', 'Penambahan point user '.$model->user->name));
+        }
+
+        if($errors->count())
+        {
+            $model['errors']                = $errors;
+
+            return false;
+        }
+
+        return true;
+    }
+
     /** 
      * observe point log event saving
      * 1. Check if reference were from user

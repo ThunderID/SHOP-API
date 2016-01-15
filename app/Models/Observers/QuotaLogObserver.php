@@ -14,7 +14,7 @@ use App\Events\AuditStore;
 class QuotaLogObserver 
 {
     /** 
-     * observe QuotaLog event saving
+     * observe QuotaLog event created
      * 1. Audit
      * 2. act, accept or refuse
      * 
