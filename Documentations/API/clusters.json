@@ -154,7 +154,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /cluster/delete/type/id/:
+  /cluster/type/delete/id/:
     delete:
       summary: Delete a Cluster
       description: 'Get Cluster detail information.'

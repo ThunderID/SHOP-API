@@ -138,9 +138,9 @@ class ClusterObserver
 		$errors 						= new MessageBag();
 
         //1. Check varian relationship with transaction
-        if($model->products->varians->transactions()->count())
+        if($model->products->count())
         {
-            $errors->add('varian', 'Tidak dapat menghapus kategori yang berhubungan dengan produk varian yang pernah di stok &/ order.');
+            $errors->add('varian', 'Tidak dapat menghapus data yang berhubungan dengan produk varian yang pernah di stok &/ order.');
         }
 
         if($errors->count())
