@@ -114,6 +114,22 @@ class TransactionDetail extends BaseModel
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
 
 	/**
+	 * scope to get selled product
+	 *
+	 * @return stock in, stock out, varian_id, transact_at
+	 */	
+	public function scopeSoldItem($query, $variable)
+	{
+		return 	$query
+					->selectraw('transaction_details.varian_id')
+					->selectraw('sum(if(transactions.type = "sell", quantity, 0)) as sold_item')
+					->TransactionStockOn(['paid', 'packed', 'shipping', 'delivered'])
+					->groupby('transaction_details.varian_id')
+					;
+		;
+	}
+
+	/**
 	 * scope to check stock movement of varian on certain time
 	 *
 	 * @return stock in, stock out, varian_id, transact_at
@@ -125,7 +141,7 @@ class TransactionDetail extends BaseModel
 					->selectraw('transactions.transact_at')
 					->selectraw('sum(if(transactions.type = "buy", quantity, 0)) as stock_in')
 					->selectraw('sum(if(transactions.type = "sell", quantity, 0)) as stock_out')
-					->TransactionStockOn(['wait', 'paid', 'packed', 'shipping', 'delivered'])
+					->TransactionStockOn(['paid', 'packed', 'shipping', 'delivered'])
 					->groupby('transactions.id')
 					->orderByRaw(DB::raw('varian_id asc, transactions.transact_at asc'))
 					;

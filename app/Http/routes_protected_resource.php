@@ -9,31 +9,35 @@
 *
 * STAFF AREA
 *
-* Product Resources 		: Line 40 - 67 
+* Product Resources 		: Line 49 - 71 
 *	
-* Product Warehouse Data 	: Line 73 - 89
+* Product Warehouse Data 	: Line 77 - 93
 *	
-* Cluster Resources 		: Line 94 - 117
+* Cluster Resources 		: Line 99 - 121
 *	
-* Supplier Resources 		: Line 123 - 145
+* Supplier Resources 		: Line 127 - 149
 *	
-* Purchase Resources 		: Line 151 - 168
+* Purchase Resources 		: Line 155 - 171
 *	
-* Sale Resources 			: Line 173 - 189
+* Sale Resources 			: Line 177 - 193
 *	
-* Courier Resources 		: Line 195 - 218
+* Courier Resources 		: Line 199 - 221
 *	
 * MANAGER AREA
 *	
-* Voucher Resources 		: Line 226 - 242
+* Voucher Resources 		: Line 230 - 250
 *	
-* Point Resources 			: Line 248 - 258
+* Point Resources 			: Line 257 - 267
 *	
-* Setting Resources 		: Line 264 - 280
+* Setting Resources 		: Line 273 - 289
 *	
 * ADMIN AREA
 *	
-* Administrator Resources	: Line 289 - 3016
+* Administrator Resources	: Line 298 - 314
+*	
+* Customer Resources		: Line 319 - 329
+*	
+* Report					: Line 289 - 316
 */
 
 $app->group(['middleware' => 'oauth|staff', 'namespace' => 'App\Http\Controllers'], function ($app) 
@@ -310,7 +314,7 @@ $app->group(['middleware' => 'oauth|admin', 'namespace' => 'App\Http\Controllers
 	);
 
 	// ------------------------------------------------------------------------------------
-	// Customers
+	// CUSTOMERS
 	// ------------------------------------------------------------------------------------
 	$app->get('/customers',
 		[
@@ -321,6 +325,21 @@ $app->group(['middleware' => 'oauth|admin', 'namespace' => 'App\Http\Controllers
 	$app->get('/customer/{id}',
 		[
 			'uses'				=> 'CustomerController@detail'
+		]
+	);
+
+	// ------------------------------------------------------------------------------------
+	// REPORTS
+	// ------------------------------------------------------------------------------------
+	$app->get('/report/usage/of/vouchers',
+		[
+			'uses'				=> 'ReportController@voucher'
+		]
+	);
+
+	$app->get('/report/selled/products',
+		[
+			'uses'				=> 'ReportController@product'
 		]
 	);
 });
