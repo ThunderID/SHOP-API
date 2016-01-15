@@ -333,7 +333,7 @@ class ProductController extends Controller
                         $price_rules   =   [
                                                 // 'product_id'                => 'required|numeric|'.($is_new ? '' : 'in:'.$product_data['id']),
                                                 'price'                     => 'required|numeric|in:'.$price_data['price'],
-                                                'promo_price'               => 'required|numeric|in:'.$price_data['promo_price'],
+                                                'promo_price'               => 'numeric|in:'.$price_data['promo_price'],
                                                 'started_at'                => 'required|date_format:"Y-m-d H:i:s"',
                                             ];
 
@@ -344,7 +344,7 @@ class ProductController extends Controller
                         $price_rules   =   [
                                                 // 'product_id'                => 'numeric|'.($is_new ? '' : 'in:'.$product_data['id']),
                                                 'price'                     => 'required|numeric',
-                                                'promo_price'               => 'required|numeric',
+                                                'promo_price'               => 'numeric',
                                                 'started_at'                => 'required|date_format:"Y-m-d H:i:s"',
                                             ];
 

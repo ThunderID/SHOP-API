@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use App\Models\Observers\PriceObserver;
+use App\Models\Observers\PriceObserver;
 
 /**
  * Used for Price Models
@@ -93,7 +93,7 @@ class Price extends BaseModel
 	{
         parent::boot();
  
-        // Price::observe(new PriceObserver());
+        Price::observe(new PriceObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
