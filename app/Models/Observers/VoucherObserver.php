@@ -23,7 +23,7 @@ class VoucherObserver
         $errors                             = new MessageBag();
 
         //1. audit
-        event(new AuditStore($model, 'voucher_added', 'Pembuatan voucher '.str_replace('_', ' ', $model->voucher->type)));
+        event(new AuditStore($model, 'voucher_added', 'Pembuatan voucher '.$model->code));
 
         if($errors->count())
         {
