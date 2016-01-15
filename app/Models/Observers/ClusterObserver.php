@@ -128,19 +128,33 @@ class ClusterObserver
     /** 
      * observe cluster event deleting
      * 1. updated parent + child path
-     * 2. act, accept or refuse
+     * 2. Delete Child
+     * 3. act, accept or refuse
      * 
      * @param $model
      * @return bool
      */
     public function deleting($model)
     {
-		$errors 						= new MessageBag();
+		$errors                           = new MessageBag();
 
         //1. Check varian relationship with transaction
         if($model->products->count())
         {
-            $errors->add('varian', 'Tidak dapat menghapus data yang berhubungan dengan produk varian yang pernah di stok &/ order.');
+            $errors->add('cluster', 'Tidak dapat menghapus data yang berhubungan dengan produk varian yang pernah di stok &/ order.');
+        }
+
+        //2. Delete Child
+        $childs                         = Cluster::orderBy('path','desc')
+                                            ->where('path','like',$model->path . ',%')
+                                            ->get();
+
+        foreach ($childs as $child) 
+        {
+            if(!$child->delete())
+            {
+                $errors->add('cluster', $child->getError());
+            }
         }
 
         if($errors->count())
