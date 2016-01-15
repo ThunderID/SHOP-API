@@ -1,6 +1,7 @@
 <?php namespace App\Models\Observers;
 
 use Illuminate\Support\MessageBag;
+use App\Events\AuditStore;
 
 /**
  * Used in Voucher model
@@ -9,6 +10,31 @@ use Illuminate\Support\MessageBag;
  */
 class VoucherObserver 
 {
+    /** 
+     * observe voucher event created
+     * 1. Audit
+     * 2. act, accept or refuse
+     * 
+     * @param $model
+     * @return bool
+     */
+    public function created($model)
+    {
+        $errors                             = new MessageBag();
+
+        //1. audit
+        event(new AuditStore($model, 'voucher_added', 'Pembuatan voucher '.str_replace('_', ' ', $model->voucher->type)));
+
+        if($errors->count())
+        {
+            $model['errors']                = $errors;
+
+            return false;
+        }
+
+        return true;
+    }
+
     /** 
      * observe voucher event saving
      * 1. check is voucher used
