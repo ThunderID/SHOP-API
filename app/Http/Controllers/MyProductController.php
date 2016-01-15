@@ -15,11 +15,27 @@ class MyProductController extends Controller
      *
      * @return Response
      */
-    public function recommended($id = null)
+    public function recommended()
     {
-        $result                 = \App\Models\Product::get()->toArray();
+        $result                     = new \App\Models\Varian;
 
-        return new JSend('success', (array)$result);
+        $count                      = count($result->get());
+
+        if(Input::has('skip'))
+        {
+            $skip                   = Input::get('skip');
+            $result                 = $result->skip($skip);
+        }
+
+        if(Input::has('take'))
+        {
+            $take                   = Input::get('take');
+            $result                 = $result->take($take);
+        }
+
+        $result                     = $result->with(['product'])->get()->toArray();
+
+        return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
 
     /**
@@ -27,11 +43,27 @@ class MyProductController extends Controller
      *
      * @return Response
      */
-    public function purchased($id = null)
+    public function purchased()
     {
-        $result                 = \App\Models\Product::get()->toArray();
+        $result                     = new \App\Models\Varian;
 
-        return new JSend('success', (array)$result);
+        $count                      = count($result->get());
+
+        if(Input::has('skip'))
+        {
+            $skip                   = Input::get('skip');
+            $result                 = $result->skip($skip);
+        }
+
+        if(Input::has('take'))
+        {
+            $take                   = Input::get('take');
+            $result                 = $result->take($take);
+        }
+
+        $result                     = $result->with(['product'])->get()->toArray();
+
+        return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
 
     /**
@@ -39,10 +71,26 @@ class MyProductController extends Controller
      *
      * @return Response
      */
-    public function viewed($id = null)
+    public function viewed()
     {
-        $result                 = \App\Models\Product::get()->toArray();
+        $result                     = new \App\Models\Varian;
 
-        return new JSend('success', (array)$result);
+        $count                      = count($result->get());
+
+        if(Input::has('skip'))
+        {
+            $skip                   = Input::get('skip');
+            $result                 = $result->skip($skip);
+        }
+
+        if(Input::has('take'))
+        {
+            $take                   = Input::get('take');
+            $result                 = $result->take($take);
+        }
+
+        $result                     = $result->with(['product'])->get()->toArray();
+
+        return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
 }

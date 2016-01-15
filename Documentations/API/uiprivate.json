@@ -1,0 +1,868 @@
+swagger: '2.0'
+info:
+  title: Private API
+  description: Move your app forward with the Private API
+  version: 1.0.0
+host: localhost:8800
+schemes:
+  - https
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /me/user_id:
+    get:
+      summary: Get My detail
+      description: |
+        Get my detail information.
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+        - name: user_id
+          in: query
+          description: customer id
+          required: true
+          type: string
+          format: string
+      tags:
+        - Account
+        - My
+        - Private
+      responses:
+        '200':
+          description: An array of user's data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/user'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /me/user_id/points:
+    get:
+      summary: Get customer points
+      description: >
+        Get customer points
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+        - name: user_id
+          in: query
+          description: customer id
+          required: true
+          type: string
+          format: string
+        - name: skip
+          in: query
+          description: How many records are going to be skipped
+          required: false
+          type: number
+          format: integer
+        - name: take
+          in: query
+          description: How many records are going to be taken from resource
+          required: false
+          type: number
+          format: integer
+      tags:
+        - Account
+        - Points
+        - Private
+      responses:
+        '200':
+          description: An array of points
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/points'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /me/user_id/update:
+    post:
+      summary: Update my profile
+      description: 'Update my profile.'
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: number
+          format: integer
+        - name: user_id
+          in: query
+          description: customer id
+          required: true
+          type: string
+          format: string
+        - name: name
+          in: query
+          description: max 255 char.
+          required: true
+          type: string
+          format: string
+        - name: email
+          in: query
+          description: Must be unique.
+          required: true
+          type: string
+          format: string
+        - name: password
+          in: query
+          description: minimum 8 char.
+          required: true
+          type: string
+          format: string
+        - name: sso_id
+          in: query
+          description: let it null for manuall register (not required).
+          required: false
+          type: string
+          format: string
+        - name: sso_media
+          in: query
+          description: only available for facebook.
+          required: false
+          type: string
+          format: string
+        - name: sso_data
+          in: query
+          description: must be json of array sso data.
+          required: false
+          type: string
+          format: string
+        - name: gender
+          in: query
+          description: must be one of femail or male.
+          required: false
+          type: string
+          format: string
+        - name: date_of_birth
+          in: query
+          description: must be in format Y-m-d H:i:s.
+          required: false
+          type: string
+          format: string
+      tags:
+        - Account
+        - Points
+        - Activate
+      responses:
+        '200':
+          description: user rich data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/user'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /me/user_id/redeem:
+    post:
+      summary: Claim referral 
+      description: >
+        Claim referral (upline)
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+        - name: user_id
+          in: query
+          description: customer id
+          required: true
+          type: string
+          format: string
+        - name: code
+          in: query
+          description: referral code
+          required: true
+          type: string
+          format: string
+      tags:
+        - Account
+        - Referral
+        - Private
+      responses:
+        '200':
+          description: An array of points
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/user'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /me/user_id/products/recommended:
+    get:
+      summary: Recommended Product
+      description: >
+        Get recommended product
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+        - name: user_id
+          in: query
+          description: customer id
+          required: true
+          type: string
+          format: string
+        - name: skip
+          in: query
+          description: How many records are going to be skipped
+          required: false
+          type: number
+          format: integer
+        - name: take
+          in: query
+          description: How many records are going to be taken from resource
+          required: false
+          type: number
+          format: integer
+      tags:
+        - Account
+        - Products
+        - Recommended
+        - Private
+      responses:
+        '200':
+          description: An array of varians
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/varians'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /me/user_id/products/purchased:
+    get:
+      summary: Purchased Product
+      description: >
+        Get purchased product
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+        - name: user_id
+          in: query
+          description: customer id
+          required: true
+          type: string
+          format: string
+        - name: skip
+          in: query
+          description: How many records are going to be skipped
+          required: false
+          type: number
+          format: integer
+        - name: take
+          in: query
+          description: How many records are going to be taken from resource
+          required: false
+          type: number
+          format: integer
+      tags:
+        - Account
+        - Products
+        - Purchased
+        - Private
+      responses:
+        '200':
+          description: An array of varians
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/varians'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /me/user_id/products/viewed:
+    get:
+      summary: Viewed Product
+      description: >
+        Get viewed product
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+        - name: user_id
+          in: query
+          description: customer id
+          required: true
+          type: string
+          format: string
+        - name: skip
+          in: query
+          description: How many records are going to be skipped
+          required: false
+          type: number
+          format: integer
+        - name: take
+          in: query
+          description: How many records are going to be taken from resource
+          required: false
+          type: number
+          format: integer
+      tags:
+        - Account
+        - Products
+        - Viewed
+        - Private
+      responses:
+        '200':
+          description: An array of varians
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/varians'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /me/user_id/orders:
+    get:
+      summary: Customers` order
+      description: >
+        Get Customers` order
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+        - name: user_id
+          in: query
+          description: customer id
+          required: true
+          type: string
+          format: string
+        - name: skip
+          in: query
+          description: How many records are going to be skipped
+          required: false
+          type: number
+          format: integer
+        - name: take
+          in: query
+          description: How many records are going to be taken from resource
+          required: false
+          type: number
+          format: integer
+      tags:
+        - Account
+        - Orders
+        - Private
+      responses:
+        '200':
+          description: An array of orders
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/orders'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /me/user_id/order/order_id:
+    get:
+      summary: Customers` order
+      description: >
+        Get Customers` order
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+        - name: user_id
+          in: query
+          description: customer id
+          required: true
+          type: string
+          format: string
+        - name: order_id
+          in: query
+          description: order id
+          required: true
+          type: string
+          format: string
+      tags:
+        - Account
+        - Order
+        - Private
+      responses:
+        '200':
+          description: An array of orders
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/order'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /me/user_id/incart:
+    get:
+      summary: Customers` cart order
+      description: >
+        Get Customers` cart order
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+        - name: user_id
+          in: query
+          description: customer id
+          required: true
+          type: string
+          format: string
+      tags:
+        - Account
+        - Cart
+        - Private
+      responses:
+        '200':
+          description: An array of carts
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/cart'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /me/user_id/order/store:
+    post:
+      summary: Store customer order
+      description: >
+        Store customer order and update status
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+        - name: user_id
+          in: query
+          description: customer id
+          required: true
+          type: string
+          format: string
+        - name: id
+          in: query
+          description: Let it null for new.
+          required: true
+          type: number
+          format: double
+        - name: voucher_id
+          in: query
+          description: voucher id
+          required: true
+          type: string
+          format: string
+        - name: transactiondetails
+          in: query
+          description: Must be array of details transaction.
+          required: true
+          type: array
+          items:
+            type: string
+        - name: transactionlogs
+          in: query
+          description: Must be array of logs' transaction.
+          required: true
+          type: array
+          items:
+            type: string
+        - name: payment
+          in: query
+          description: Must be payment (look below).
+          required: true
+          type: array
+          items:
+            type: string
+        - name: shipment
+          in: query
+          description: Must be shipment and address (look below).
+          required: true
+          type: array
+          items:
+            type: string
+      tags:
+        - Account
+        - Purchase
+        - Order
+        - Private
+      responses:
+        '200':
+          description: An array of carts
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/cart'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  user:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      role:
+        type: string
+      is_active:
+        type: boolean
+      sso_id:
+        type: string
+      sso_media:
+        type: string
+      sso_data:
+        type: string
+      gender:
+        type: string
+      date_of_birth:
+        type: string
+      last_logged_at:
+        type: string
+      quota_referral:
+        type: number
+      reference_name:
+        type: string
+      total_point:
+        type: number
+      total_reference:
+        type: number
+      myreferrals:
+        type: array
+        items:
+          $ref: '#/definitions/myreferrals'
+  myreferrals:
+    properties:
+      id:
+        type: string
+      amount:
+        type: number
+      expired_at:
+        type: string
+      notes:
+        type: string
+      user:
+        type: array
+        items:
+          $ref: '#/definitions/user'
+  points:
+    properties:
+      count:
+        type: number
+        description: 'Total points.'
+      data:
+        properties:
+          id:
+            type: string
+          amount:
+            type: number
+          expired_at:
+            type: string
+          notes:
+            type: string
+  varians:
+    properties:
+      count:
+        type: number
+        description: 'Total Varians.'
+      data:
+        properties:
+          id:
+            type: string
+          product_id:
+            type: string
+          sku:
+            type: string
+          size:
+            type: string
+          current_stock:
+            type: number
+          on_hold_stock:
+            type: number
+          inventory_stock:
+            type: number
+          reserved_stock:
+            type: number
+          packed_stock:
+            type: number
+          product:
+            type: array
+            items:
+              $ref: '#/definitions/product'
+  product:
+    properties:
+      id:
+        type: number
+      name:
+        type: string
+      upc:
+        type: string
+      slug:
+        type: string
+      description:
+        type: string
+      current_stock:
+        type: number
+      on_hold_stock:
+        type: number
+      inventory_stock:
+        type: number
+      reserved_stock:
+        type: number
+      packed_stock:
+        type: number
+      cart_item:
+        type: number
+      sold_item:
+        type: number
+      price:
+        type: number
+      promo_price:
+        type: number
+      thumbnail:
+        type: string
+      image_xs:
+        type: string
+      image_sm:
+        type: string
+      image_md:
+        type: string
+      image_lg:
+        type: string
+  orders:
+    properties:
+      count:
+        type: number
+        description: 'Total Orders.'
+      data:
+        properties:
+          id:
+            type: string
+          ref_number:
+            type: string
+          transact_at:
+            type: string
+          status:
+            type: string
+          unique_number:
+            type: number
+          shipping_cost:
+            type: number
+          voucher_discount:
+            type: number
+          amount:
+            type: number
+          bills:
+            type: number
+  order:
+    properties:
+      id:
+        type: string
+      ref_number:
+        type: string
+      transact_at:
+        type: string
+      status:
+        type: string
+      unique_number:
+        type: number
+      shipping_cost:
+        type: number
+      voucher_discount:
+        type: number
+      amount:
+        type: number
+      bills:
+        type: number
+      transactiondetails:
+        type: array
+        items:
+          $ref: '#/definitions/details'
+      transactionlogs:
+        type: array
+        items:
+          $ref: '#/definitions/logs'
+      paidpointlogs:
+        type: array
+        items:
+          $ref: '#/definitions/points'
+      payment:
+        type: array
+        items:
+          $ref: '#/definitions/payment'
+      shipment:
+        type: array
+        items:
+          $ref: '#/definitions/shipment'
+  cart:
+    properties:
+      id:
+        type: string
+      ref_number:
+        type: string
+      transact_at:
+        type: string
+      status:
+        type: string
+      unique_number:
+        type: number
+      shipping_cost:
+        type: number
+      voucher_discount:
+        type: number
+      amount:
+        type: number
+      bills:
+        type: number
+      transactiondetails:
+        type: array
+        items:
+          $ref: '#/definitions/details'
+  details:
+    properties:
+      id:
+        type: string
+      quantity:
+        type: number
+      price:
+        type: number
+      discount:
+        type: number
+      varian:
+        type: array
+        items:
+          $ref: '#/definitions/varian'
+  varian:
+    properties:
+      id:
+        type: string
+      product_id:
+        type: string
+      sku:
+        type: string
+      size:
+        type: string
+      current_stock:
+        type: number
+      on_hold_stock:
+        type: number
+      inventory_stock:
+        type: number
+      reserved_stock:
+        type: number
+      packed_stock:
+        type: number
+      product:
+        type: array
+        items:
+          $ref: '#/definitions/product'
+  logs:
+    properties:
+      id:
+        type: string
+      status:
+        type: string
+      changed_at:
+        type: string
+      notes:
+        type: string
+  payment:
+    properties:
+      id:
+        type: string
+      method:
+        type: string
+      destination:
+        type: string
+      account_name:
+        type: string
+      account_number:
+        type: string
+      ondate:
+        type: string
+      amount:
+        type: number
+  shipment:
+    properties:
+      id:
+        type: string
+      receipt_number:
+        type: string
+      receiver_name:
+        type: string
+      address:
+        type: array
+        items:
+          $ref: '#/definitions/address'
+      courier:
+        type: array
+        items:
+          $ref: '#/definitions/courier'
+  address:
+    properties:
+      id:
+        type: string
+      phone:
+        type: string
+      address:
+        type: string
+      zipcode:
+        type: string
+  courier:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+  Error:
+    type: object
+    properties:
+      status:
+        type: string
+      data:
+        type: string
+      message:
+        type: string
+      code:
+        type: integer
+        format: int32

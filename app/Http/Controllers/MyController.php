@@ -34,9 +34,25 @@ class MyController extends Controller
      */
     public function points($user_id = null)
     {
-        $result                 = \App\Models\PointLog::userid($user_id)->get()->toArray();
+        $result                     = \App\Models\PointLog::userid($user_id);
 
-        return new JSend('success', (array)$result);
+        $count                      = $result->count();
+
+        if(Input::has('skip'))
+        {
+            $skip                   = Input::get('skip');
+            $result                 = $result->skip($skip);
+        }
+
+        if(Input::has('take'))
+        {
+            $take                   = Input::get('take');
+            $result                 = $result->take($take);
+        }
+
+        $result                     = $result->get()->toArray();
+
+        return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
 
     /**
@@ -108,7 +124,7 @@ class MyController extends Controller
 
         DB::commit();
         
-        $final_customer                 = \App\Models\Customer::id($customer_data['id'])->first()->toArray();
+        $final_customer                 = \App\Models\Customer::id($user_id)->with(['myreferrals', 'myreferrals.user'])->toArray();
 
         return new JSend('success', (array)$final_customer);
     }

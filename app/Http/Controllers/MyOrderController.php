@@ -19,9 +19,25 @@ class MyOrderController extends Controller
      */
     public function index($user_id = null)
     {
-        $result                 = \App\Models\Sale::userid($user_id)->status(['wait', 'canceled', 'paid', 'shipping', 'packed', 'delivered'])->get()->toArray();
+        $result                     = \App\Models\Sale::userid($user_id)->status(['wait', 'canceled', 'paid', 'shipping', 'packed', 'delivered']);
 
-        return new JSend('success', (array)$result);
+        $count                      = count($result->get());
+
+        if(Input::has('skip'))
+        {
+            $skip                   = Input::get('skip');
+            $result                 = $result->skip($skip);
+        }
+
+        if(Input::has('take'))
+        {
+            $take                   = Input::get('take');
+            $result                 = $result->take($take);
+        }
+
+        $result                     = $result->get()->toArray();
+
+        return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
 
     /**
