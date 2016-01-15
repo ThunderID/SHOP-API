@@ -3,32 +3,32 @@
 use Illuminate\Support\MessageBag;
 use Hash;
 
-use App\Models\Price;
+use App\Models\QuotaLog;
 use App\Events\AuditStore;
 
 /**
- * Used in Price
+ * Used in QuotaLog
  *
  * @author cmooy
  */
-class PriceObserver 
+class QuotaLogObserver 
 {
     /** 
-     * observe Price event saving
+     * observe QuotaLog event saving
      * 1. Audit
      * 2. act, accept or refuse
      * 
      * @param $model
      * @return bool
      */
-    public function saved($model)
+    public function created($model)
     {
         $errors                             = new MessageBag();
 
         //1. audit
-        if($model->product()->count())
+        if($model->voucher()->count())
         {
-            event(new AuditStore($model, 'price_changed', 'Perubahan harga '.$model->product->name));
+            event(new AuditStore($model, 'quota_added', 'Penambahan quota voucher '.$model->voucher->code));
         }
 
         if($errors->count())

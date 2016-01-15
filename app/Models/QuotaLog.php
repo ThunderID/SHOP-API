@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use App\Models\Observers\QuotaLogObserver;
+use App\Models\Observers\QuotaLogObserver;
 
 /**
  * Used for QuotaLog Models
@@ -91,7 +91,7 @@ class QuotaLog extends BaseModel
 	{
         parent::boot();
  
-        // QuotaLog::observe(new QuotaLogObserver());
+        QuotaLog::observe(new QuotaLogObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
