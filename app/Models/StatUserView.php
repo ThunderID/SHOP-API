@@ -2,21 +2,28 @@
 
 namespace App\Models;
 
-// use App\Models\Observers\StatProductViewObserver;
+// use App\Models\Observers\StatUserViewObserver;
 
 /**
  * Future Feature of Stat View
  * 
  * @author cmooy
  */
-class StatProductView extends BaseModel
+class StatUserView extends BaseModel
 {
+	/**
+	 * Relationship Traits.
+	 *
+	 */
+	use \App\Models\Traits\belongsTo\HasUserTrait;
+ 	use \App\Models\Traits\morphTo\HasStatableTrait;
+
 	/**
 	 * The database table used by the model.
 	 *
 	 * @var string
 	 */
-	protected $table				= 'stat_product_views';
+	protected $table				= 'stat_user_views';
 
 	/**
 	 * Timestamp field
@@ -54,7 +61,8 @@ class StatProductView extends BaseModel
 
 	protected $fillable				=	[
 											'user_id'						,
-											'product_id'					,
+											'statable_id'					,
+											'statable_type'					,
 											'view'							,
 											'ondate'						,
 										];
@@ -83,8 +91,23 @@ class StatProductView extends BaseModel
 	{
         parent::boot();
  
-        // StatProductView::observe(new StatProductViewObserver());
+        // StatUserView::observe(new StatUserViewObserver());
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
+
+	/**
+	 * scope to find exact date
+	 *
+	 * @param string of history
+	 */
+	public  function scopeOndate($query, $variable)
+	{
+		if(!is_array($variable))
+		{
+			return $query->where('ondate', '=', date('Y-m-d', strtotime($variable)))->orderBy('ondate', 'desc');
+		}
+
+		return $query->where('ondate', '>=', date('Y-m-d', strtotime($variable[0])))->where('ondate', '<=', date('Y-m-d', strtotime($variable[1])))->orderBy('started_at', 'asc');
+	}
 }

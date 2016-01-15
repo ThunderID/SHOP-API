@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Events\ProductSearched;
 
 /**
  * Handle Protected Resource of customer
@@ -37,16 +39,42 @@ class UIController extends Controller
                         break;
                     case 'slug':
                         $result     = $result->slug($value);
+
+                        if(Auth::check())
+                        {
+                            $data['user_id']    = Auth::user()->id;
+                        }
+                        $data['slug']           = $value;
+                        $data['type']           = 'product';
                         break;
                     case 'categories':
-                        $result     = $result->categoriesslug($value);
+                        $result     = $result->categoriesslug($value);                        
+                        if(Auth::check())
+                        {
+                            $data['user_id']    = Auth::user()->id;
+                        }
+                        $data['slug']           = $value;
+                        $data['type']           = 'category';
                         break;
                     case 'tags':
                         $result     = $result->tagsslug($value);
+
+                        if(Auth::check())
+                        {
+                            $data['user_id']    = Auth::user()->id;
+                        }
+                        $data['slug']           = $value;
+                        $data['type']           = 'tag';
                         break;
                     default:
                         # code...
                         break;
+                }
+
+                if(isset($data))
+                {
+                    event(new ProductSearched($data));
+                    unset($data);
                 }
             }
         }

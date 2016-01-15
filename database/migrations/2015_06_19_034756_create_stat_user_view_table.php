@@ -18,7 +18,7 @@ class CreateStatUserViewTable extends Migration
             $table->integer('statable_id')->unsigned()->index();
             $table->string('statable_type', 255);
             $table->integer('view');
-            $table->datetime('ondate');
+            $table->date('ondate');
             $table->timestamps();
             $table->softDeletes();
             
