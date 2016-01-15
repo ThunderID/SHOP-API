@@ -44,4 +44,40 @@ trait HasReferenceTrait
     {
 		return $query->where('reference_type', $variable);
     }
+
+	/**
+	 * call reference in voucher
+	 *
+	 **/
+    public function ReferenceVoucher()
+    {
+		return $this->belongsTo('\App\Models\Campaign', 'reference_id');
+    }
+
+	/**
+	 * call reference in user
+	 *
+	 **/
+    public function ReferenceReferral()
+    {
+		return $this->belongsTo('\App\Models\User', 'reference_id');
+    }
+
+	/**
+	 * call reference in point
+	 *
+	 **/
+    public function ReferencePointVoucher()
+    {
+		return $this->belongsTo('\App\Models\PointLog', 'point_log_id')->where('reference_type', 'App\Models\Voucher');
+    }
+
+	/**
+	 * call reference in point
+	 *
+	 **/
+    public function ReferencePointReferral()
+    {
+		return $this->belongsTo('\App\Models\PointLog', 'point_log_id')->where('reference_type', 'App\Models\User');
+    }
 }
