@@ -18,6 +18,24 @@ trait HasClustersTrait
 	}
 
 	/**
+	 * call belongsto many relationship clusters' type
+	 *
+	 **/
+	public function Clusters()
+	{
+		return $this->belongsToMany('App\Models\Cluster', 'categories_products', 'product_id', 'category_id');
+	}
+
+	/**
+	 * check if model has category in certain slug
+	 *
+	 * @var array or singular slug
+	 **/
+	public function scopeClustersSlug($query, $variable)
+	{
+		return $query->whereHas('clusters', function($q)use($variable){$q->slug($variable);});
+	}
+	/**
 	 * call belongsto many relationship category's type
 	 *
 	 **/

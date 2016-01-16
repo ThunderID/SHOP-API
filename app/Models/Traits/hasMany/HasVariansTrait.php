@@ -26,4 +26,19 @@ trait HasVariansTrait
 	{
 		return $this->hasMany('App\Models\Varian');
 	}
+
+	/**
+	 * check if model has varian in size
+	 *
+	 * @var array or singular size
+	 **/
+	public function scopeVarianSize($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('varians.size', $variable);
+		}
+
+		return $query->where('varians.size', $variable);
+	}
 }

@@ -129,6 +129,21 @@ class Varian extends BaseModel
 	{
 		return 	$query->where('sku', $variable);
 	}
+	
+	/**
+	 * scope to find size of product varian
+	 *
+	 * @param string of size
+	 */
+	public function scopeSize($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return 	$query->whereIn('size', $variable);
+		}
+
+		return 	$query->where('size', $variable);
+	}
 
 	/**
 	 * scope to find varian who hath current stock

@@ -57,6 +57,16 @@ trait HasTransactionTrait
 	}
 
 	/**
+	 * check if model has transaction in certain userid
+	 *
+	 * @var singular userid
+	 **/
+	public function scopeTransactionCustomerId($query, $variable)
+	{
+		return $query->whereHas('sale', function($q)use($variable){$q->userid($variable);});
+	}
+
+	/**
 	 * call belongsto relationship with sale transaction
 	 *
 	 **/

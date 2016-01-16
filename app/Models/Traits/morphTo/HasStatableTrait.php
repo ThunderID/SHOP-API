@@ -42,6 +42,11 @@ trait HasStatableTrait
 	 **/
     public function scopeStatableType($query, $variable)
     {
+    	if(is_array($variable))
+    	{
+			return $query->whereIn('statable_type', $variable);
+    	}
+
 		return $query->where('statable_type', $variable);
     }
 }
