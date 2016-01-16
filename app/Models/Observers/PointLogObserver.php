@@ -5,6 +5,7 @@ use Illuminate\Support\MessageBag;
 use App\Models\PointLog;
 use App\Models\StoreSetting;
 use App\Models\Voucher;
+use App\Models\Referral;
 use App\Events\AuditStore;
 
 /**
@@ -214,9 +215,9 @@ class PointLogObserver
             else
             {
                 //give royalti to referral
-                $voucher                = Voucher::userid($model->reference_id)->first();
+                $voucher                = Referral::userid($model->reference_id)->first();
 
-                if($voucher && $voucher['type']=='referral' && $voucher['value']==0)
+                if($voucher && $voucher['value']==0)
                 {
                     $referee            = new PointLog;
 
