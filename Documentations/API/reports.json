@@ -1,0 +1,337 @@
+swagger: '2.0'
+info:
+  title: Report API
+  description: Move your app forward with the Report API
+  version: 1.0.0
+host: localhost:8800
+schemes:
+  - https
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /report/usage/of/vouchers:
+    get:
+      summary: Voucher usage
+      description: |
+        The Sales purchases using voucher *BALIN*
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+        - name: search
+          in: query
+          description: search parameter (see below).
+          required: false
+          type: array
+          items:
+            type: string
+        - name: skip
+          in: query
+          description: How many records are going to be skipped
+          required: false
+          type: number
+          format: integer
+        - name: take
+          in: query
+          description: How many records are going to be taken from resource
+          required: false
+          type: number
+          format: integer
+      tags:
+        - Voucher
+        - Report
+      responses:
+        '200':
+          description: An array of Sales' data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/sales'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /report/sold/products:
+    get:
+      summary: Sold item
+      description: |
+        The Sold items *BALIN*
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+        - name: search
+          in: query
+          description: search parameter (see below).
+          required: false
+          type: array
+          items:
+            type: string
+        - name: skip
+          in: query
+          description: How many records are going to be skipped
+          required: false
+          type: number
+          format: integer
+        - name: take
+          in: query
+          description: How many records are going to be taken from resource
+          required: false
+          type: number
+          format: integer
+      tags:
+        - Voucher
+        - Report
+      responses:
+        '200':
+          description: An array of Varians' data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/varian'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  search:
+    properties:
+      func:
+        type: string
+        description: 'Search Sale that hath certain parameter'
+  sales:
+    properties:
+      count:
+        type: number
+        description: 'Total Sales.'
+      data:
+        properties:
+          id:
+            type: string
+          ref_number:
+            type: string
+          transact_at:
+            type: string
+          status:
+            type: string
+          unique_number:
+            type: number
+          shipping_cost:
+            type: number
+          voucher_discount:
+            type: number
+          amount:
+            type: number
+          bills:
+            type: number
+          user:
+            type: array
+            items:
+              $ref: '#/definitions/user'
+          transactiondetails:
+            type: array
+            items:
+              $ref: '#/definitions/details'
+          paidpointlogs:
+            type: array
+            items:
+              $ref: '#/definitions/points'
+          payment:
+            type: array
+            items:
+              $ref: '#/definitions/payment'
+  user:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      role:
+        type: string
+      is_active:
+        type: boolean
+      sso_id:
+        type: string
+      sso_media:
+        type: string
+      sso_data:
+        type: string
+      gender:
+        type: string
+      date_of_birth:
+        type: string
+      last_logged_at:
+        type: string
+      quota_referral:
+        type: number
+      reference_name:
+        type: string
+      total_point:
+        type: number
+      total_reference:
+        type: number
+  details:
+    properties:
+      id:
+        type: string
+      quantity:
+        type: number
+      price:
+        type: number
+      discount:
+        type: number
+      varian:
+        type: array
+        items:
+          $ref: '#/definitions/varian'
+  varian:
+    properties:
+      id:
+        type: string
+      sku:
+        type: string
+      size:
+        type: string
+      current_stock:
+        type: number
+      on_hold_stock:
+        type: number
+      inventory_stock:
+        type: number
+      reserved_stock:
+        type: number
+      packed_stock:
+        type: number
+      product:
+        type: array
+        items:
+          $ref: '#/definitions/product'
+  product:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      upc:
+        type: string
+      slug:
+        type: string
+      description:
+        type: string
+      current_stock:
+        type: number
+      on_hold_stock:
+        type: number
+      inventory_stock:
+        type: number
+      reserved_stock:
+        type: number
+      packed_stock:
+        type: number
+      price:
+        type: number
+      promo_price:
+        type: number
+      thumbnail:
+        type: string
+      image_xs:
+        type: string
+      image_sm:
+        type: string
+      image_md:
+        type: string
+      image_lg:
+        type: string
+  points:
+    properties:
+      id:
+        type: string
+      amount:
+        type: number
+      expired_at:
+        type: string
+      notes:
+        type: string
+      referencepointvoucher:
+        type: array
+        items:
+          $ref: '#/definitions/referencepointvoucher'
+      referencepointuser:
+        type: array
+        items:
+          $ref: '#/definitions/referencepointuser'
+  referencepointvoucher:
+    properties:
+      id:
+        type: string
+      amount:
+        type: number
+      expired_at:
+        type: string
+      notes:
+        type: string
+      referencevoucher:
+        type: array
+        items:
+          $ref: '#/definitions/voucher'
+  referencepointuser:
+    properties:
+      id:
+        type: string
+      amount:
+        type: number
+      expired_at:
+        type: string
+      notes:
+        type: string
+      referenceuser:
+        type: array
+        items:
+          $ref: '#/definitions/user'
+  payment:
+    properties:
+      id:
+        type: string
+      method:
+        type: string
+      destination:
+        type: string
+      account_name:
+        type: string
+      account_number:
+        type: string
+      ondate:
+        type: string
+      amount:
+        type: number
+  voucher:
+    properties:
+      id:
+        type: string
+      code:
+        type: string
+      type:
+        type: string
+      quota:
+        type: number
+      started_at:
+        type: string
+      expired_at:
+        type: string
+  Error:
+    type: object
+    properties:
+      status:
+        type: string
+      data:
+        type: string
+      message:
+        type: string
+      code:
+        type: integer
+        format: int32

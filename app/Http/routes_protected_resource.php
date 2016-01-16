@@ -35,9 +35,9 @@
 *	
 * Administrator Resources	: Line 298 - 314
 *	
-* Customer Resources		: Line 319 - 329
+* Customer Resources		: Line 320 - 330
 *	
-* Report					: Line 289 - 316
+* Report					: Line 336 - 346
 */
 
 $app->group(['middleware' => 'oauth|staff', 'namespace' => 'App\Http\Controllers'], function ($app) 
@@ -316,6 +316,7 @@ $app->group(['middleware' => 'oauth|admin', 'namespace' => 'App\Http\Controllers
 	// ------------------------------------------------------------------------------------
 	// CUSTOMERS
 	// ------------------------------------------------------------------------------------
+
 	$app->get('/customers',
 		[
 			'uses'				=> 'CustomerController@index'
@@ -331,13 +332,14 @@ $app->group(['middleware' => 'oauth|admin', 'namespace' => 'App\Http\Controllers
 	// ------------------------------------------------------------------------------------
 	// REPORTS
 	// ------------------------------------------------------------------------------------
+
 	$app->get('/report/usage/of/vouchers',
 		[
 			'uses'				=> 'ReportController@voucher'
 		]
 	);
 
-	$app->get('/report/selled/products',
+	$app->get('/report/sold/products',
 		[
 			'uses'				=> 'ReportController@product'
 		]
