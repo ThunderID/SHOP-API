@@ -13,6 +13,8 @@ class MyProductController extends Controller
     /**
      * Display recommended product by customer
      *
+     * 1. Product has viewed/purchased category/tag
+     * 2. Product has size of purchased item
      * @return Response
      */
     public function recommended($user_id = 0)
@@ -29,7 +31,7 @@ class MyProductController extends Controller
             $slugs[]                = \App\Models\Cluster::find($value['statable_id'])['slug'];
         }
 
-        $purchased                  = \App\Models\TransactionDetail::TransactionSellOn(['paid', 'packed', 'shipping', 'delivered'])->where('transactions.user_id',$user_id)->with(['varian', 'varian.product', 'varian.product.clusters'])->get()->toArray();
+        $purchased                  = \App\Models\TransactionDetail::TransactionSellOn(['paid', 'packed', 'shipping', 'delivered'])->where('transactions.user_id',$user_id)->groupby('varian_id')->with(['varian', 'varian.product', 'varian.product.clusters'])->get()->toArray();
 
         foreach ($purchased as $key => $value) 
         {
@@ -50,7 +52,19 @@ class MyProductController extends Controller
         $productids                 = array_unique($purchased_prods);
         $variansize                 = array_unique($purchased_varians);
 
-        $result                     = \App\Models\Product::sellable(true)->notid($productids)->variansize($variansize)->clustersslug($slug);
+        $result                     = \App\Models\Product::sellable(true);
+        if(!empty($slug))
+        {
+            $result                 = $result->clustersslug($slug);
+        }
+        if(!empty($productids))
+        {
+            $result                 = $result->notid($productids);
+        }
+        if(!empty($variansize))
+        {
+            $result                 = $result->variansize($variansize);
+        }
 
         $count                      = count($result->get());
 
@@ -78,7 +92,20 @@ class MyProductController extends Controller
      */
     public function purchased($user_id = 0)
     {
-        $result                     = new \App\Models\Varian;
+        $purchased_prods            = [];
+
+        //1. get purchased item
+        $purchased                  = \App\Models\TransactionDetail::TransactionSellOn(['paid', 'packed', 'shipping', 'delivered'])->where('transactions.user_id',$user_id)->groupby('varian_id')->with(['varian'])->get()->toArray();
+
+        foreach ($purchased as $key => $value) 
+        {
+            //2. get product id
+            $purchased_prods[]      = $value['varian']['product_id']; 
+        }
+
+        $productids                 = array_unique($purchased_prods);
+
+        $result                     = \App\Models\Product::sellable(true)->id($productids);
 
         $count                      = count($result->get());
 
@@ -94,7 +121,7 @@ class MyProductController extends Controller
             $result                 = $result->take($take);
         }
 
-        $result                     = $result->with(['product'])->get()->toArray();
+        $result                     = $result->with(['varians', 'images', 'labels'])->get()->toArray();
 
         return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
@@ -106,7 +133,20 @@ class MyProductController extends Controller
      */
     public function viewed($user_id = 0)
     {
-        $result                     = new \App\Models\Varian;
+        //1. Check product viewed
+        $stat                       = \App\Models\StatUserView::userid($user_id)->statabletype('App\Models\Product')->get(['statable_id'])->toArray();
+
+        //1b. Get ids
+        $viewed_prods               = [];
+
+        foreach ($stat as $key => $value) 
+        {
+            $viewed_prods[]         = $value['statable_id'];
+        }
+
+        $productids                 = array_unique($viewed_prods);
+
+        $result                     = \App\Models\Product::id($productids);
 
         $count                      = count($result->get());
 
@@ -122,7 +162,7 @@ class MyProductController extends Controller
             $result                 = $result->take($take);
         }
 
-        $result                     = $result->with(['product'])->get()->toArray();
+        $result                     = $result->with(['varians', 'images', 'labels'])->get()->toArray();
 
         return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
