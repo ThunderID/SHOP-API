@@ -68,7 +68,7 @@ class AuthController extends Controller
 
         $customer_rules             =   [
                                             'name'                          => 'required|max:255',
-                                            'email'                         => 'required|max:255|unique:customers,email,'.(!is_null($customer['id']) ? $customer['id'] : ''),
+                                            'email'                         => 'required|max:255|unique:users,email,'.(!is_null($customer['id']) ? $customer['id'] : ''),
                                             'password'                      => 'max:255',
                                             'sso_id'                        => '',
                                             'sso_media'                     => 'in:facebook',
