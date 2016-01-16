@@ -130,7 +130,7 @@ class UIController extends Controller
     }
 
     /**
-     * Display all sellable clusters
+     * Display all clusters
      *
      * @return Response
      */
@@ -179,6 +179,49 @@ class UIController extends Controller
         }
 
         $result                     = $result->get()->toArray();
+
+        return new JSend('success', (array)['count' => $count, 'data' => $result]);
+    }
+
+    /**
+     * Display all labels
+     *
+     * @return Response
+     */
+    public function labels($type = null)
+    {
+        $result                 = \App\Models\ProductLabel::groupby('lable');
+
+        if(Input::has('search'))
+        {
+            $search                 = Input::get('search');
+
+            foreach ($search as $key => $value) 
+            {
+                switch (strtolower($key)) 
+                {
+                    default:
+                        # code...
+                        break;
+                }
+            }
+        }
+
+        $count                      = count($result->get(['lable']));
+
+        if(Input::has('skip'))
+        {
+            $skip                   = Input::get('skip');
+            $result                 = $result->skip($skip);
+        }
+
+        if(Input::has('take'))
+        {
+            $take                   = Input::get('take');
+            $result                 = $result->take($take);
+        }
+
+        $result                     = $result->get(['lable'])->toArray();
 
         return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }

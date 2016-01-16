@@ -1,0 +1,86 @@
+swagger: '2.0'
+info:
+  title: Label API
+  description: Move your app forward with the Label API
+  version: 1.0.0
+host: localhost:8800
+schemes:
+  - https
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /balin/store/labels:
+    get:
+      summary: Label Lists
+      description: |
+        The Labels endpoint returns information about the *BALIN* UI Labels
+        could be tags or categories.
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+        - name: search
+          in: query
+          description: search parameter (look below).
+          required: false
+          type: array
+          items:
+            type: string
+        - name: skip
+          in: query
+          description: How many records are going to be skipped
+          required: false
+          type: number
+          format: integer
+        - name: take
+          in: query
+          description: How many records are going to be taken from resource
+          required: false
+          type: number
+          format: integer
+      tags:
+        - Labels
+      responses:
+        '200':
+          description: An array of Labels' data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/label'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  search:
+    properties:
+      name:
+        type: string
+        description: 'Search Cluster that hath likely name'
+  label:
+    properties:
+      count:
+        type: number
+        description: 'Total label.'
+      data:
+        properties:
+          id:
+            type: string
+          lable:
+            type: string
+  Error:
+    type: object
+    properties:
+      status:
+        type: string
+      data:
+        type: string
+      message:
+        type: string
+      code:
+        type: integer
+        format: int32
