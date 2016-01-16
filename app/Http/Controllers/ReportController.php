@@ -64,7 +64,7 @@ class ReportController extends Controller
      */
     public function product()
     {
-        $result                     = \App\Models\TransactionDetail::solditem(true);
+        $result                     = new \App\Models\Varian;
 
         if(Input::has('search'))
         {
@@ -95,7 +95,7 @@ class ReportController extends Controller
             $result                 = $result->take($take);
         }
 
-        $result                     = $result->with(['varian', 'varian.product'])->get()->toArray();
+        $result                     = $result->with(['product'])->get()->toArray();
 
         return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }

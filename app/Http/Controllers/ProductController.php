@@ -69,13 +69,13 @@ class ProductController extends Controller
                 switch (strtolower($key)) 
                 {
                     case 'name':
-                        $result     = $result->orderby($value, $key);
+                        $result     = $result->orderby($key, $value);
                         break;
                     case 'price':
-                        $result     = $result->orderby($value, $key);
+                        $result     = $result->orderby($key, $value);
                         break;
                     case 'newest':
-                        $result     = $result->orderby('created_at', $key);
+                        $result     = $result->orderby('created_at', $value);
                         break;
                     
                     default:
