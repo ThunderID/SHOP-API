@@ -8,6 +8,10 @@ use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
+use App\Models\StoreSetting;
+
+use Carbon\Carbon;
+
 class MyController extends Controller
 {
     /**
@@ -148,23 +152,35 @@ class MyController extends Controller
         DB::beginTransaction();
 
         //1. Check Link
-        $voucher_data              = \App\Models\Campaign::code($code)->ondate('now')->type(['referral', 'promo_referral'])->first();
+        $voucher_data              = \App\Models\Campaign::code($code)->type(['referral', 'promo_referral'])->first();
 
         if(!$voucher_data)
         {
             $errors->add('Redeem', 'Code tidak valid.');
         }
-        elseif(!$voucher_data->quota > 0)
+        elseif($voucher_data->quota <= 0)
         {
             $errors->add('Redeem', 'Quota sudah habis.');
         }
         else
         {
+            $store                      = StoreSetting::type('voucher_point_expired')->Ondate('now')->first();
+
+            if($store)
+            {
+                $expired_at             = new Carbon($store->value);
+            }
+            else
+            {
+                $expired_at             = new Carbon('+ 3 months');
+            }
+
             //if validator passed, save voucher
             $point                  =   [
                                             'user_id'               => $user_id,
                                             'reference_id'          => $voucher_data['user_id'],
-                                            'reference_type'        => '\App\Models\User',
+                                            'reference_type'        => 'App\Models\User',
+                                            'expired_at'            => $expired_at->format('Y-m-d H:i:s'),
                                         ];
 
             $point_data             = new \App\Models\PointLog;

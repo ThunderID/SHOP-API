@@ -79,7 +79,7 @@ class PointLogObserver
                 $errors->add('PointLog', 'Tidak memakai dapat referral code anda sebagai pemberi referens.');
             }
             //1aiv. If referal quota lower equal to 0, refuse
-            elseif($model->reference->quota <= 0)
+            elseif($model->reference->quota_referral <= 0)
             {
                 $errors->add('PointLog', 'Untuk saat ini tidak dapat menggunakan referral code '.$model->reference->name);
             }
@@ -93,7 +93,7 @@ class PointLogObserver
                     $errors->add('PointLog', 'Tidak ada campaign untuk point reference.');
                 }
                 //check if there were referral setting, let it be
-                elseif($model->reference->voucher->value!=0)
+                elseif($model->reference->referral->value!=0)
                 {
                     $model->amount          = $model->reference->voucher->value;
                     $model->notes           = 'Referensi promo '.$model->reference->name;
@@ -108,7 +108,7 @@ class PointLogObserver
 
             if(!$errors->count())
             {
-                $result                     = $this->CreditQuota($model->reference->voucher, 'Mereferensikan '.$model->user->name);
+                $result                     = $model->CreditQuota($model->reference, 'Mereferensikan '.$model->user->name);
                 if(!$result)
                 {
                     return false;
@@ -170,7 +170,7 @@ class PointLogObserver
                 
                 if(!$errors->count())
                 {
-                    $result                     = $this->CreditQuota(App\Models\Voucher::findorfail($prev_reference), 'Mereferensikan '.$model->user->name);
+                    $result                     = $model->CreditQuota(App\Models\Voucher::findorfail($prev_reference), 'Mereferensikan '.$model->user->name);
                     if(!$result)
                     {
                         return false;

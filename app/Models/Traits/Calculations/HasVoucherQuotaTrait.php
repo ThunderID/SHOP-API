@@ -24,7 +24,7 @@ trait HasVoucherQuotaTrait
 		$quotalog                       = new \App\Models\QuotaLog;
 
 		$quotalog->fill([
-		        'voucher_id'            => $voucher->id,
+		        'voucher_id'            => $voucher['id'],
 		        'amount'                => -1,
 		        'notes'                 => $message,
 		    ]);

@@ -137,14 +137,14 @@ class AuthController extends Controller
         {
             $errors->add('Customer', 'Link tidak valid.');
         }
-        elseif(!$customer_data->is_active)
+        elseif($customer_data->is_active)
         {
             $errors->add('Customer', 'Link tidak valid.');
         }
         else
         {
             //if validator passed, save customer
-            $customer_data           = $customer_data->fill(['is_active' => true]);
+            $customer_data           = $customer_data->fill(['is_active' => true, 'activation_link' => '']);
 
             if(!$customer_data->save())
             {

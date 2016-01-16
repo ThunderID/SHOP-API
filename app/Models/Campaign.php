@@ -17,6 +17,7 @@ class Campaign extends BaseModel
 	 * Relationship Traits.
 	 *
 	 */
+	use \App\Models\Traits\belongsTo\HasUserTrait;
 	use \App\Models\Traits\hasMany\HasQuotaLogsTrait;
 	use \App\Models\Traits\hasMany\HasTransactionsTrait;
 	
