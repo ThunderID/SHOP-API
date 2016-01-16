@@ -42,6 +42,11 @@ trait HasProductTrait
 	 **/
 	public function scopeProductID($query, $variable)
 	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('product_id', $variable);
+		}
+
 		return $query->where('product_id', $variable);
 	}
 

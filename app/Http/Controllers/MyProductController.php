@@ -105,7 +105,7 @@ class MyProductController extends Controller
 
         $productids                 = array_unique($purchased_prods);
 
-        $result                     = \App\Models\Product::sellable(true)->id($productids);
+        $result                     = \App\Models\Varian::productid($productids);
 
         $count                      = count($result->get());
 
@@ -121,7 +121,7 @@ class MyProductController extends Controller
             $result                 = $result->take($take);
         }
 
-        $result                     = $result->with(['varians', 'images', 'labels'])->get()->toArray();
+        $result                     = $result->with(['product', 'product.images', 'product.labels'])->get()->toArray();
 
         return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
