@@ -244,11 +244,11 @@ paths:
         - Private
       responses:
         '200':
-          description: An array of varians
+          description: An array of products
           schema:
             type: array
             items:
-              $ref: '#/definitions/varians'
+              $ref: '#/definitions/products'
         default:
           description: Unexpected error
           schema:
@@ -336,11 +336,11 @@ paths:
         - Private
       responses:
         '200':
-          description: An array of varians
+          description: An array of products
           schema:
             type: array
             items:
-              $ref: '#/definitions/varians'
+              $ref: '#/definitions/products'
         default:
           description: Unexpected error
           schema:
@@ -600,6 +600,75 @@ definitions:
             type: string
           notes:
             type: string
+  products:
+    properties:
+      count:
+        type: number
+        description: 'Total products.'
+      data:
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+          upc:
+            type: string
+          slug:
+            type: string
+          description:
+            type: string
+          current_stock:
+            type: number
+          on_hold_stock:
+            type: number
+          inventory_stock:
+            type: number
+          reserved_stock:
+            type: number
+          packed_stock:
+            type: number
+          cart_item:
+            type: number
+          sold_item:
+            type: number
+          price:
+            type: number
+          promo_price:
+            type: number
+          thumbnail:
+            type: string
+          image_xs:
+            type: string
+          image_sm:
+            type: string
+          image_md:
+            type: string
+          image_lg:
+            type: string
+          varians:
+            type: array
+            items:
+              $ref: '#/definitions/varian'
+  varian:
+    properties:
+      id:
+        type: string
+      product_id:
+        type: string
+      sku:
+        type: string
+      size:
+        type: string
+      current_stock:
+        type: number
+      on_hold_stock:
+        type: number
+      inventory_stock:
+        type: number
+      reserved_stock:
+        type: number
+      packed_stock:
+        type: number
   varians:
     properties:
       count:

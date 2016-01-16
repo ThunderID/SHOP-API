@@ -80,7 +80,7 @@ class MyProductController extends Controller
             $result                 = $result->take($take);
         }
 
-        $result                     = $result->with(['varians', 'images', 'labels'])->get()->toArray();
+        $result                     = $result->with(['varians'])->get()->toArray();
 
         return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
@@ -121,7 +121,7 @@ class MyProductController extends Controller
             $result                 = $result->take($take);
         }
 
-        $result                     = $result->with(['product', 'product.images', 'product.labels'])->get()->toArray();
+        $result                     = $result->with(['product'])->get()->toArray();
 
         return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
@@ -162,7 +162,7 @@ class MyProductController extends Controller
             $result                 = $result->take($take);
         }
 
-        $result                     = $result->with(['varians', 'images', 'labels'])->get()->toArray();
+        $result                     = $result->with(['varians'])->get()->toArray();
 
         return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
