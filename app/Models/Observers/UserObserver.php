@@ -113,9 +113,19 @@ class UserObserver
         //2. Check rehash password
         if (Hash::needsRehash($model->password))
         {
-            $model->password           = bcrypt($model->password);
+            $model->password                = bcrypt($model->password);
         }
 
+        //3. Check is active
+        if(isset($model->getDirty()['is_active']) && $model->is_active)
+        {
+            $result                         = $model->giveWelcomeGift($model);
+
+            if(!$result)
+            {
+                return false;
+            }
+        }
         if($errors->count())
         {
             $model['errors']                = $errors;

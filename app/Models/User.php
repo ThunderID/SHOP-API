@@ -17,6 +17,10 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
+use App\Models\StoreSetting;
+use App\Models\PointLog;
+use Carbon\Carbon;
+
 /**
  * Used for User Models
  * 
@@ -239,6 +243,49 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
 	        }
         }
 
+		return true;
+	}
+
+	/**
+	 * save welcome gift
+	 * 
+	 * @param model of user
+	 * @return boolean
+	 */	
+    public function giveWelcomeGift($user)
+	{
+		$gift                    		= StoreSetting::type('welcome_gift')->Ondate('now')->first();
+
+		$store                    		= StoreSetting::type('voucher_point_expired')->Ondate('now')->first();
+
+        if($gift)
+        {
+        	if($store)
+        	{
+            	$expired_at 			= new Carbon($store->value);
+        	}
+        	else
+        	{
+            	$expired_at 			= new Carbon('+ 3 months');
+        	}
+
+			$point 						= new PointLog;
+
+			$point->fill([
+					'user_id'			=> $user->id,
+					'amount'			=> $gift->value,
+					'expired_at'		=> $expired_at->format('Y-m-d H:i:s'),
+					'notes'				=> 'Welcome Gift dari BALIN',
+				]);
+
+			if(!$point->save())
+			{
+				$this->errors 			= $point->getError();
+
+				return false;
+			}
+		}
+	
 		return true;
 	}
 
