@@ -526,10 +526,9 @@ class ProductController extends Controller
                     {
                         $label_rules   =   [
                                                 'product_id'                => 'required|numeric|'.($is_new ? '' : 'in:'.$product_data['id']),
-                                                'lable'                     => 'required|max:255|in:'.$label_data['lable'],
-                                                'value'                     => 'required|in:'.$label_data['value'],
-                                                'started_at'                => 'required|date_format:"Y-m-d H:i:s"in:'.$label_data['started_at'],
-                                                'ended_at'                  => 'date_format:"Y-m-d H:i:s"|in:'.$label_data['ended_at'],
+                                                'label'                     => 'required|max:255',
+                                                'started_at'                => 'required',
+                                                'ended_at'                  => 'date_format:"Y-m-d H:i:s"',
                                             ];
 
                         $validator      = Validator::make($label_data['attributes'], $label_rules);
@@ -538,8 +537,7 @@ class ProductController extends Controller
                     {
                         $label_rules   =   [
                                                 'product_id'                => 'numeric|'.($is_new ? '' : 'in:'.$product_data['id']),
-                                                'lable'                     => 'required|max:255',
-                                                'value'                     => 'required',
+                                                'label'                     => 'required|max:255',
                                                 'started_at'                => 'required|date_format:"Y-m-d H:i:s"',
                                                 'ended_at'                  => 'date_format:"Y-m-d H:i:s"',
                                             ];
@@ -560,7 +558,8 @@ class ProductController extends Controller
                         }
                         else
                         {
-                            $label_data                = $label_data->fill($value);
+                            $value['lable']             = $value['label'];
+                            $label_data                 = $label_data->fill($value);
 
                             if(!$label_data->save())
                             {
@@ -584,6 +583,7 @@ class ProductController extends Controller
                     else
                     {
                         $value['product_id']            = $product_data['id'];
+                        $value['lable']                 = $value['label'];
 
                         $label_data                    = new \App\Models\ProductLabel;
 

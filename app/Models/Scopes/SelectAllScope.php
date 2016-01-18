@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\DB;
  * @return record
  * @author cmooy
  */
-
 class SelectAllScope implements ScopeInterface  
 {
 	
