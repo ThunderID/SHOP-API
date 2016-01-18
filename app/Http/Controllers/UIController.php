@@ -190,7 +190,7 @@ class UIController extends Controller
      */
     public function labels($type = null)
     {
-        $result                 = \App\Models\ProductLabel::groupby('lable');
+        $result                 = \App\Models\ProductLabel::selectraw('lable as label')->groupby('label');
 
         if(Input::has('search'))
         {
@@ -221,7 +221,7 @@ class UIController extends Controller
             $result                 = $result->take($take);
         }
 
-        $result                     = $result->get(['lable'])->toArray();
+        $result                     = $result->get()->toArray();
 
         return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
