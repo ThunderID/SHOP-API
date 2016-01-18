@@ -7,6 +7,8 @@ use App\Models\Traits\HasQuotaTrait;
 use App\Models\Traits\HasReferencedByTrait;
 use App\Models\Traits\HasReferralOfTrait;
 use App\Models\Traits\HasTotalPointTrait;
+use App\Models\Traits\HasSelectAllTrait;
+
 use App\Models\Observers\UserObserver;
 
 use Illuminate\Auth\Authenticatable;
@@ -43,6 +45,7 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
 	 * Global traits used as query builder (global scope).
 	 *
 	 */
+	use HasSelectAllTrait;
 	use HasQuotaTrait;
 	use HasReferencedByTrait;
 	use HasTotalPointTrait;

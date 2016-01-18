@@ -6,14 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Scope to count current stock of product/varian
+ * Scope to get select raw of all variable
  *
- * @return current_stock
+ * @return record
  * @author cmooy
  */
 
-class CurrentStockScope implements ScopeInterface  
+class SelectAllScope implements ScopeInterface  
 {
+	
 	/**
 	 * Apply the scope to a given Eloquent query builder.
 	 *
@@ -23,23 +24,9 @@ class CurrentStockScope implements ScopeInterface
 	 */
 	public function apply(Builder $builder, Model $model)
 	{
-		if($model->getTable()=='products')
-		{
-			$builder->selectglobalstock(true)
-					->LeftJoinVarianFromProduct(true)
-					->LeftJoinTransactionDetailFromVarian(true)
-					->LeftTransactionStockOn(['wait', 'paid', 'packed', 'shipping', 'delivered'])
-					->groupby('products.id')
-					;
-		}
-		else
-		{
-			$builder->selectglobalstock(true)
-					->LeftJoinTransactionDetailFromVarian(true)
-					->LeftTransactionStockOn(['wait', 'paid', 'packed', 'shipping', 'delivered'])
-					->groupby('varians.id')
-					;
-		}
+		$builder
+		->selectraw($model->getTable().'.*')
+		;
 	}
 
 	/**

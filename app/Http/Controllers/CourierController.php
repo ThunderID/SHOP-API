@@ -58,7 +58,7 @@ class CourierController extends Controller
             $result                 = $result->take($take);
         }
 
-        $result                     = $result->with(['shippingcosts'])->get()->toArray();
+        $result                     = $result->with(['shippingcosts', 'addresses'])->get()->toArray();
 
         return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
@@ -70,7 +70,7 @@ class CourierController extends Controller
      */
     public function detail($id = null)
     {
-        $result                 = \App\Models\Courier::id($id)->with(['shippingcosts'])->first();
+        $result                 = \App\Models\Courier::id($id)->with(['shippingcosts', 'addresses', 'images'])->first();
        
         if($result)
         {
@@ -86,6 +86,8 @@ class CourierController extends Controller
      *
      * 1. Save Courier
      * 2. Save Shipping Cost
+     * 3. Save Address
+     * 4. Save Image
      * 
      * @return Response
      */
@@ -101,8 +103,8 @@ class CourierController extends Controller
         DB::beginTransaction();
 
         //1. Validate Courier Parameter
-
         $courier                    = Input::get('courier');
+        
         if(is_null($courier['id']))
         {
             $is_new                 = true;
@@ -254,6 +256,246 @@ class CourierController extends Controller
             }
         }
 
+        //3. Validate courier Image Parameter
+        if(!$errors->count() && isset($courier['addresses']) && is_array($courier['addresses']))
+        {
+            $address_current_ids         = [];
+            foreach ($courier['addresses'] as $key => $value) 
+            {
+                if(!$errors->count())
+                {
+                    $address_data        = \App\Models\Address::find($value['id']);
+
+                    if($address_data)
+                    {
+                        $address_rules   =   [
+                                                'owner_id'                  => 'required|numeric|'.($is_new ? '' : 'in:'.$courier_data['id']),
+                                                'owner_type'                => 'required|max:255',
+                                                'phone'                     => 'required|max:255',
+                                                'address'                   => 'required',
+                                                'zipcode'                   => 'required|max:255',
+                                            ];
+
+                        $validator      = Validator::make($address_data['attributes'], $address_rules);
+                    }
+                    else
+                    {
+                        $address_rules   =   [
+                                                'owner_id'                  => 'numeric|'.($is_new ? '' : 'in:'.$courier_data['id']),
+                                                'phone'                     => 'required|max:255',
+                                                'address'                   => 'required',
+                                                'zipcode'                   => 'required|max:255',
+                                            ];
+
+                        $validator      = Validator::make($value, $address_rules);
+                    }
+
+                    //if there was image and validator false
+                    if ($address_data && !$validator->passes())
+                    {
+                        if(isset($value['owner_id']) && $value['owner_id']!=$courier['id'])
+                        {
+                            $errors->add('Address', 'Produk dari Image Tidak Valid.');
+                        }
+                        elseif($is_new)
+                        {
+                            $errors->add('Address', 'Produk Image Tidak Valid.');
+                        }
+                        else
+                        {
+                            $address_data                = $address_data->fill($value);
+
+                            if(!$address_data->save())
+                            {
+                                $errors->add('Address', $address_data->getError());
+                            }
+                            else
+                            {
+                                $address_current_ids[]   = $address_data['id'];
+                            }
+                        }
+                    }
+                    //if there was image and validator false
+                    elseif (!$address_data && !$validator->passes())
+                    {
+                        $errors->add('Address', $validator->errors());
+                    }
+                    elseif($address_data && $validator->passes())
+                    {
+                        $address_current_ids[]              = $address_data['id'];
+                    }
+                    else
+                    {
+                        $value['owner_id']                  = $courier_data['id'];
+                        $value['owner_type']                = get_class($courier_data);
+
+                        $address_data                       = new \App\Models\Address;
+
+                        $address_data                       = $address_data->fill($value);
+
+                        if(!$address_data->save())
+                        {
+                            $errors->add('Address', $address_data->getError());
+                        }
+                        else
+                        {
+                            $address_current_ids[]          = $address_data['id'];
+                        }
+                    }
+                }
+            }
+            //if there was no error, check if there were things need to be delete
+            if(!$errors->count())
+            {
+                $addresses                            = \App\Models\Address::ownerid($courier['id'])->ownertype(get_class($courier_data))->get()->toArray();
+                
+                $address_should_be_ids               = [];
+                foreach ($addresses as $key => $value) 
+                {
+                    $address_should_be_ids[]         = $value['id'];
+                }
+
+                $difference_address_ids              = array_diff($address_should_be_ids, $address_current_ids);
+
+                if($difference_address_ids)
+                {
+                    foreach ($difference_address_ids as $key => $value) 
+                    {
+                        $address_data                = \App\Models\Address::find($value);
+
+                        if(!$address_data->delete())
+                        {
+                            $errors->add('Address', $address_data->getError());
+                        }
+                    }
+                }
+            }
+        }
+        //End of validate courier image
+
+        //4. Validate courier Image Parameter
+        if(!$errors->count() && isset($courier['images']) && is_array($courier['images']))
+        {
+            $image_current_ids         = [];
+            foreach ($courier['images'] as $key => $value) 
+            {
+                if(!$errors->count())
+                {
+                    $image_data        = \App\Models\Image::find($value['id']);
+
+                    if($image_data)
+                    {
+                        $image_rules   =   [
+                                                'imageable_id'              => 'required|numeric|'.($is_new ? '' : 'in:'.$courier_data['id']),
+                                                'imageable_type'            => 'required|max:255',
+                                                'thumbnail'                 => 'required|max:255',
+                                                'image_xs'                  => 'required|max:255',
+                                                'image_sm'                  => 'required|max:255',
+                                                'image_md'                  => 'required|max:255',
+                                                'image_lg'                  => 'required|max:255',
+                                                'is_default'                => 'boolean|in:'.$image_data['is_default'],
+                                            ];
+
+                        $validator      = Validator::make($image_data['attributes'], $image_rules);
+                    }
+                    else
+                    {
+                        $image_rules   =   [
+                                                'imageable_id'              => 'numeric|'.($is_new ? '' : 'in:'.$courier_data['id']),
+                                                'thumbnail'                 => 'required|max:255',
+                                                'image_xs'                  => 'required|max:255',
+                                                'image_sm'                  => 'required|max:255',
+                                                'image_md'                  => 'required|max:255',
+                                                'image_lg'                  => 'required|max:255',
+                                                'is_default'                => 'boolean',
+                                            ];
+
+                        $validator      = Validator::make($value, $image_rules);
+                    }
+
+                    //if there was image and validator false
+                    if ($image_data && !$validator->passes())
+                    {
+                        if(isset($value['imageable_id']) && $value['imageable_id']!=$courier['id'])
+                        {
+                            $errors->add('Image', 'Produk dari Image Tidak Valid.');
+                        }
+                        elseif($is_new)
+                        {
+                            $errors->add('Image', 'Produk Image Tidak Valid.');
+                        }
+                        else
+                        {
+                            $image_data                = $image_data->fill($value);
+
+                            if(!$image_data->save())
+                            {
+                                $errors->add('Image', $image_data->getError());
+                            }
+                            else
+                            {
+                                $image_current_ids[]   = $image_data['id'];
+                            }
+                        }
+                    }
+                    //if there was image and validator false
+                    elseif (!$image_data && !$validator->passes())
+                    {
+                        $errors->add('Image', $validator->errors());
+                    }
+                    elseif($image_data && $validator->passes())
+                    {
+                        $image_current_ids[]            = $image_data['id'];
+                    }
+                    else
+                    {
+                        $value['imageable_id']          = $courier_data['id'];
+                        $value['imageable_type']        = get_class($courier_data);
+
+                        $image_data                     = new \App\Models\Image;
+
+                        $image_data                     = $image_data->fill($value);
+
+                        if(!$image_data->save())
+                        {
+                            $errors->add('Image', $image_data->getError());
+                        }
+                        else
+                        {
+                            $image_current_ids[]       = $image_data['id'];
+                        }
+                    }
+                }
+            }
+            //if there was no error, check if there were things need to be delete
+            if(!$errors->count())
+            {
+                $images                            = \App\Models\Image::imageableid($courier['id'])->imageabletype(get_class($courier_data))->get()->toArray();
+                
+                $image_should_be_ids               = [];
+                foreach ($images as $key => $value) 
+                {
+                    $image_should_be_ids[]         = $value['id'];
+                }
+
+                $difference_image_ids              = array_diff($image_should_be_ids, $image_current_ids);
+
+                if($difference_image_ids)
+                {
+                    foreach ($difference_image_ids as $key => $value) 
+                    {
+                        $image_data                = \App\Models\Image::find($value);
+
+                        if(!$image_data->delete())
+                        {
+                            $errors->add('Image', $image_data->getError());
+                        }
+                    }
+                }
+            }
+        }
+        //End of validate courier image
+
         if($errors->count())
         {
             DB::rollback();
@@ -263,7 +505,7 @@ class CourierController extends Controller
 
         DB::commit();
         
-        $final_courier              = \App\Models\Courier::id($courier_data['id'])->with(['shippingcosts'])->first()->toArray();
+        $final_courier                 = \App\Models\Courier::id($courier_data['id'])->with(['shippingcosts', 'addresses', 'images'])->first()->toArray();
 
         return new JSend('success', (array)$final_courier);
     }

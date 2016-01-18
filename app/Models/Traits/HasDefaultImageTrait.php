@@ -12,7 +12,7 @@ use App\Models\Scopes\DefaultImageScope;
 trait HasDefaultImageTrait 
 {
     /**
-     * Boot the Has CurrentPrice trait for a model has default image.
+     * Boot the Has DefaultImage trait for a model has default image.
      *
      * @return void
      */

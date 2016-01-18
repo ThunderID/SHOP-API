@@ -8,6 +8,7 @@ use App\Models\Traits\HasDefaultImageTrait;
 
 use App\Models\Traits\HasSlugTrait;
 use App\Models\Traits\HasNameTrait;
+use App\Models\Traits\HasSelectAllTrait;
 
 use App\Models\Traits\HasStockTrait;
 use App\Models\Traits\HasSellableTrait;
@@ -37,6 +38,7 @@ class Product extends BaseModel
 	 * Global traits used as query builder (global scope).
 	 *
 	 */
+	use HasSelectAllTrait;
 	use HasCurrentStockTrait;
 	use HasCurrentPriceTrait;
 	use HasDefaultImageTrait;

@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasDefaultImageTrait;
 use App\Models\Traits\HasNameTrait;
+use App\Models\Traits\HasSelectAllTrait;
+
 use App\Models\Observers\CourierObserver;
 
 /**
@@ -18,9 +21,19 @@ class Courier extends BaseModel
 	 */
 	use \App\Models\Traits\hasMany\HasShipmentsTrait;
 	use \App\Models\Traits\hasMany\HasShippingCostsTrait;
+	use \App\Models\Traits\hasMany\HasAddressesTrait;
+	
+	use \App\Models\Traits\morphMany\HasImagesTrait;
 
 	/**
 	 * Global traits used as query builder (global scope).
+	 *
+	 */
+	use HasSelectAllTrait;
+	use HasDefaultImageTrait;
+
+	/**
+	 * Global traits used as query builder (plugged scope).
 	 *
 	 */
 	use HasNameTrait;

@@ -7,9 +7,11 @@ use Carbon\Carbon;
 use App\Models\Traits\HasTypeTrait;
 use App\Models\Traits\HasAmountTrait;
 use App\Models\Traits\HasCurrentStatusTrait;
+use App\Models\Traits\HasSelectAllTrait;
 use App\Models\Traits\HasTransactionStatusTrait;
-use App\Models\Observers\TransactionObserver;
 use App\Models\Traits\Changes\HasStatusLogTrait;
+
+use App\Models\Observers\TransactionObserver;
 
 /**
  * Used for Sale and Purchase Models
@@ -29,6 +31,7 @@ class Transaction extends BaseModel
 	 * Global traits used as query builder (global scope).
 	 *
 	 */
+	use HasSelectAllTrait;
 	use HasAmountTrait;
 	use HasCurrentStatusTrait;
 	use HasTransactionStatusTrait;

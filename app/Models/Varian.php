@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\HasCurrentPriceTrait;
 use App\Models\Traits\HasCurrentStockTrait;
 use App\Models\Traits\HasDefaultImageTrait;
+use App\Models\Traits\HasSelectAllTrait;
 
 use App\Models\Traits\HasStockTrait;
 use App\Models\Traits\HasTransactionStatusTrait;
@@ -30,6 +31,7 @@ class Varian extends BaseModel
 	 * Global traits used as query builder (global scope).
 	 *
 	 */
+	use HasSelectAllTrait;
 	use HasCurrentStockTrait;
 
 	/**

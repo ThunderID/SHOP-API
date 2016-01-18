@@ -16,6 +16,7 @@ class Address extends BaseModel
 	 *
 	 */
 	use \App\Models\Traits\hasMany\HasShipmentsTrait;
+ 	use \App\Models\Traits\morphTo\HasOwnerTrait;
 
 	/**
 	 * The database table used by the model.

@@ -24,7 +24,6 @@ class CurrentPriceScope implements ScopeInterface
 	public function apply(Builder $builder, Model $model)
 	{
 		$builder
-		->selectraw('products.*')
 		->selectraw('prices.price as price')
 		->selectraw('prices.promo_price as promo_price')
 		->selectraw('prices.started_at as price_start')

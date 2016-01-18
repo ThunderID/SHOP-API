@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\HasTypeTrait;
+use App\Models\Traits\HasSelectAllTrait;
 use App\Models\Traits\HasQuotaTrait;
 // use App\Models\Observers\CampaignObserver;
 
@@ -25,8 +26,8 @@ class Campaign extends BaseModel
 	 * Global traits used as query builder (global scope).
 	 *
 	 */
+	use HasSelectAllTrait;
 	use HasQuotaTrait;
-
 	use HasTypeTrait;
 
 	/**

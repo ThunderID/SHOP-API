@@ -726,7 +726,7 @@ class ProductController extends Controller
             //if there was no error, check if there were things need to be delete
             if(!$errors->count())
             {
-                $images                            = \App\Models\Image::imageableid($product['id'])->get()->toArray();
+                $images                            = \App\Models\Image::imageableid($product['id'])->imageabletype(get_class($product_data))->get()->toArray();
                 
                 $image_should_be_ids               = [];
                 foreach ($images as $key => $value) 

@@ -1,7 +1,7 @@
 <?php namespace App\Models\Traits\morphMany;
 
 /**
- * Trait for models has many Labels.
+ * Trait for models morph many Images.
  *
  * @author cmooy
  */
@@ -19,7 +19,7 @@ trait HasImagesTrait
 	}
 	
 	/**
-	 * call has many relationship
+	 * call morph many relationship
 	 *
 	 **/
 	public function Images()

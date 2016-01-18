@@ -138,20 +138,52 @@ definitions:
             type: string
           name:
             type: string
+          thumbnail:
+            type: string
+          image_xs:
+            type: string
+          image_sm:
+            type: string
+          image_md:
+            type: string
+          image_lg:
+            type: string
           shipppingcosts:
             type: array
             items:
               $ref: '#/definitions/costs'
+          addresses:
+            type: array
+            items:
+              $ref: '#/definitions/address'
   courier:
     properties:
       id:
         type: string
       name:
         type: string
-      shippingcosts:
+      thumbnail:
+        type: string
+      image_xs:
+        type: string
+      image_sm:
+        type: string
+      image_md:
+        type: string
+      image_lg:
+        type: string
+      shipppingcosts:
         type: array
         items:
           $ref: '#/definitions/costs'
+      addresses:
+        type: array
+        items:
+          $ref: '#/definitions/addresses'
+      images:
+        type: array
+        items:
+          $ref: '#/definitions/images'
   costs:
     properties:
       id:
@@ -164,6 +196,34 @@ definitions:
         type: string
       cost:
         type: number
+  addresses:
+    properties:
+      id:
+        type: string
+      phone:
+        type: string
+      address:
+        type: string
+      zipcode:
+        type: string
+  images:
+    properties:
+      id:
+        type: string
+      product_id:
+        type: string
+      thumbnail:
+        type: string
+      image_xs:
+        type: string
+      image_sm:
+        type: string
+      image_md:
+        type: string
+      image_lg:
+        type: string
+      is_default:
+        type: boolean
   Error:
     type: object
     properties:
