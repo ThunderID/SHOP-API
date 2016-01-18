@@ -200,6 +200,9 @@ class UIController extends Controller
             {
                 switch (strtolower($key)) 
                 {
+                    case 'name' :
+                        $result     = $result->name($value);
+                    break;
                     default:
                         # code...
                         break;
