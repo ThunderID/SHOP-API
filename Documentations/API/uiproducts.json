@@ -10,7 +10,7 @@ basePath: /v1
 produces:
   - application/json
 paths:
-  /balin/store/products:
+  /balin/public/products:
     get:
       summary: Product Lists
       description: |

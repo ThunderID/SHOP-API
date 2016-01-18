@@ -42,7 +42,7 @@ $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], fu
 	// ------------------------------------------------------------------------------------
 	// PRODUCTS
 	// ------------------------------------------------------------------------------------
-	$app->get('/balin/store/products',
+	$app->get('/balin/public/products',
 		[
 			'uses'				=> 'UIController@products'
 		]
@@ -51,7 +51,7 @@ $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], fu
 	// ------------------------------------------------------------------------------------
 	// CLUSTERS
 	// ------------------------------------------------------------------------------------
-	$app->get('/balin/store/clusters/{type}',
+	$app->get('/balin/public/clusters/{type}',
 		[
 			'uses'				=> 'UIController@clusters'
 		]
@@ -60,7 +60,7 @@ $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], fu
 	// ------------------------------------------------------------------------------------
 	// CLUSTERS
 	// ------------------------------------------------------------------------------------
-	$app->get('/balin/store/labels',
+	$app->get('/balin/public/labels',
 		[
 			'uses'				=> 'UIController@labels'
 		]

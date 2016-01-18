@@ -10,7 +10,7 @@ basePath: /v1
 produces:
   - application/json
 paths:
-  /balin/store/clusters/type/:
+  /balin/public/clusters/type/:
     get:
       summary: Cluster Lists
       description: |

@@ -10,7 +10,7 @@ basePath: /v1
 produces:
   - application/json
 paths:
-  /balin/store/labels:
+  /balin/public/labels:
     get:
       summary: Label Lists
       description: |
