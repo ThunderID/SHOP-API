@@ -447,7 +447,7 @@ class ProductController extends Controller
                 {
                     $category_current_ids[]     = $value['id'];
                 }
-                else
+                elseif(isset($value['name']))
                 {
                     $category_data              = new \App\Models\Category;
                     $category_data              = $category_data->fill(['name' => $value['name']]);
@@ -486,7 +486,7 @@ class ProductController extends Controller
                 {
                     $tag_current_ids[]      = $value['id'];
                 }
-                else
+                elseif(isset($value['name']))
                 {
                     $tag_data               = new \App\Models\Tag;
                     $tag_data               = $tag_data->fill(['name' => $value['name']]);
@@ -502,9 +502,9 @@ class ProductController extends Controller
                 }
             }
 
-            if($errors->count())
+            if(!$errors->count())
             {
-                if(!$product_data->categories()->sync($tag_current_ids))
+                if(!$product_data->tags()->sync($tag_current_ids))
                 {
                     $errors->add('Tag', 'Tag produk tidak tersimpan.');
                 }
