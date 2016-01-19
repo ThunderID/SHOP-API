@@ -573,7 +573,7 @@ class ProductController extends Controller
                         }
                         else
                         {
-                            $value['lable']             = $value['label'];
+                            $value['lable']             = (isset($value['label']) ? $value['label'] : $value['lable']);
                             $label_data                 = $label_data->fill($value);
 
                             if(!$label_data->save())
