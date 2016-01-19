@@ -433,6 +433,8 @@ class ProductController extends Controller
             }
         }
         //End of validate product price
+        
+        $cluster_current_ids                    = [];
 
         //4. Validate Product Category Parameter
         if(!$errors->count() && isset($product['categories']) && is_array($product['categories']))
@@ -446,6 +448,7 @@ class ProductController extends Controller
                 if($category)
                 {
                     $category_current_ids[]     = $value['id'];
+                    $cluster_current_ids[]      = $value['id'];
                 }
                 elseif(isset($value['name']))
                 {
@@ -459,17 +462,18 @@ class ProductController extends Controller
                     else
                     {
                         $category_current_ids[]     = $category_data['id'];
+                        $cluster_current_ids[]      = $category_data['id'];
                     }
                 }
             }
 
-            if(!$errors->count())
-            {
-                if(!$product_data->categories()->sync($category_current_ids))
-                {
-                    $errors->add('Category', 'Kategori produk tidak tersimpan.');
-                }
-            }
+            // if(!$errors->count())
+            // {
+            //     if(!$product_data->categories()->sync($category_current_ids))
+            //     {
+            //         $errors->add('Category', 'Kategori produk tidak tersimpan.');
+            //     }
+            // }
         }
         //End of validate product category
 
@@ -485,6 +489,7 @@ class ProductController extends Controller
                 if($tag)
                 {
                     $tag_current_ids[]      = $value['id'];
+                    $cluster_current_ids[]      = $value['id'];
                 }
                 elseif(isset($value['name']))
                 {
@@ -497,19 +502,29 @@ class ProductController extends Controller
                     }
                     else
                     {
-                        $tag_current_ids[]  = $tag_data['id'];
+                        $tag_current_ids[]          = $tag_data['id'];
+                        $cluster_current_ids[]      = $tag_data['id'];
                     }
                 }
             }
 
-            if(!$errors->count())
+            // if(!$errors->count())
+            // {
+            //     if(!$product_data->tags()->sync($tag_current_ids))
+            //     {
+            //         $errors->add('Tag', 'Tag produk tidak tersimpan.');
+            //     }
+            // }
+        }
+
+        if(!$errors->count() && isset($cluster_current_ids))
+        {
+            if(!$product_data->clusters()->sync($cluster_current_ids))
             {
-                if(!$product_data->tags()->sync($tag_current_ids))
-                {
-                    $errors->add('Tag', 'Tag produk tidak tersimpan.');
-                }
+                $errors->add('Product', 'Tag/Kategori produk tidak tersimpan.');
             }
         }
+
         //End of validate product category
 
         //6. Validate Product Label Parameter
