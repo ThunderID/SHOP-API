@@ -4,6 +4,7 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 
 use Illuminate\Support\MessageBag;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Validator;
 
 /**
  * Abstract class for eloquent models Models
@@ -61,6 +62,22 @@ abstract class BaseModel extends Eloquent
 	public static function boot() 
 	{
         parent::boot();
+
+        static::saving(function($model)
+		{
+			if(isset($model['rules']))
+			{
+				$validator 				= Validator::make($model['attributes'], $model['rules']);
+
+				if(!$validator->passes())
+				{
+					$model['errors'] 	= $validator->errors();
+
+					return false;
+				}
+
+			}
+		});
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/

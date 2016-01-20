@@ -221,7 +221,7 @@ class ProductController extends Controller
                                                 'size'                      => 'required|max:255|in:'.$varian_data['size'],
                                             ];
 
-                        $validator      = Validator::make($varian, $varian_rules);
+                        $validator      = Validator::make($value, $varian_rules);
                     }
                     else
                     {
