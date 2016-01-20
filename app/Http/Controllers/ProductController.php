@@ -149,7 +149,7 @@ class ProductController extends Controller
 
         //1. Validate Product Parameter
         $product                    = Input::get('product');
- 
+
         //1a. Get original data
         if(is_null($product['id']))
         {
@@ -221,7 +221,7 @@ class ProductController extends Controller
                                                 'size'                      => 'required|max:255|in:'.$varian_data['size'],
                                             ];
 
-                        $validator      = Validator::make($varian_data['attributes'], $varian_rules);
+                        $validator      = Validator::make($varian, $varian_rules);
                     }
                     else
                     {
@@ -337,7 +337,7 @@ class ProductController extends Controller
                                                 'started_at'                => 'required|date_format:"Y-m-d H:i:s"',
                                             ];
 
-                        $validator      = Validator::make($price_data['attributes'], $price_rules);
+                        $validator      = Validator::make($value, $price_rules);
                     }
                     else
                     {
@@ -364,7 +364,9 @@ class ProductController extends Controller
                         }
                         else
                         {
-                            $price_data                = $price_data->fill($value);
+                            $value['product_id']        = $product_data['id'];
+
+                            $price_data                 = $price_data->fill($value);
 
                             if(!$price_data->save())
                             {
@@ -546,7 +548,7 @@ class ProductController extends Controller
                                                 'ended_at'                  => 'date_format:"Y-m-d H:i:s"',
                                             ];
 
-                        $validator      = Validator::make($label_data['attributes'], $label_rules);
+                        $validator      = Validator::make($value, $label_rules);
                     }
                     else
                     {
@@ -667,7 +669,7 @@ class ProductController extends Controller
                                                 'is_default'                => 'boolean|in:'.$image_data['is_default'],
                                             ];
 
-                        $validator      = Validator::make($image_data['attributes'], $image_rules);
+                        $validator      = Validator::make($value, $label_rules);
                     }
                     else
                     {
