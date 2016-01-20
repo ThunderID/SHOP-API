@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\HasDefaultImageTrait;
+use App\Models\Traits\HasDefaultAddressTrait;
 use App\Models\Traits\HasNameTrait;
 use App\Models\Traits\HasSelectAllTrait;
 
@@ -30,6 +31,7 @@ class Courier extends BaseModel
 	 *
 	 */
 	use HasSelectAllTrait;
+	use HasDefaultAddressTrait;
 	use HasDefaultImageTrait;
 
 	/**

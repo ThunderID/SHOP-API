@@ -148,6 +148,12 @@ definitions:
             type: string
           image_lg:
             type: string
+          current_address:
+            type: string
+          current_zipcode:
+            type: string
+          current_phone:
+            type: string
           shipppingcosts:
             type: array
             items:
@@ -171,6 +177,12 @@ definitions:
       image_md:
         type: string
       image_lg:
+        type: string
+      current_address:
+        type: string
+      current_zipcode:
+        type: string
+      current_phone:
         type: string
       shipppingcosts:
         type: array
