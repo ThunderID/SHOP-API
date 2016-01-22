@@ -83,12 +83,13 @@ class Payment extends BaseModel
 	 * @var array
 	 */
 	protected $rules				=	[
-											'method'						=> 'required|max:255',
-											'destination'					=> 'required|max:255',
-											'account_name'					=> 'required|max:255',
-											'account_number'				=> 'required|max:255',
-											'ondate'						=> 'required|date_format:"Y-m-d H:i:s"',
-											'amount'						=> 'required|numeric',
+											'transaction_id'				=> 'exists:transactions,id',
+											'method'						=> 'max:255',
+											'destination'					=> 'max:255',
+											'account_name'					=> 'max:255',
+											'account_number'				=> 'max:255',
+											'ondate'						=> 'date_format:"Y-m-d H:i:s"',
+											'amount'						=> 'numeric',
 										];
 	
 	/* ---------------------------------------------------------------------------- RELATIONSHIP ----------------------------------------------------------------------------*/

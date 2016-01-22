@@ -83,8 +83,9 @@ class PointLog extends BaseModel
 	 * @var array
 	 */
 	protected $rules				=	[
+											'user_id'						=> 'exists:users,id',
 											'amount'						=> 'numeric',
-											'expired_at'					=> 'required|date_format:"Y-m-d H:i:s"|after:now',
+											'expired_at'					=> 'date_format:"Y-m-d H:i:s"|after:now',
 										];
 	
 	/* ---------------------------------------------------------------------------- RELATIONSHIP ----------------------------------------------------------------------------*/

@@ -75,11 +75,12 @@ class Image extends BaseModel
 	 * @var array
 	 */
 	protected $rules				=	[
-											'thumbnail'						=> 'required|max:255|url',
-											'image_xs'						=> 'required|max:255|url',
-											'image_sm'						=> 'required|max:255|url',
-											'image_md'						=> 'required|max:255|url',
-											'image_lg'						=> 'required|max:255|url',
+											'thumbnail'						=> 'max:255|url',
+											'image_xs'						=> 'max:255|url',
+											'image_sm'						=> 'max:255|url',
+											'image_md'						=> 'max:255|url',
+											'image_lg'						=> 'max:255|url',
+											'is_default'					=> 'boolean',
 										];
 	
 	/* ---------------------------------------------------------------------------- RELATIONSHIP ----------------------------------------------------------------------------*/

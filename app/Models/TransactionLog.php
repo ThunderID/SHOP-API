@@ -80,8 +80,9 @@ class TransactionLog extends BaseModel
 	 * @var array
 	 */
 	protected $rules				=	[
-											'status'						=> 'required|in:cart,wait,paid,packed,shipping,delivered,canceled,abandoned',
-											'changed_at'					=> 'required|date_format:"Y-m-d H:i:s"',
+											'transaction_id'				=> 'exists:transactions,id',
+											'status'						=> 'in:cart,wait,paid,packed,shipping,delivered,canceled,abandoned',
+											'changed_at'					=> 'date_format:"Y-m-d H:i:s"',
 											'notes'							=> 'required_if:status,delivered',
 										];
 	

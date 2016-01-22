@@ -40,10 +40,12 @@ class Referral extends Campaign
 	 * @var array
 	 */
 	protected $rules				=	[
-											'code'							=> 'required|max:255|min:8',
+											'user_id' 						=> 'exists:users,id',
+											'code'							=> 'max:255|min:8',
 											'value'							=> 'numeric',
+											'type'							=> 'referral',
 											// 'started_at'					=> 'date_format:"Y-m-d H:i:s"|after:now',
-											'expired_at'					=> 'date_format:"Y-m-d H:i:s"|after:now',
+											// 'expired_at'					=> 'date_format:"Y-m-d H:i:s"|after:now',
 										];
 	
 	/* ---------------------------------------------------------------------------- RELATIONSHIP ----------------------------------------------------------------------------*/

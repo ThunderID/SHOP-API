@@ -42,6 +42,8 @@ class Purchase extends Transaction
 	 * @var array
 	 */
 	protected $rules				=	[
+											'supplier_id'					=> 'exists:suppliers,id',
+											'type'							=> 'in:buy',
 											'ref_number'					=> 'max:255',
 											'transact_at'					=> 'date_format:"Y-m-d H:i:s"',
 										];

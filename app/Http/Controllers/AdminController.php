@@ -94,7 +94,7 @@ class AdminController extends Controller
         DB::beginTransaction();
 
         //1. Validate Admin Parameter
-        $admin                    = Input::get('admin');
+        $admin                      = Input::get('admin');
         
         if(is_null($admin['id']))
         {

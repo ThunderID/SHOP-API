@@ -94,8 +94,9 @@ class Varian extends BaseModel
 	 * @var array
 	 */
 	protected $rules				=	[
-											'size'							=> 'required|max:255',
-											'sku'							=> 'required|max:255',
+											'product_id'					=> 'exists:products,id',
+											'size'							=> 'max:255',
+											'sku'							=> 'max:255',
 										];
 	
 	/* ---------------------------------------------------------------------------- RELATIONSHIP ----------------------------------------------------------------------------*/

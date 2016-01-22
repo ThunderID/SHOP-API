@@ -70,9 +70,10 @@ class Price extends BaseModel
 	 * @var array
 	 */
 	protected $rules				=	[
-											'price'							=> 'required|numeric',
+											'product_id'					=> 'exists:products,id'
+											'price'							=> 'numeric',
 											'promo_price'					=> 'numeric',
-											'started_at'					=> 'required|date_format:"Y-m-d H:i:s"',
+											'started_at'					=> 'date_format:"Y-m-d H:i:s"',
 										];
 	
 	/* ---------------------------------------------------------------------------- RELATIONSHIP ----------------------------------------------------------------------------*/

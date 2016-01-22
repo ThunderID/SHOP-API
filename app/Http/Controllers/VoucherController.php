@@ -15,278 +15,234 @@ use Illuminate\Support\Facades\DB;
  */
 class VoucherController extends Controller
 {
-    /**
-     * Display all vouchers
-     *
-     * @param search, skip, take
-     * @return Response
-     */
-    public function index()
-    {
-        $result                 = new \App\Models\Voucher;
+	/**
+	 * Display all vouchers
+	 *
+	 * @param search, skip, take
+	 * @return Response
+	 */
+	public function index()
+	{
+		$result                 = new \App\Models\Voucher;
 
-        if(Input::has('search'))
-        {
-            $search                 = Input::get('search');
+		if(Input::has('search'))
+		{
+			$search                 = Input::get('search');
 
-            foreach ($search as $key => $value) 
-            {
-                switch (strtolower($key)) 
-                {
-                    default:
-                        # code...
-                        break;
-                }
-            }
-        }
+			foreach ($search as $key => $value) 
+			{
+				switch (strtolower($key)) 
+				{
+					default:
+						# code...
+						break;
+				}
+			}
+		}
 
-        $count                      = $result->count();
+		$count                      = $result->count();
 
-        if(Input::has('skip'))
-        {
-            $skip                   = Input::get('skip');
-            $result                 = $result->skip($skip);
-        }
+		if(Input::has('skip'))
+		{
+			$skip                   = Input::get('skip');
+			$result                 = $result->skip($skip);
+		}
 
-        if(Input::has('take'))
-        {
-            $take                   = Input::get('take');
-            $result                 = $result->take($take);
-        }
+		if(Input::has('take'))
+		{
+			$take                   = Input::get('take');
+			$result                 = $result->take($take);
+		}
 
-        $result                     = $result->with(['quotalogs'])->get()->toArray();
+		$result                     = $result->with(['quotalogs'])->get()->toArray();
 
-        return new JSend('success', (array)['count' => $count, 'data' => $result]);
-    }
+		return new JSend('success', (array)['count' => $count, 'data' => $result]);
+	}
 
-    /**
-     * Display a voucher
-     *
-     * @param voucher id
-     * @return Response
-     */
-    public function detail($id = null)
-    {
-        $result                 = \App\Models\Voucher::id($id)->with(['quotalogs', 'sales', 'sales.customer'])->first();
+	/**
+	 * Display a voucher
+	 *
+	 * @param voucher id
+	 * @return Response
+	 */
+	public function detail($id = null)
+	{
+		$result                 = \App\Models\Voucher::id($id)->with(['quotalogs', 'sales', 'sales.customer'])->first();
 
-        if($result)
-        {
-            return new JSend('success', (array)$result->toArray());
-        }
-        return new JSend('error', (array)Input::all(), 'ID Tidak Valid.');
-    }
+		if($result)
+		{
+			return new JSend('success', (array)$result->toArray());
+		}
+		return new JSend('error', (array)Input::all(), 'ID Tidak Valid.');
+	}
 
-    /**
-     * Store a Voucher
-     *
-     * 1. Save Vouchers
-     * 2. Save Quota Logs
-     *
-     * @return Response
-     */
-    public function store()
-    {
-        if(!Input::has('voucher'))
-        {
-            return new JSend('error', (array)Input::all(), 'Tidak ada data voucher.');
-        }
+	/**
+	 * Store a Voucher
+	 *
+	 * 1. Save Vouchers
+	 * 2. Save Quota Logs
+	 *
+	 * @return Response
+	 */
+	public function store()
+	{
+		if(!Input::has('voucher'))
+		{
+			return new JSend('error', (array)Input::all(), 'Tidak ada data voucher.');
+		}
 
-        $errors                     = new MessageBag();
+		$errors                     = new MessageBag();
 
-        DB::beginTransaction();
+		DB::beginTransaction();
 
-        //1. Validate Voucher Parameter
-        $voucher                    = Input::get('voucher');
-        
-        if(is_null($voucher['id']))
-        {
-            $is_new                 = true;
-        }
-        else
-        {
-            $is_new                 = false;
-        }
+		//1. Validate Voucher Parameter
+		$voucher                    = Input::get('voucher');
+		
+		if(is_null($voucher['id']))
+		{
+			$is_new                 = true;
+		}
+		else
+		{
+			$is_new                 = false;
+		}
 
-        $voucher_rules             =   [
-                                            'user_id'                       => 'exists:users,id',
-                                            'code'                          => 'required|max:255|unique:tmp_vouchers,code,'.(!is_null($voucher['id']) ? $voucher['id'] : ''),
-                                            'type'                          => 'required|in:debit_point,free_shipping_cost',
-                                            'value'                         => 'required|numeric',
-                                            'started_at'                    => 'date_format:"Y-m-d H:i:s"',
-                                            'expired_at'                    => 'date_format:"Y-m-d H:i:s"',
-                                        ];
+		$voucher_rules             =   [
+											'user_id'		=> 'exists:users,id',
+											'code'			=> 'required|max:255|unique:tmp_vouchers,code,'.(!is_null($voucher['id']) ? $voucher['id'] : ''),
+											'type'			=> 'required|in:debit_point,free_shipping_cost',
+											'value'			=> 'required|numeric',
+											'started_at'	=> 'date_format:"Y-m-d H:i:s"',
+											'expired_at'	=> 'date_format:"Y-m-d H:i:s"',
+										];
 
-        //1a. Get original data
-        $voucher_data              = \App\Models\Voucher::findornew($voucher['id']);
+		//1a. Get original data
+		$voucher_data              = \App\Models\Voucher::findornew($voucher['id']);
 
-        //1b. Validate Basic Voucher Parameter
-        $validator                  = Validator::make($voucher, $voucher_rules);
+		//1b. Validate Basic Voucher Parameter
+		$validator                  = Validator::make($voucher, $voucher_rules);
 
-        if (!$validator->passes())
-        {
-            $errors->add('Voucher', $validator->errors());
-        }
-        else
-        {
-            //if validator passed, save voucher
-            $voucher_data           = $voucher_data->fill($voucher);
+		if (!$validator->passes())
+		{
+			$errors->add('Voucher', $validator->errors());
+		}
+		else
+		{
+			//if validator passed, save voucher
+			$voucher_data           = $voucher_data->fill($voucher);
 
-            if(!$voucher_data->save())
-            {
-                $errors->add('Voucher', $voucher_data->getError());
-            }
-        }
+			if(!$voucher_data->save())
+			{
+				$errors->add('Voucher', $voucher_data->getError());
+			}
+		}
 
-        //2. Validate Voucher Logs Parameter
-        if(!$errors->count() && isset($voucher['quotalogs']) && is_array($voucher['quotalogs']))
-        {
-            $log_current_ids         = [];
-            foreach ($voucher['quotalogs'] as $key => $value) 
-            {
-                if(!$errors->count())
-                {
-                    $log_data        = \App\Models\QuotaLog::find($value['id']);
+		//2. Validate Voucher Logs Parameter
+		if(!$errors->count() && isset($voucher['quotalogs']) && is_array($voucher['quotalogs']))
+		{
+			$log_current_ids         = [];
+			foreach ($voucher['quotalogs'] as $key => $value) 
+			{
+				if(!$errors->count())
+				{
+					$log_data        = \App\Models\QuotaLog::findornew($value['id']);
 
-                    if($log_data)
-                    {
-                        $log_rules   =   [
-                                                'voucher_id'                    => 'required|numeric|'.($is_new ? '' : 'in:'.$voucher_data['id']),
-                                                'amount'                        => 'required|numeric',
-                                                'notes'                         => 'required|max:512',
-                                            ];
+					$log_rules		=   [
+											'voucher_id'	=> 'exists:tmp_vouchers,id|'.($is_new ? '' : 'in:'.$voucher_data['id']),
+											'amount'		=> 'required|numeric',
+											'notes'			=> 'required|max:512',
+										];
 
-                        $validator      = Validator::make($log_data['attributes'], $log_rules);
-                    }
-                    else
-                    {
-                        $log_rules   =   [
-                                                'voucher_id'                    => 'numeric|'.($is_new ? '' : 'in:'.$voucher_data['id']),
-                                                'amount'                        => 'required|numeric',
-                                                'notes'                         => 'required|max:512',
-                                            ];
+					$validator      = Validator::make($value, $log_rules);
 
-                        $validator      = Validator::make($value, $log_rules);
-                    }
+					//if there was log and validator false
+					if (!$validator->passes())
+					{
+						$errors->add('Log', $validator->errors());
+					}
+					else
+					{
+						$value['voucher_id']        = $voucher_data['id'];
 
-                    //if there was log and validator false
-                    if ($log_data && !$validator->passes())
-                    {
-                        if($value['voucher_id']!=$voucher['id'])
-                        {
-                            $errors->add('Log', 'Voucher dari Log Tidak Valid.');
-                        }
-                        elseif($is_new)
-                        {
-                            $errors->add('Log', 'Voucher Log Tidak Valid.');
-                        }
-                        else
-                        {
-                            $log_data                = $log_data->fill($value);
+						$log_data                    = $log_data->fill($value);
 
-                            if(!$log_data->save())
-                            {
-                                $errors->add('Log', $log_data->getError());
-                            }
-                            else
-                            {
-                                $log_current_ids[]   = $log_data['id'];
-                            }
-                        }
-                    }
-                    //if there was log and validator false
-                    elseif (!$log_data && !$validator->passes())
-                    {
-                        $errors->add('Log', $validator->errors());
-                    }
-                    elseif($log_data && $validator->passes())
-                    {
-                        $log_current_ids[]           = $log_data['id'];
-                    }
-                    else
-                    {
-                        $value['voucher_id']        = $voucher_data['id'];
+						if(!$log_data->save())
+						{
+							$errors->add('Log', $log_data->getError());
+						}
+						else
+						{
+							$log_current_ids[]       = $log_data['id'];
+						}
+					}
+				}
+			}
 
-                        $log_data                    = new \App\Models\QuotaLog;
+			//if there was no error, check if there were things need to be delete
+			if(!$errors->count())
+			{
+				$logs                            = \App\Models\QuotaLog::voucherid($voucher['id'])->get(['id'])->toArray();
+				
+				$log_should_be_ids               = [];
+				foreach ($logs as $key => $value) 
+				{
+					$log_should_be_ids[]         = $value['id'];
+				}
 
-                        $log_data                    = $log_data->fill($value);
+				$difference_log_ids              = array_diff($log_should_be_ids, $log_current_ids);
 
-                        if(!$log_data->save())
-                        {
-                            $errors->add('Log', $log_data->getError());
-                        }
-                        else
-                        {
-                            $log_current_ids[]       = $log_data['id'];
-                        }
-                    }
-                }
-            }
+				if($difference_log_ids)
+				{
+					foreach ($difference_log_ids as $key => $value) 
+					{
+						$log_data                = \App\Models\QuotaLog::find($value);
 
-            //if there was no error, check if there were things need to be delete
-            if(!$errors->count())
-            {
-                $logs                            = \App\Models\QuotaLog::voucherid($voucher['id'])->get()->toArray();
-                
-                $log_should_be_ids               = [];
-                foreach ($logs as $key => $value) 
-                {
-                    $log_should_be_ids[]         = $value['id'];
-                }
+						if(!$log_data->delete())
+						{
+							$errors->add('Log', $log_data->getError());
+						}
+					}
+				}
+			}
+		}
 
-                $difference_log_ids              = array_diff($log_should_be_ids, $log_current_ids);
+		if($errors->count())
+		{
+			DB::rollback();
 
-                if($difference_log_ids)
-                {
-                    foreach ($difference_log_ids as $key => $value) 
-                    {
-                        $log_data                = \App\Models\QuotaLog::find($value);
+			return new JSend('error', (array)Input::all(), $errors);
+		}
 
-                        if(!$log_data->delete())
-                        {
-                            $errors->add('Log', $log_data->getError());
-                        }
-                    }
-                }
-            }
-        }
+		DB::commit();
+		
+		$final_voucher                 = \App\Models\Voucher::id($voucher_data['id'])->with(['quotalogs', 'transactions'])->first()->toArray();
 
-        if($errors->count())
-        {
-            DB::rollback();
+		return new JSend('success', (array)$final_voucher);
+	}
 
-            return new JSend('error', (array)Input::all(), $errors);
-        }
+	/**
+	 * Delete a voucher
+	 *
+	 * @param product id
+	 * @return Response
+	 */
+	public function delete($id = null)
+	{
+		//
+		$voucher                    = \App\Models\Voucher::id($id)->with(['quotalogs', 'transactions'])->first();
 
-        DB::commit();
-        
-        $final_voucher                 = \App\Models\Voucher::id($voucher_data['id'])->with(['quotalogs', 'transactions'])->first()->toArray();
+		if(!$voucher)
+		{
+			return new JSend('error', (array)Input::all(), 'Produk tidak ditemukan.');
+		}
 
-        return new JSend('success', (array)$final_voucher);
-    }
+		$result                     = $voucher->toArray();
 
-    /**
-     * Delete a voucher
-     *
-     * @param product id
-     * @return Response
-     */
-    public function delete($id = null)
-    {
-        //
-        $voucher                    = \App\Models\Voucher::id($id)->with(['quotalogs', 'transactions'])->first();
+		if($voucher->delete())
+		{
+			return new JSend('success', (array)$result);
+		}
 
-        if(!$voucher)
-        {
-            return new JSend('error', (array)Input::all(), 'Produk tidak ditemukan.');
-        }
-
-        $result                     = $voucher->toArray();
-
-        if($voucher->delete())
-        {
-            return new JSend('success', (array)$result);
-        }
-
-        return new JSend('error', (array)$result, $voucher->getError());
-    }
+		return new JSend('error', (array)$result, $voucher->getError());
+	}
 }

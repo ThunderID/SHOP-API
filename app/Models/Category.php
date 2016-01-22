@@ -38,8 +38,8 @@ class Category extends Cluster
 	 * @var array
 	 */
 	protected $rules				=	[
-											'path'							=> 'required|max:255',
-											'name'							=> 'required|max:255',
+											'path'							=> 'max:255',
+											'name'							=> 'max:255',
 											'slug'							=> 'max:255',
 										];
 	

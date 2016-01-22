@@ -15,161 +15,161 @@ use Illuminate\Support\Facades\DB;
  */
 class SupplierController extends Controller
 {
-    /**
-     * Display all suppliers
-     *
-     * @param search, skip, take
-     * @return Response
-     */
-    public function index()
-    {
-        $result                 = new \App\Models\Supplier;
+	/**
+	 * Display all suppliers
+	 *
+	 * @param search, skip, take
+	 * @return Response
+	 */
+	public function index()
+	{
+		$result                 = new \App\Models\Supplier;
 
-        if(Input::has('search'))
-        {
-            $search                 = Input::get('search');
+		if(Input::has('search'))
+		{
+			$search                 = Input::get('search');
 
-            foreach ($search as $key => $value) 
-            {
-                switch (strtolower($key)) 
-                {
-                    case 'name':
-                        $result     = $result->name($value);
-                        break;
-                    
-                    default:
-                        # code...
-                        break;
-                }
-            }
-        }
+			foreach ($search as $key => $value) 
+			{
+				switch (strtolower($key)) 
+				{
+					case 'name':
+						$result     = $result->name($value);
+						break;
+					
+					default:
+						# code...
+						break;
+				}
+			}
+		}
 
-        $count                      = $result->count();
+		$count                      = $result->count();
 
-        if(Input::has('skip'))
-        {
-            $skip                   = Input::get('skip');
-            $result                 = $result->skip($skip);
-        }
+		if(Input::has('skip'))
+		{
+			$skip                   = Input::get('skip');
+			$result                 = $result->skip($skip);
+		}
 
-        if(Input::has('take'))
-        {
-            $take                   = Input::get('take');
-            $result                 = $result->take($take);
-        }
+		if(Input::has('take'))
+		{
+			$take                   = Input::get('take');
+			$result                 = $result->take($take);
+		}
 
-        $result                     = $result->get()->toArray();
+		$result                     = $result->get()->toArray();
 
-        return new JSend('success', (array)['count' => $count, 'data' => $result]);
-    }
+		return new JSend('success', (array)['count' => $count, 'data' => $result]);
+	}
 
-    /**
-     * Display a supplier
-     *
-     * @return Response
-     */
-    public function detail($id = null)
-    {
-        $result                 = \App\Models\Supplier::id($id)->first();
-       
-        if($result)
-        {
-            return new JSend('success', (array)$result->toArray());
+	/**
+	 * Display a supplier
+	 *
+	 * @return Response
+	 */
+	public function detail($id = null)
+	{
+		$result                 = \App\Models\Supplier::id($id)->first();
+	   
+		if($result)
+		{
+			return new JSend('success', (array)$result->toArray());
 
-        }
-        return new JSend('error', (array)Input::all(), 'ID Tidak Valid.');
+		}
+		return new JSend('error', (array)Input::all(), 'ID Tidak Valid.');
 
-    }
+	}
 
-    /**
-     * Store a supplier
-     *
-     * @return Response
-     */
-    public function store()
-    {
-        if(!Input::has('supplier'))
-        {
-            return new JSend('error', (array)Input::all(), 'Tidak ada data supplier.');
-        }
+	/**
+	 * Store a supplier
+	 *
+	 * @return Response
+	 */
+	public function store()
+	{
+		if(!Input::has('supplier'))
+		{
+			return new JSend('error', (array)Input::all(), 'Tidak ada data supplier.');
+		}
 
-        $errors                     = new MessageBag();
+		$errors                     = new MessageBag();
 
-        DB::beginTransaction();
+		DB::beginTransaction();
 
-        //1. Validate Supplier Parameter
-        $supplier                    = Input::get('supplier');
-        if(is_null($supplier['id']))
-        {
-            $is_new                 = true;
-        }
-        else
-        {
-            $is_new                 = false;
-        }
+		//1. Validate Supplier Parameter
+		$supplier                    = Input::get('supplier');
+		if(is_null($supplier['id']))
+		{
+			$is_new                 = true;
+		}
+		else
+		{
+			$is_new                 = false;
+		}
 
-        $supplier_rules             =   [
-                                            'name'                      => 'required|max:255',
-                                        ];
+		$supplier_rules             =   [
+											'name'                      => 'required|max:255',
+										];
 
-        //1a. Get original data
-        $supplier_data              = \App\Models\Supplier::findornew($supplier['id']);
+		//1a. Get original data
+		$supplier_data              = \App\Models\Supplier::findornew($supplier['id']);
 
-        //1b. Validate Basic Supplier Parameter
-        $validator                  = Validator::make($supplier, $supplier_rules);
+		//1b. Validate Basic Supplier Parameter
+		$validator                  = Validator::make($supplier, $supplier_rules);
 
-        if (!$validator->passes())
-        {
-            $errors->add('Supplier', $validator->errors());
-        }
-        else
-        {
-            //if validator passed, save supplier
-            $supplier_data           = $supplier_data->fill($supplier);
+		if (!$validator->passes())
+		{
+			$errors->add('Supplier', $validator->errors());
+		}
+		else
+		{
+			//if validator passed, save supplier
+			$supplier_data           = $supplier_data->fill($supplier);
 
-            if(!$supplier_data->save())
-            {
-                $errors->add('Supplier', $supplier_data->getError());
-            }
-        }
-        //End of validate supplier
+			if(!$supplier_data->save())
+			{
+				$errors->add('Supplier', $supplier_data->getError());
+			}
+		}
+		//End of validate supplier
 
-        if($errors->count())
-        {
-            DB::rollback();
+		if($errors->count())
+		{
+			DB::rollback();
 
-            return new JSend('error', (array)Input::all(), $errors);
-        }
+			return new JSend('error', (array)Input::all(), $errors);
+		}
 
-        DB::commit();
-        
-        $final_supplier              = \App\Models\Supplier::id($supplier_data['id'])->first()->toArray();
+		DB::commit();
+		
+		$final_supplier              = \App\Models\Supplier::id($supplier_data['id'])->first()->toArray();
 
-        return new JSend('success', (array)$final_supplier);
-    }
+		return new JSend('success', (array)$final_supplier);
+	}
 
-    /**
-     * Delete a supplier
-     *
-     * @return Response
-     */
-    public function delete($id = null)
-    {
-        //
-        $supplier                   = \App\Models\Supplier::id($id)->first();
+	/**
+	 * Delete a supplier
+	 *
+	 * @return Response
+	 */
+	public function delete($id = null)
+	{
+		//
+		$supplier                   = \App\Models\Supplier::id($id)->first();
 
-        if(!$supplier)
-        {
-            return new JSend('error', (array)Input::all(), 'Supplier tidak ditemukan.');
-        }
+		if(!$supplier)
+		{
+			return new JSend('error', (array)Input::all(), 'Supplier tidak ditemukan.');
+		}
 
-        $result                     = $supplier->toArray();
+		$result                     = $supplier->toArray();
 
-        if($supplier->delete())
-        {
-            return new JSend('success', (array)$result);
-        }
+		if($supplier->delete())
+		{
+			return new JSend('success', (array)$result);
+		}
 
-        return new JSend('error', (array)$result, $supplier->getError());
-    }
+		return new JSend('error', (array)$result, $supplier->getError());
+	}
 }

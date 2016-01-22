@@ -84,8 +84,10 @@ class TransactionDetail extends BaseModel
 	 * @var array
 	 */
 	protected $rules				=	[
-											'quantity'						=> 'required|numeric',
-											'price'							=> 'required|numeric',
+											'transaction_id'				=> 'exists:transactions,id',
+											'varian_id'						=> 'exists:varians,id',
+											'quantity'						=> 'numeric',
+											'price'							=> 'numeric',
 											'discount'						=> 'numeric',
 										];
 	

@@ -137,8 +137,6 @@ class ClusterController extends Controller
 
         $cluster_rules             =   [
                                             'category_id'               => 'numeric|exists:categories,id',
-                                            // 'type'                      => 'required|in:category,id',
-                                            // 'path'                      => 'required|max:255',
                                             'name'                      => 'required|max:255',
                                             'slug'                      => 'max:255|unique:categories,slug,'.(!is_null($cluster['id']) ? $cluster['id'] : ''),
                                         ];

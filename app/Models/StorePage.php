@@ -34,6 +34,7 @@ class StorePage extends StoreSetting
 	 * @var array
 	 */
 	protected $rules				=	[
+											'type'								=> 'in:about_us,why_join,term_and_condition',
 											'started_at'						=> 'date_format:"Y-m-d H:i:s"'/*|after: - 1 second'*/,
 										];
 	

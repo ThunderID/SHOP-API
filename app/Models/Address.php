@@ -73,7 +73,8 @@ class Address extends BaseModel
 	 * @var array
 	 */
 	protected $rules				=	[
-											'address'						=> 'required',
+											'phone'							=> 'max:255',
+											'zipcode'						=> 'max:255',
 										];
 	
 	/* ---------------------------------------------------------------------------- RELATIONSHIP ----------------------------------------------------------------------------*/

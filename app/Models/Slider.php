@@ -42,6 +42,7 @@ class Slider extends StoreSetting
 	 * @var array
 	 */
 	protected $rules				=	[
+											'type'								=> 'in:slider',
 											'started_at'						=> 'date_format:"Y-m-d H:i:s"'/*|after: - 1 second'*/,
 											'ended_at'							=> 'date_format:"Y-m-d H:i:s"'/*|after: - 1 second'*/,
 										];

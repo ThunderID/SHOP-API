@@ -72,10 +72,11 @@ class ShippingCost extends BaseModel
 	 * @var array
 	 */
 	protected $rules				=	[
-											'start_postal_code'				=> 'required|numeric',
-											'end_postal_code'				=> 'required|numeric',
-											'cost'							=> 'required|numeric',
-											'started_at'					=> 'required|date_format:"Y-m-d H:i:s"'/*|after:now*/,
+											'courier_id'					=> 'exists:couriers,id',
+											'start_postal_code'				=> 'max:255',
+											'end_postal_code'				=> 'max:255',
+											'cost'							=> 'numeric',
+											'started_at'					=> 'date_format:"Y-m-d H:i:s"'/*|after:now*/,
 										];
 	
 	/* ---------------------------------------------------------------------------- RELATIONSHIP ----------------------------------------------------------------------------*/

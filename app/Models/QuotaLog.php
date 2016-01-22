@@ -70,7 +70,8 @@ class QuotaLog extends BaseModel
 	 * @var array
 	 */
 	protected $rules				=	[
-											'amount'						=> 'required|numeric',
+											'voucher_id'					=> 'exists:tmp_vouchers,id',
+											'amount'						=> 'numeric',
 										];
 	
 	/* ---------------------------------------------------------------------------- RELATIONSHIP ----------------------------------------------------------------------------*/

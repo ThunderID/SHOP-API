@@ -109,9 +109,9 @@ class Product extends BaseModel
 	 * @var array
 	 */
 	protected $rules				=	[
-											'name'							=> 'required|max:50',
-											'upc'							=> 'required|max:255',
-											'slug'							=> 'required|max:255',
+											'name'							=> 'max:255',
+											'upc'							=> 'max:255',
+											'slug'							=> 'max:255',
 										];
 
 

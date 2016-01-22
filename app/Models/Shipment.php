@@ -83,6 +83,9 @@ class Shipment extends BaseModel
 	 * @var array
 	 */
 	protected $rules				=	[
+											'transaction_id'				=> 'exists:transactions,id',
+											'courier_id'					=> 'exists:couriers,id',
+											'receipt_number'				=> 'max:255',
 											'receiver_name'					=> 'max:255',
 										];
 	

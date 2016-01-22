@@ -40,10 +40,11 @@ class Voucher extends Campaign
 	 * @var array
 	 */
 	protected $rules				=	[
-											'code'							=> 'required|max:255|min:8',
-											'type'							=> 'required|max:255',
+											'type'							=> 'in:free_shipping_cost,debit_point,promo_referral',
+											'code'							=> 'max:255|min:8',
+											'type'							=> 'max:255',
 											'value'							=> 'numeric',
-											// 'started_at'					=> 'date_format:"Y-m-d H:i:s"|after:now',
+											'started_at'					=> 'date_format:"Y-m-d H:i:s"'/*|after:now'*/,
 											'expired_at'					=> 'date_format:"Y-m-d H:i:s"|after:now',
 										];
 	
