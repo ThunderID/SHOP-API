@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\HasTypeTrait;
+use App\Models\Traits\HasNameTrait;
 use App\Models\Traits\HasQuotaTrait;
 use App\Models\Traits\HasReferencedByTrait;
 use App\Models\Traits\HasReferralOfTrait;
@@ -51,6 +52,7 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
 	use HasTotalPointTrait;
 	use HasReferralOfTrait;
 
+	use HasNameTrait;
 	use HasTypeTrait;
 
 	/**

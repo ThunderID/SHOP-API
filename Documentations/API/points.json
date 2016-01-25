@@ -110,9 +110,9 @@ paths:
 definitions:
   search:
     properties:
-      name:
+      customername:
         type: string
-        description: 'Search point that hath certain name'
+        description: 'Search point that contain customers name'
   points:
     properties:
       count:

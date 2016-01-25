@@ -22,9 +22,43 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $result                 = \App\Models\Customer::get()->toArray();
+        $result                     = new \App\Models\Customer;
 
-        return new JSend('success', (array)$result);
+        if(Input::has('search'))
+        {
+            $search                 = Input::get('search');
+
+            foreach ($search as $key => $value) 
+            {
+                switch (strtolower($key)) 
+                {
+                    case 'name':
+                        $result     = $result->name($value);
+                        break;
+                    default:
+                        # code...
+                        break;
+                }
+            }
+        }
+
+        $count                      = count($result->get());
+
+        if(Input::has('skip'))
+        {
+            $skip                   = Input::get('skip');
+            $result                 = $result->skip($skip);
+        }
+
+        if(Input::has('take'))
+        {
+            $take                   = Input::get('take');
+            $result                 = $result->take($take);
+        }
+
+        $result                     = $result->get()->toArray();
+
+        return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
 
     /**

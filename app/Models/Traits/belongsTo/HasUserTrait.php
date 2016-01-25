@@ -54,4 +54,24 @@ trait HasUserTrait
 	{
 		return $this->belongsTo('App\Models\Customer', 'user_id');
 	}
+
+	/**
+	 * check if model has customer in certain name
+	 *
+	 * @var string name
+	 **/
+	public function scopeCustomerName($query, $variable)
+	{
+		return $query
+				->selectraw($this->getTable().'.*')
+				->join('users', function ($join) use($variable) 
+				{
+	             	$join->on ( $this->getTable().'.user_id', '=', 'users.id' )
+	             		->where('users.name', 'like', '%'.$variable.'%')
+						->wherenull('users.deleted_at')
+					;
+				})
+			;
+	}
+
 }
