@@ -144,7 +144,7 @@ class MyOrderController extends Controller
 
 					$detail_rules		=   [
 												'transaction_id'            => 'exists:transactions,id|'.($is_new ? '' : 'in:'.$order_data['id']),
-												'varian_id'                 => 'required|max:255|exists:varians,id',
+												'varian_id'                 => 'required|exists:varians,id',
 												'quantity'                  => 'required|numeric',
 												'price'                     => 'required|numeric',
 												'discount'                  => 'numeric',

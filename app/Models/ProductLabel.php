@@ -72,7 +72,7 @@ class ProductLabel extends BaseModel
 	 * @var array
 	 */
 	protected $rules				=	[
-											'product_id'					=> 'exists:products,id'
+											'product_id'					=> 'exists:products,id',
 											'lable' 						=> 'max:255',
 											'started_at'					=> 'date_format:"Y-m-d H:i:s"',
 											'ended_at'						=> 'date_format:"Y-m-d H:i:s"',

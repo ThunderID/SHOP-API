@@ -25,7 +25,7 @@ class ImageObserver
         //1. check default image to set init default
 		if(isset($model->imageable_id))
         {
-            $countimage                     = Image::where('imageable_id', $model->imageable_id)
+            $countimage                 = Image::where('imageable_id', $model->imageable_id)
                                             ->where('imageable_type', $model->imageable_type)
                                             ->where('is_default', 1)
                                             ->count();

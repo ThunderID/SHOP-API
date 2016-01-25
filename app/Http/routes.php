@@ -11,22 +11,22 @@
 |
 */
 
+/**
+* Routes Authorized used only for authorized
+*/
 include('routes_authorized.php');
+
+/**
+* Routes Authorized used only for 'office/store' resource
+*/
 include('routes_protected_resource.php');
+
+/**
+* Routes Protected used only 'my' resource
+*/
 include('routes_private_resource.php');
+
+/**
+* Routes Authorized used only for registered client public
+*/
 include('routes_public.php');
-
-$app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], function ($app) 
-{
-	// ------------------------------------------------------------------------------------
-	// Gettin' Me
-	// ------------------------------------------------------------------------------------
-
-	$app->get('/me', function() 
-	{
-		$user 								= \LucaDegasperi\OAuth2Server\Facades\Authorizer::getResourceOwnerId();
-
-		return new \App\Libraries\JSend('success', (array)$user);
-	});
-});
-

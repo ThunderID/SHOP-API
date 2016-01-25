@@ -7,7 +7,6 @@
  */
 trait HasPointLogsTrait 
 {
-
 	/**
 	 * boot
 	 *

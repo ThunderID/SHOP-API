@@ -50,3 +50,18 @@ $app->post('/oauth/client/access_token', function()
 	
 	return new \App\Libraries\JSend('success', (array)$issue);
 });
+
+$app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], function ($app) 
+{
+	// ------------------------------------------------------------------------------------
+	// Gettin' Me
+	// ------------------------------------------------------------------------------------
+
+	$app->get('/me', function() 
+	{
+		$user 								= \LucaDegasperi\OAuth2Server\Facades\Authorizer::getResourceOwnerId();
+
+		return new \App\Libraries\JSend('success', (array)$user);
+	});
+});
+

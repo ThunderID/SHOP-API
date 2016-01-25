@@ -12,91 +12,95 @@ use Illuminate\Support\Facades\Input;
  */
 class ReportController extends Controller
 {
-    /**
-     * Display usage of voucher in transaction
-     *
-     * @param skip, take
-     * @return Response
-     */
-    public function voucher()
-    {
-        $result                     = \App\Models\Sale::status(['paid', 'packed', 'shipping', 'delivered']);
+	/**
+	 * Display usage of voucher in transaction
+	 *
+	 * @param skip, take
+	 * @return Response
+	 */
+	public function voucher()
+	{
+		$result                     = \App\Models\Sale::status(['paid', 'packed', 'shipping', 'delivered']);
 
-        if(Input::has('search'))
-        {
-            $search                 = Input::get('search');
+		if(Input::has('search'))
+		{
+			$search                 = Input::get('search');
 
-            foreach ($search as $key => $value) 
-            {
-                switch (strtolower($key)) 
-                {
-                    default:
-                        # code...
+			foreach ($search as $key => $value) 
+			{
+				switch (strtolower($key)) 
+				{
+					case 'ondate':
+						$dates 		= explode('to', $value);
+						$result 	= $result->TransactionLogChangedAt($dates);
                         break;
-                }
-            }
-        }
+					default:
+						# code...
+						break;
+				}
+			}
+		}
 
-        $count                      = $result->count();
+		$count                      = count($result->get(['id']));
 
-        if(Input::has('skip'))
-        {
-            $skip                   = Input::get('skip');
-            $result                 = $result->skip($skip);
-        }
+		if(Input::has('skip'))
+		{
+			$skip                   = Input::get('skip');
+			$result                 = $result->skip($skip);
+		}
 
-        if(Input::has('take'))
-        {
-            $take                   = Input::get('take');
-            $result                 = $result->take($take);
-        }
+		if(Input::has('take'))
+		{
+			$take                   = Input::get('take');
+			$result                 = $result->take($take);
+		}
 
-        $result                     = $result->with(['user', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'payment', 'paidpointlogs', 'paidpointlogs.referencepointvoucher', 'paidpointlogs.referencepointvoucher.referencevoucher', 'paidpointlogs.referencepointreferral', 'paidpointlogs.referencepointreferral.referencereferral'])->get()->toArray();
+		$result                     = $result->with(['user', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'payment', 'paidpointlogs', 'paidpointlogs.referencepointvoucher', 'paidpointlogs.referencepointvoucher.referencevoucher', 'paidpointlogs.referencepointreferral', 'paidpointlogs.referencepointreferral.referencereferral', 'paidpointlogs.pointlog'])->get()->toArray();
 
-        return new JSend('success', (array)['count' => $count, 'data' => $result]);
-    }
-    
-    /**
-     * Display selled product
-     *
-     * @param skip, take
-     * @return Response
-     */
-    public function product()
-    {
-        $result                     = new \App\Models\Varian;
+		return new JSend('success', (array)['count' => $count, 'data' => $result]);
+	}
+	
+	/**
+	 * Display selled product
+	 *
+	 * @param skip, take
+	 * @return Response
+	 */
+	public function product()
+	{
+		$result                     = new \App\Models\Varian;
 
-        if(Input::has('search'))
-        {
-            $search                 = Input::get('search');
+		if(Input::has('search'))
+		{
+			$search                 = Input::get('search');
 
-            foreach ($search as $key => $value) 
-            {
-                switch (strtolower($key)) 
-                {
-                    default:
-                        # code...
-                        break;
-                }
-            }
-        }
+			foreach ($search as $key => $value) 
+			{
+				switch (strtolower($key)) 
+				{
+					default:
+						# code...
+						break;
+				}
+			}
+		}
 
-        $count                      = $result->count();
+		$count                      = $result->count();
 
-        if(Input::has('skip'))
-        {
-            $skip                   = Input::get('skip');
-            $result                 = $result->skip($skip);
-        }
+		if(Input::has('skip'))
+		{
+			$skip                   = Input::get('skip');
+			$result                 = $result->skip($skip);
+		}
 
-        if(Input::has('take'))
-        {
-            $take                   = Input::get('take');
-            $result                 = $result->take($take);
-        }
+		if(Input::has('take'))
+		{
+			$take                   = Input::get('take');
+			$result                 = $result->take($take);
+		}
 
-        $result                     = $result->with(['product'])->get()->toArray();
+		$result                     = $result->with(['product'])->get()->toArray();
 
-        return new JSend('success', (array)['count' => $count, 'data' => $result]);
-    }
+		return new JSend('success', (array)['count' => $count, 'data' => $result]);
+	}
 }
