@@ -78,6 +78,10 @@ class ReportController extends Controller
 			{
 				switch (strtolower($key)) 
 				{
+					case 'ondate':
+						$dates 		= explode('to', $value);
+						$result 	= $result->TransactionLogChangedAt($dates);
+                        break;
 					default:
 						# code...
 						break;
@@ -85,7 +89,7 @@ class ReportController extends Controller
 			}
 		}
 
-		$count                      = $result->count();
+		$count                      = count($result->havingsolditem(0)->get(['id']));
 
 		if(Input::has('skip'))
 		{
@@ -99,7 +103,7 @@ class ReportController extends Controller
 			$result                 = $result->take($take);
 		}
 
-		$result                     = $result->with(['product'])->get()->toArray();
+		$result                     = $result->havingsolditem(0)->with(['product'])->get()->toArray();
 
 		return new JSend('success', (array)['count' => $count, 'data' => $result]);
 	}

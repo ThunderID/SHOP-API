@@ -142,4 +142,28 @@ trait HasStockTrait
 									),0) '.$param.' '.$variable)
 		;
 	}
+
+	/**
+	 * condition of sold_item having certain value
+	 *
+	 * @param threshold (negative defined as less than, positive defined as greater than)
+	 **/
+	public function scopeHavingSoldItem($query, $variable)
+	{
+		if($variable < 0)
+		{
+			$param 					= '<=';
+			$variable 				= abs($variable);
+		}
+		else
+		{
+			$param 					= '>';
+			$variable 				= abs($variable);
+		}
+
+		return $query->havingraw('IFNULL(SUM(
+									if(transactions.type ="sell", if(transaction_logs.status ="paid" OR transaction_logs.status="packed" OR transaction_logs.status="shipping" OR transaction_logs.status="delivered", quantity, 0), 0)
+									),0) '.$param.' '.$variable)
+		;
+	}
 }
