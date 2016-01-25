@@ -101,9 +101,9 @@ paths:
 definitions:
   search:
     properties:
-      func:
+      ondate:
         type: string
-        description: 'Search Sale that hath certain parameter'
+        description: 'write in format : mm-dd-yyyy to mm-dd-yyyy where first date was start date and last one was end date'
   sales:
     properties:
       count:

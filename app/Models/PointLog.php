@@ -16,6 +16,7 @@ class PointLog extends BaseModel
 	 * Relationship Traits.
 	 *
 	 */
+	use \App\Models\Traits\belongsTo\HasPointLogTrait;
 	use \App\Models\Traits\belongsTo\HasUserTrait;
 	use \App\Models\Traits\morphTo\HasReferenceTrait;
 	use \App\Models\Traits\hasMany\HasPointLogsTrait;
