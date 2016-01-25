@@ -184,9 +184,9 @@ paths:
 definitions:
   search:
     properties:
-      name:
+      code:
         type: string
-        description: 'Search voucher that hath certain name'
+        description: 'Search voucher that hath certain code'
   vouchers:
     properties:
       count:

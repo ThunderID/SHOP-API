@@ -33,6 +33,9 @@ class VoucherController extends Controller
 			{
 				switch (strtolower($key)) 
 				{
+					case 'code':
+						$result     = $result->code($value);
+						break;
 					default:
 						# code...
 						break;
@@ -40,7 +43,7 @@ class VoucherController extends Controller
 			}
 		}
 
-		$count                      = $result->count();
+		$count                      = count($result->get(['id']));
 
 		if(Input::has('skip'))
 		{
@@ -138,6 +141,22 @@ class VoucherController extends Controller
 		}
 
 		//2. Validate Voucher Logs Parameter
+		//2a. save using quota
+		if(!$errors->count() && isset($voucher['quota']) && $voucher['quota'] != $voucher_data['quota'])
+		{
+			$log_data        = new \App\Models\QuotaLog;
+
+			$value['voucher_id']        = $voucher_data['id'];
+			$value['amount']			= $voucher['quota'] - $voucher_data['quota'];
+
+			$log_data                    = $log_data->fill($value);
+
+			if(!$log_data->save())
+			{
+				$errors->add('Log', $log_data->getError());
+			}
+		}
+		
 		if(!$errors->count() && isset($voucher['quotalogs']) && is_array($voucher['quotalogs']))
 		{
 			$log_current_ids         = [];

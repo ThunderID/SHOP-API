@@ -15,66 +15,66 @@ use Illuminate\Support\Facades\DB;
  */
 class CustomerController extends Controller
 {
-    /**
-     * Display all customers
-     *
-     * @return Response
-     */
-    public function index()
-    {
-        $result                     = new \App\Models\Customer;
+	/**
+	 * Display all customers
+	 *
+	 * @return Response
+	 */
+	public function index()
+	{
+		$result                     = new \App\Models\Customer;
 
-        if(Input::has('search'))
-        {
-            $search                 = Input::get('search');
+		if(Input::has('search'))
+		{
+			$search                 = Input::get('search');
 
-            foreach ($search as $key => $value) 
-            {
-                switch (strtolower($key)) 
-                {
-                    case 'name':
-                        $result     = $result->name($value);
-                        break;
-                    default:
-                        # code...
-                        break;
-                }
-            }
-        }
+			foreach ($search as $key => $value) 
+			{
+				switch (strtolower($key)) 
+				{
+					case 'name':
+						$result     = $result->name($value);
+						break;
+					default:
+						# code...
+						break;
+				}
+			}
+		}
 
-        $count                      = count($result->get());
+		$count                      = count($result->get());
 
-        if(Input::has('skip'))
-        {
-            $skip                   = Input::get('skip');
-            $result                 = $result->skip($skip);
-        }
+		if(Input::has('skip'))
+		{
+			$skip                   = Input::get('skip');
+			$result                 = $result->skip($skip);
+		}
 
-        if(Input::has('take'))
-        {
-            $take                   = Input::get('take');
-            $result                 = $result->take($take);
-        }
+		if(Input::has('take'))
+		{
+			$take                   = Input::get('take');
+			$result                 = $result->take($take);
+		}
 
-        $result                     = $result->get()->toArray();
+		$result                     = $result->get()->toArray();
 
-        return new JSend('success', (array)['count' => $count, 'data' => $result]);
-    }
+		return new JSend('success', (array)['count' => $count, 'data' => $result]);
+	}
 
-    /**
-     * Display a customer
-     *
-     * @return Response
-     */
-    public function detail($id = null)
-    {
-        $result                 = \App\Models\Customer::id($id)->with(['sales'])->first();
+	/**
+	 * Display a customer
+	 *
+	 * @return Response
+	 */
+	public function detail($id = null)
+	{
+		$result                 = \App\Models\Customer::id($id)->with(['sales'])->first();
 
-        if($result)
-        {
-            return new JSend('success', (array)$result->toArray());
-        }
-        
-        return new JSend('error', (array)Input::all(), 'ID Tidak Valid.');
-    }
+		if($result)
+		{
+			return new JSend('success', (array)$result->toArray());
+		}
+		
+		return new JSend('error', (array)Input::all(), 'ID Tidak Valid.');
+	}
 }
