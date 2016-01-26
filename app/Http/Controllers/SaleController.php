@@ -37,6 +37,12 @@ class SaleController extends Controller
 						$dates 		= explode('to', $value);
 						$result 	= $result->TransactionLogChangedAt($dates);
                         break;
+					case 'bills':
+						$result 	= $result->bills($value);
+                        break;
+                    case 'status':
+						$result 	= $result->status($value);
+                        break;
 					default:
 						# code...
 						break;
@@ -152,7 +158,8 @@ class SaleController extends Controller
 				}
 				else
 				{
-					$paid_data                    = $paid_data->fill($sale['payment']);
+					$sale['payment']['transaction_id']	= $sale['id'];
+					$paid_data                    		= $paid_data->fill($sale['payment']);
 
 					if(!$paid_data->save())
 					{
@@ -188,7 +195,8 @@ class SaleController extends Controller
 					}
 					else
 					{
-						$shipping_data                    = $shipping_data->fill($sale['shipment']);
+						$sale['shipment']['transaction_id']	= $sale['id'];
+						$shipping_data                    	= $shipping_data->fill($sale['shipment']);
 
 						if(!$shipping_data->save())
 						{
