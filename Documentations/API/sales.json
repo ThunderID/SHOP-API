@@ -71,6 +71,12 @@ paths:
           required: true
           type: string
           format: string
+        - name: notes
+          in: query
+          description: only required for delivered status.
+          required: false
+          type: string
+          format: string
         - name: transactionlogs
           in: query
           description: Must be array of logs' transaction.
