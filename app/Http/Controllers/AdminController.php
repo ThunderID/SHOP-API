@@ -33,6 +33,9 @@ class AdminController extends Controller
             {
                 switch (strtolower($key)) 
                 {
+                    case 'name':
+                        $result     = $result->name($value);
+                        break;
                     default:
                         # code...
                         break;
@@ -110,7 +113,7 @@ class AdminController extends Controller
                                             'email'                         => 'required|max:255|unique:users,email,'.(!is_null($admin['id']) ? $admin['id'] : ''),
                                             'role'                          => 'required|in:admin,store_manager,staff',
                                             'is_active'                     => 'boolean',
-                                            'gender'                        => 'required|in:male,female',
+                                            'gender'                        => 'in:male,female',
                                             'date_of_birth'                 => 'date_format:"Y-m-d H:i:s"',
                                         ];
 

@@ -43,7 +43,7 @@ class Referral extends Campaign
 											'user_id' 						=> 'exists:users,id',
 											'code'							=> 'max:255|min:8',
 											'value'							=> 'numeric',
-											'type'							=> 'referral',
+											'type'							=> 'in:referral',
 											// 'started_at'					=> 'date_format:"Y-m-d H:i:s"|after:now',
 											// 'expired_at'					=> 'date_format:"Y-m-d H:i:s"|after:now',
 										];

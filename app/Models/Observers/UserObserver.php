@@ -65,6 +65,7 @@ class UserObserver
         
         //2. give referral code and regist quota
         $result                             = $model->giveReferralCode($model, $referral_code);
+
         if(!$result)
         {
             return false;
@@ -117,7 +118,7 @@ class UserObserver
         }
 
         //3. Check is active
-        if(isset($model->getDirty()['is_active']) && $model->is_active)
+        if(isset($model->getDirty()['is_active']) && $model->is_active && !is_null($model->id))
         {
             $result                         = $model->giveWelcomeGift($model);
 
@@ -126,6 +127,7 @@ class UserObserver
                 return false;
             }
         }
+
         if($errors->count())
         {
             $model['errors']                = $errors;

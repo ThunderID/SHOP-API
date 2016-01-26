@@ -156,7 +156,7 @@ definitions:
     properties:
       name:
         type: string
-        description: 'Search admin that hath certain name'
+        description: 'Search customer that hath certain label'
   admins:
     properties:
       count:
