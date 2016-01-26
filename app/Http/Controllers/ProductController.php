@@ -43,6 +43,9 @@ class ProductController extends Controller
 					case 'slug':
 						$result     = $result->slug($value);
 						break;
+					case 'discount':
+						$result     = $result->discount($value);
+						break;
 					case 'categories':
 						$result     = $result->categoriesslug($value);
 						break;

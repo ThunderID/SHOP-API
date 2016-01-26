@@ -125,6 +125,10 @@ definitions:
             type: number
           total_reference:
             type: number
+          myreferrals:
+            type: array
+            items:
+              $ref: '#/definitions/points'
   customer:
     properties:
       id:
@@ -159,6 +163,10 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/sales'
+      myreferrals:
+        type: array
+        items:
+          $ref: '#/definitions/points'
   sales:
     properties:
       count:
@@ -184,6 +192,50 @@ definitions:
             type: number
           bills:
             type: number
+  point:
+    properties:
+      id:
+        type: string
+      amount:
+        type: number
+      expired_at:
+        type: string
+      notes:
+        type: string
+      user:
+        type: array
+        items:
+          $ref: '#/definitions/user'
+  user:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      role:
+        type: string
+      is_active:
+        type: boolean
+      sso_id:
+        type: string
+      sso_media:
+        type: string
+      sso_data:
+        type: string
+      gender:
+        type: string
+      date_of_birth:
+        type: string
+      last_logged_at:
+        type: string
+      quota_referral:
+        type: number
+      reference_name:
+        type: string
+      total_point:
+        type: number
+      total_reference:
+        type: number
   Error:
     type: object
     properties:

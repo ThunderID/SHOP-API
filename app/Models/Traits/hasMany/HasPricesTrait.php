@@ -44,4 +44,14 @@ trait HasPricesTrait
 	{
 		return $query->whereHas('prices', function($q)use($variable){$q->id($variable);});
 	}
+
+	/**
+	 * check if model has discount now
+	 *
+	 * @var none
+	 **/
+	public function scopeDiscount($query, $variable)
+	{
+		return $query->where('promo_price', '>', '0');
+	}
 }

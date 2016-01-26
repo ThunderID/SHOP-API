@@ -51,7 +51,7 @@ trait HasPointLogsTrait
 	 **/
 	public function MyReferrals()
 	{
-		return $this->hasMany('App\Models\PointLog', 'reference_id')->where('reference_type', '=', 'App\Models\User');
+		return $this->hasMany('App\Models\PointLog', 'reference_id')->whereIn('reference_type', ['App\Models\User', 'App\Models\Admin', 'App\Models\Customer']);
 	}
 
 	/**

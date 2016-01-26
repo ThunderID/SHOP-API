@@ -56,7 +56,7 @@ class CustomerController extends Controller
 			$result                 = $result->take($take);
 		}
 
-		$result                     = $result->get()->toArray();
+		$result                     = $result->with(['myreferrals', 'myreferrals.user'])->get()->toArray();
 
 		return new JSend('success', (array)['count' => $count, 'data' => $result]);
 	}
@@ -68,7 +68,7 @@ class CustomerController extends Controller
 	 */
 	public function detail($id = null)
 	{
-		$result                 = \App\Models\Customer::id($id)->with(['sales'])->first();
+		$result                 = \App\Models\Customer::id($id)->with(['sales', 'myreferrals', 'myreferrals.user'])->first();
 
 		if($result)
 		{
