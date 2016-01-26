@@ -33,6 +33,10 @@ class SaleController extends Controller
 			{
 				switch (strtolower($key)) 
 				{
+					case 'ondate':
+						$dates 		= explode('to', $value);
+						$result 	= $result->TransactionLogChangedAt($dates);
+                        break;
 					default:
 						# code...
 						break;
@@ -66,7 +70,7 @@ class SaleController extends Controller
 	 */
 	public function detail($id = null)
 	{
-		$result                 = \App\Models\Sale::id($id)->with(['transactionlogs', 'user', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'paidpointlogs', 'payment', 'shipment', 'shipment.address', 'shipment.courier'])->first();
+		$result                 = \App\Models\Sale::id($id)->with(['voucher', 'transactionlogs', 'user', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'paidpointlogs', 'payment', 'shipment', 'shipment.address', 'shipment.courier'])->first();
 
 		if($result)
 		{
@@ -237,7 +241,7 @@ class SaleController extends Controller
 
 		DB::commit();
 		
-		$final_sale                 = \App\Models\Sale::id($sale_data['id'])->with(['transactionlogs', 'user', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product'])->first()->toArray();
+		$final_sale                 = \App\Models\Sale::id($sale_data['id'])->with(['voucher', 'transactionlogs', 'user', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product'])->first()->toArray();
 
 		return new JSend('success', (array)$final_sale);
 	}

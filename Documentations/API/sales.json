@@ -124,9 +124,9 @@ paths:
 definitions:
   search:
     properties:
-      name:
+      ondate:
         type: string
-        description: 'Search Sale that hath certain name'
+        description: 'write in format : mm-dd-yyyy to mm-dd-yyyy where first date was start date and last one was end date'
   sales:
     properties:
       count:
@@ -176,6 +176,10 @@ definitions:
         type: number
       bills:
         type: number
+      voucher:
+        type: array
+        items:
+          $ref: '#/definitions/voucher'
       user:
         type: array
         items:
@@ -369,6 +373,20 @@ definitions:
       id:
         type: string
       name:
+        type: string
+  voucher:
+    properties:
+      id:
+        type: string
+      code:
+        type: string
+      type:
+        type: string
+      quota:
+        type: number
+      started_at:
+        type: string
+      expired_at:
         type: string
   Error:
     type: object
