@@ -43,6 +43,9 @@ class SaleController extends Controller
                     case 'status':
 						$result 	= $result->status($value);
                         break;
+                    case 'refnumber':
+						$result 	= $result->refnumber($value);
+                        break;
 					default:
 						# code...
 						break;
