@@ -40,7 +40,7 @@ class PurchaseController extends Controller
 			}
 		}
 
-		$count                      = $result->count();
+		$count                      = count($result->get(['id']));
 
 		if(Input::has('skip'))
 		{
@@ -146,7 +146,7 @@ class PurchaseController extends Controller
 
 					$detail_rules   	=   [
 												'transaction_id'            => 'exists:transactions,id|'.($is_new ? '' : 'in:'.$purchase_data['id']),
-												'varian_id'                 => 'required|exists:varians,id|in:'.$detail_data['varian_id'],
+												'varian_id'                 => 'required|exists:varians,id',
 												'quantity'                  => 'required|numeric',
 												'price'                     => 'required|numeric',
 												'discount'                  => 'numeric',
