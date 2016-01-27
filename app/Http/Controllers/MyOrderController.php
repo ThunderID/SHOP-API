@@ -241,7 +241,7 @@ class MyOrderController extends Controller
 			//2b. save shipment
 			if(!$errors->count())
 			{
-				if($order_data->shipment->count())
+				if($order_data->shipment()->count())
 				{
 					$shipment_data      = \App\Models\Shipment::findorfail($order_data->shipment->id);
 				}
