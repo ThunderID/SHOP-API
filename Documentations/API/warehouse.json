@@ -48,7 +48,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/stockcard'
+              $ref: '#/definitions/varian'
         default:
           description: Unexpected error
           schema:
@@ -126,7 +126,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 definitions:
-  products:
+  product:
     properties:
       id:
         type: string
@@ -180,11 +180,37 @@ definitions:
         type: number
       packed_stock:
         type: number
-      products:
+      product:
         type: array
         items:
-          $ref: '#/definitions/products'
-  stockcard:
+          $ref: '#/definitions/product'
+  varians:
+    properties:
+      id:
+        type: string
+      sku:
+        type: string
+      size:
+        type: string
+      current_stock:
+        type: number
+      on_hold_stock:
+        type: number
+      inventory_stock:
+        type: number
+      reserved_stock:
+        type: number
+      packed_stock:
+        type: number
+      product:
+        type: array
+        items:
+          $ref: '#/definitions/product'
+      details:
+        type: array
+        items:
+          $ref: '#/definitions/details'
+  details:
     properties:
       varian_id:
         type: string
@@ -194,10 +220,6 @@ definitions:
         type: number
       stock_out:
         type: number
-      varians:
-        type: array
-        items:
-          $ref: '#/definitions/varians'
   Error:
     type: object
     properties:
