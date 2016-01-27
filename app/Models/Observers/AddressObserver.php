@@ -24,7 +24,13 @@ class AddressObserver
         //1. check if zipcode updating
         if(isset($model->getDirty()['zipcode']))
         {
-            $errors->add('Address', 'Tidak dapat mengubah kode pos pesanan yang sudah checkout.');
+            foreach ($model->shipments as $key => $value) 
+            {
+                if($value->transaction()->count() && $value->transaction->status!='wait')
+                {
+                    $errors->add('Address', 'Tidak dapat mengubah kode pos pesanan yang sudah checkout.');
+                }
+            }
         }
 
         if($errors->count())
