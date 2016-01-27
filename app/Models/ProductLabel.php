@@ -36,7 +36,7 @@ class ProductLabel extends BaseModel
 	 *
 	 * @var array
 	 */
-	protected $dates				=	['created_at', 'updated_at', 'deleted_at', 'ondate'];
+	protected $dates				=	['created_at', 'updated_at', 'deleted_at', 'started_at', 'ended_at'];
 
 	/**
 	 * The appends attributes from mutator and accessor
@@ -75,7 +75,7 @@ class ProductLabel extends BaseModel
 											'product_id'					=> 'exists:products,id',
 											'lable' 						=> 'max:255',
 											'started_at'					=> 'date_format:"Y-m-d H:i:s"',
-											'ended_at'						=> 'date_format:"Y-m-d H:i:s"',
+											// 'ended_at'						=> 'date_format:"Y-m-d H:i:s"',
 										];
 	
 	/* ---------------------------------------------------------------------------- RELATIONSHIP ----------------------------------------------------------------------------*/

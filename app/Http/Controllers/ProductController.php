@@ -453,10 +453,15 @@ class ProductController extends Controller
 
 					$label_rules   		=   [
 												'product_id'	=> 'exists:products,id|'.($is_new ? '' : 'in:'.$product_data['id']),
-												'label'			=> 'required|max:255',
+												'label'			=> 'max:255',
 												'started_at'	=> 'required|date_format:"Y-m-d H:i:s"',
 												'ended_at'		=> 'date_format:"Y-m-d H:i:s"',
 											];
+
+					if(!strtotime($value['ended_at']))
+					{
+						$value['ended_at']	= null;
+					}
 
 					$validator      = Validator::make($value, $label_rules);
 
@@ -467,8 +472,11 @@ class ProductController extends Controller
 					}
 					else
 					{
-						$value['product_id']            = $product_data['id'];
-						$value['lable']                 = $value['label'];
+						$value['product_id']			= $product_data['id'];
+						if(isset($value['label']))
+						{
+							$value['lable']				= $value['label'];
+						}
 
 						$label_data                    = $label_data->fill($value);
 
