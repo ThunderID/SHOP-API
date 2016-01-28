@@ -61,7 +61,7 @@ $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], fu
 	{
 		$user 								= \LucaDegasperi\OAuth2Server\Facades\Authorizer::getResourceOwnerId();
 
-		return new \App\Libraries\JSend('success', (array)$user);
+		return $user;
 	});
 });
 
