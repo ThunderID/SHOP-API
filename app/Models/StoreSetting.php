@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Models\Traits\HasTypeTrait;
+use App\Models\Traits\HasSelectAllTrait;
 use App\Models\Observers\StoreSettingObserver;
+use DB;
 
 /**
  * Used for StoreSetting, Policy, Store, Page, Slider Models
@@ -16,6 +18,7 @@ class StoreSetting extends BaseModel
 	 * Global traits used as query builder (global scope).
 	 *
 	 */
+	use HasSelectAllTrait;
 	use HasTypeTrait;
 
 	/**
@@ -106,4 +109,15 @@ class StoreSetting extends BaseModel
 
 		return $query->where('started_at', '>=', date('Y-m-d H:i:s', strtotime($variable[0])))->where('started_at', '<=', date('Y-m-d H:i:s', strtotime($variable[1])))->orderBy('started_at', 'asc');
 	}
+
+	/**
+	 * scope to find history of date
+	 *
+	 * @param string of history
+	 */
+	public  function scopeDefault($query, $variable)
+	{
+		return $query->whereraw(DB::raw('tmp_store_settings.id = (select id from tmp_store_settings as tl2 where tl2.type = tmp_store_settings.type and tl2.deleted_at is null order by tl2.started_at desc limit 1)')) ;
+	}
 }
+

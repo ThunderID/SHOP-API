@@ -49,6 +49,9 @@ class StoreSettingController extends Controller
 			{
 				switch (strtolower($key)) 
 				{
+					case 'default':
+						$result = $result->default($value);
+						break;
 					default:
 						# code...
 						break;
@@ -56,7 +59,7 @@ class StoreSettingController extends Controller
 			}
 		}
 		
-		$count                      = $result->count();
+		$count                      = count($result->get(['id']));
 
 		if(Input::has('skip'))
 		{
@@ -214,7 +217,6 @@ class StoreSettingController extends Controller
 					if(!$validator->passes())
 					{
 						$errors->add('Image', $validator->errors());
-					}
 					}
 					else
 					{
