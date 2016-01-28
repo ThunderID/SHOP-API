@@ -20,13 +20,13 @@ class Shipment extends BaseModel
 	use \App\Models\Traits\belongsTo\HasAddressTrait;
 	use \App\Models\Traits\belongsTo\HasCourierTrait;
 	use \App\Models\Traits\belongsTo\HasTransactionTrait;
-	use HasStatusLogTrait;
 
 	/**
 	 * Global traits used as query builder (global scope).
 	 *
 	 */
 	use HasShipCostTrait;
+	use HasStatusLogTrait;
 
 	/**
 	 * The database table used by the model.
