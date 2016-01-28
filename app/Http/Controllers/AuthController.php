@@ -144,7 +144,7 @@ class AuthController extends Controller
         else
         {
             //if validator passed, save customer
-            $customer_data           = $customer_data->fill(['is_active' => true, 'activation_link' => '']);
+            $customer_data           = $customer_data->fill(['is_active' => true, 'activation_link' => '', 'date_of_birth' => (($customer_data['date_of_birth']->format('Y-m-d H:i:s')) ? $customer_data['date_of_birth']->format('Y-m-d H:i:s') : '')]);
 
             if(!$customer_data->save())
             {
