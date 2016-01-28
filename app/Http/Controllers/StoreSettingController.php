@@ -28,7 +28,7 @@ class StoreSettingController extends Controller
 		switch (strtolower($type)) 
 		{
 			case 'slider':
-				$result         = \App\Models\Slider::with(['images']);
+				$result         = \App\Models\Slider::with(['image']);
 				break;
 			case 'page':
 				$result         = new \App\Models\StorePage;
@@ -50,7 +50,14 @@ class StoreSettingController extends Controller
 				switch (strtolower($key)) 
 				{
 					case 'default':
-						$result = $result->default($value);
+						if(strtolower($type)!='slider')
+						{
+							$result = $result->default($value);
+						}
+						else
+						{
+							$result = $result->ondate('now');
+						}
 						break;
 					default:
 						# code...

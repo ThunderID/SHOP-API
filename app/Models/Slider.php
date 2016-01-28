@@ -16,6 +16,7 @@ class Slider extends StoreSetting
 	 *
 	 */
 	use \App\Models\Traits\morphMany\HasImagesTrait;
+	use \App\Models\Traits\hasOne\HasImageTrait;
 
 	/**
 	 * The public variable that assigned type of inheritance model
