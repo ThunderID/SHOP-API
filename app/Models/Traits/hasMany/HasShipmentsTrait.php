@@ -19,11 +19,21 @@ trait HasShipmentsTrait
 	}
 
 	/**
-	 * call has one relationship
+	 * call has many relationship
 	 *
 	 **/
 	public function Shipments()
 	{
 		return $this->hasMany('App\Models\Shipment');
+	}
+
+
+	/**
+	 * call has many relationship
+	 *
+	 **/
+	public function Shippings()
+	{
+		return $this->hasMany('App\Models\Shipment')->wherehas('transaction', function($q){$q->status('shipping');});
 	}
 }

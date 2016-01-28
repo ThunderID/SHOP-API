@@ -70,7 +70,7 @@ class CourierController extends Controller
 	 */
 	public function detail($id = null)
 	{
-		$result                 = \App\Models\Courier::id($id)->with(['shippingcosts', 'addresses', 'images'])->first();
+		$result                 = \App\Models\Courier::id($id)->with(['shippingcosts', 'addresses', 'images', 'shippings', 'shippings.address', 'shippings.sale'])->first();
 	   
 		if($result)
 		{

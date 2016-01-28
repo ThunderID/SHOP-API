@@ -196,6 +196,10 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/images'
+      shippings:
+        type: array
+        items:
+          $ref: '#/definitions/shippings'
   costs:
     properties:
       id:
@@ -236,6 +240,52 @@ definitions:
         type: string
       is_default:
         type: boolean
+  shippings:
+    properties:
+      id:
+        type: string
+      receipt_number:
+        type: string
+      receiver_name:
+        type: string
+      address:
+        type: array
+        items:
+          $ref: '#/definitions/address'
+      sale:
+        type: array
+        items:
+          $ref: '#/definitions/sale'
+  address:
+    properties:
+      id:
+        type: string
+      phone:
+        type: string
+      address:
+        type: string
+      zipcode:
+        type: string
+  sale:
+    properties:
+      id:
+        type: string
+      ref_number:
+        type: string
+      transact_at:
+        type: string
+      status:
+        type: string
+      unique_number:
+        type: number
+      shipping_cost:
+        type: number
+      voucher_discount:
+        type: number
+      amount:
+        type: number
+      bills:
+        type: number
   Error:
     type: object
     properties:
