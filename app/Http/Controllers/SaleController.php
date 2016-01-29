@@ -34,8 +34,7 @@ class SaleController extends Controller
 				switch (strtolower($key)) 
 				{
 					case 'ondate':
-						$dates 		= explode('to', $value);
-						$result 	= $result->TransactionLogChangedAt($dates);
+						$result 	= $result->TransactionLogChangedAt($value);
                         break;
 					case 'bills':
 						$result 	= $result->bills($value);

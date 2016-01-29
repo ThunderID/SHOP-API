@@ -1,6 +1,8 @@
 <?php namespace App\Models\Observers;
 
 use Illuminate\Support\MessageBag;
+use Illuminate\Support\Facades\Log;
+
 use Carbon\Carbon;
 
 /**
@@ -64,7 +66,7 @@ class SaleObserver
         }
 
         //3. create transact_at
-        if($model->status=='wait')
+        if(!in_array($model->status, ['canceled', 'abandoned', 'paid', 'shipping', 'delivered', 'na', 'wait']))
         {
             $model->transact_at             = Carbon::now()->format('Y-m-d H:i:s');
         }

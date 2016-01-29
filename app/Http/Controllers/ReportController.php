@@ -31,8 +31,7 @@ class ReportController extends Controller
 				switch (strtolower($key)) 
 				{
 					case 'ondate':
-						$dates 		= explode('to', $value);
-						$result 	= $result->TransactionLogChangedAt($dates);
+						$result 	= $result->TransactionLogChangedAt($value);
                         break;
 					default:
 						# code...
@@ -79,8 +78,7 @@ class ReportController extends Controller
 				switch (strtolower($key)) 
 				{
 					case 'ondate':
-						$dates 		= explode('to', $value);
-						$result 	= $result->TransactionLogChangedAt($dates);
+						$result 	= $result->TransactionLogChangedAt($value);
                         break;
 					default:
 						# code...
