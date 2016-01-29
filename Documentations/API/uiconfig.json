@@ -1,0 +1,134 @@
+swagger: '2.0'
+info:
+  title: Store Config API
+  description: Move your app forward with the Store Config API
+  version: 1.0.0
+host: localhost:8800
+schemes:
+  - https
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /balin/public/store configs:
+    get:
+      summary: Store Config Lists
+      description: |
+        The store configs endpoint returns information about the *BALIN* UI store configs
+        could be tags or categories.
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+      tags:
+        - Store
+        - Configs
+      responses:
+        '200':
+          description: An array of store configs' data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/configs'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  configs:
+    properties:
+      sliders:
+        type: array
+        items:
+          $ref: '#/definitions/sliders'
+      info:
+        type: array
+        items:
+          $ref: '#/definitions/info'
+      about_us:
+        type: array
+        items:
+          $ref: '#/definitions/about_us'
+      term_and_condition:
+        type: array
+        items:
+          $ref: '#/definitions/term_and_condition'
+      why_join:
+        type: array
+        items:
+          $ref: '#/definitions/why_join'
+  sliders:
+    properties:
+      id:
+        type: string
+      type:
+        type: string
+      value:
+        type: string
+      started_at:
+        type: string
+      ended_at:
+        type: string
+  info:
+    properties:
+      id:
+        type: string
+      type:
+        type: string
+      value:
+        type: string
+      started_at:
+        type: string
+      ended_at:
+        type: string
+  about_us:
+    properties:
+      id:
+        type: string
+      type:
+        type: string
+      value:
+        type: string
+      started_at:
+        type: string
+      ended_at:
+        type: string
+  term_and_condition:
+    properties:
+      id:
+        type: string
+      type:
+        type: string
+      value:
+        type: string
+      started_at:
+        type: string
+      ended_at:
+        type: string
+  why_join:
+    properties:
+      id:
+        type: string
+      type:
+        type: string
+      value:
+        type: string
+      started_at:
+        type: string
+      ended_at:
+        type: string
+  Error:
+    type: object
+    properties:
+      status:
+        type: string
+      data:
+        type: string
+      message:
+        type: string
+      code:
+        type: integer
+        format: int32

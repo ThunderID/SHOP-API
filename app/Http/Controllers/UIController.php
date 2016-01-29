@@ -17,215 +17,239 @@ use App\Events\ProductSearched;
  */
 class UIController extends Controller
 {
-    /**
-     * Display all sellable products
-     *
-     * @return Response
-     */
-    public function products()
-    {
-        $result                     = new \App\Models\Product;
+	/**
+	 * Display all sellable products
+	 *
+	 * @return Response
+	 */
+	public function products()
+	{
+		$result                     = new \App\Models\Product;
 
-        if(Input::has('search'))
-        {
-            $search                 = Input::get('search');
+		if(Input::has('search'))
+		{
+			$search                 = Input::get('search');
 
-            foreach ($search as $key => $value) 
-            {
-                switch (strtolower($key)) 
-                {
-                    case 'name':
-                        $result     = $result->name($value);
-                        break;
-                    case 'slug':
-                        $result     = $result->slug($value);
+			foreach ($search as $key => $value) 
+			{
+				switch (strtolower($key)) 
+				{
+					case 'name':
+						$result     = $result->name($value);
+						break;
+					case 'slug':
+						$result     = $result->slug($value);
 
-                        if(Auth::check())
-                        {
-                            $data['user_id']    = Auth::user()->id;
-                        }
-                        $data['slug']           = $value;
-                        $data['type']           = 'product';
-                        break;
-                    case 'categories':
-                        $result     = $result->categoriesslug($value);                        
-                        if(Auth::check())
-                        {
-                            $data['user_id']    = Auth::user()->id;
-                        }
-                        $data['slug']           = $value;
-                        $data['type']           = 'category';
-                        break;
-                    case 'tags':
-                        $result     = $result->tagsslug($value);
+						if(Auth::check())
+						{
+							$data['user_id']    = Auth::user()->id;
+						}
+						$data['slug']           = $value;
+						$data['type']           = 'product';
+						break;
+					case 'categories':
+						$result     = $result->categoriesslug($value);                        
+						if(Auth::check())
+						{
+							$data['user_id']    = Auth::user()->id;
+						}
+						$data['slug']           = $value;
+						$data['type']           = 'category';
+						break;
+					case 'tags':
+						$result     = $result->tagsslug($value);
 
-                        if(Auth::check())
-                        {
-                            $data['user_id']    = Auth::user()->id;
-                        }
-                        $data['slug']           = $value;
-                        $data['type']           = 'tag';
-                        break;
-                    default:
-                        # code...
-                        break;
-                }
+						if(Auth::check())
+						{
+							$data['user_id']    = Auth::user()->id;
+						}
+						$data['slug']           = $value;
+						$data['type']           = 'tag';
+						break;
+					default:
+						# code...
+						break;
+				}
 
-                if(isset($data))
-                {
-                    event(new ProductSearched($data));
-                    unset($data);
-                }
-            }
-        }
+				if(isset($data))
+				{
+					event(new ProductSearched($data));
+					unset($data);
+				}
+			}
+		}
 
-        $result                     = $result->sellable(true);
+		$result                     = $result->sellable(true);
 
-        if(Input::has('sort'))
-        {
-            $sort                 = Input::get('sort');
+		if(Input::has('sort'))
+		{
+			$sort                 = Input::get('sort');
 
-            foreach ($sort as $key => $value) 
-            {
-                if(!in_array($value, ['asc', 'desc']))
-                {
-                    return new JSend('error', (array)Input::all(), $key.' harus bernilai asc atau desc.');
-                }
-                switch (strtolower($key)) 
-                {
-                    case 'name':
-                        $result     = $result->orderby($key, $value);
-                        break;
-                    case 'price':
-                        $result     = $result->orderby($key, $value);
-                        break;
-                    case 'newest':
-                        $result     = $result->orderby('created_at', $value);
-                        break;
-                    
-                    default:
-                        # code...
-                        break;
-                }
-            }
-        }
+			foreach ($sort as $key => $value) 
+			{
+				if(!in_array($value, ['asc', 'desc']))
+				{
+					return new JSend('error', (array)Input::all(), $key.' harus bernilai asc atau desc.');
+				}
+				switch (strtolower($key)) 
+				{
+					case 'name':
+						$result     = $result->orderby($key, $value);
+						break;
+					case 'price':
+						$result     = $result->orderby($key, $value);
+						break;
+					case 'newest':
+						$result     = $result->orderby('created_at', $value);
+						break;
+					
+					default:
+						# code...
+						break;
+				}
+			}
+		}
 
-        $count                      = count($result->get());
-        
-        if(Input::has('skip'))
-        {
-            $skip                   = Input::get('skip');
-            $result                 = $result->skip($skip);
-        }
+		$count                      = count($result->get());
+		
+		if(Input::has('skip'))
+		{
+			$skip                   = Input::get('skip');
+			$result                 = $result->skip($skip);
+		}
 
-        if(Input::has('take'))
-        {
-            $take                   = Input::get('take');
-            $result                 = $result->take($take);
-        }
+		if(Input::has('take'))
+		{
+			$take                   = Input::get('take');
+			$result                 = $result->take($take);
+		}
 
-        $result                     = $result->with(['varians', 'images', 'labels'])->get()->toArray();
+		$result                     = $result->with(['varians', 'images', 'labels'])->get()->toArray();
 
-        return new JSend('success', (array)['count' => $count, 'data' => $result]);
-    }
+		return new JSend('success', (array)['count' => $count, 'data' => $result]);
+	}
 
-    /**
-     * Display all clusters
-     *
-     * @return Response
-     */
-    public function clusters($type = null)
-    {
-        if($type=='category')
-        {
-            $result                 = \App\Models\Category::orderby('path', 'asc')->with(['category']);
-        }
-        else
-        {
-            $result                 = \App\Models\Tag::orderby('path', 'asc')->with(['tag']);
-        }
+	/**
+	 * Display all clusters
+	 *
+	 * @return Response
+	 */
+	public function clusters($type = null)
+	{
+		if($type=='category')
+		{
+			$result                 = \App\Models\Category::orderby('path', 'asc')->with(['category']);
+		}
+		else
+		{
+			$result                 = \App\Models\Tag::orderby('path', 'asc')->with(['tag']);
+		}
 
-        if(Input::has('search'))
-        {
-            $search                 = Input::get('search');
+		if(Input::has('search'))
+		{
+			$search                 = Input::get('search');
 
-            foreach ($search as $key => $value) 
-            {
-                switch (strtolower($key)) 
-                {
-                    case 'name':
-                        $result     = $result->name($value);
-                        break;
-                    
-                    default:
-                        # code...
-                        break;
-                }
-            }
-        }
+			foreach ($search as $key => $value) 
+			{
+				switch (strtolower($key)) 
+				{
+					case 'name':
+						$result     = $result->name($value);
+						break;
+					
+					default:
+						# code...
+						break;
+				}
+			}
+		}
 
-        $count                      = $result->count();
+		$count                      = $result->count();
 
-        if(Input::has('skip'))
-        {
-            $skip                   = Input::get('skip');
-            $result                 = $result->skip($skip);
-        }
+		if(Input::has('skip'))
+		{
+			$skip                   = Input::get('skip');
+			$result                 = $result->skip($skip);
+		}
 
-        if(Input::has('take'))
-        {
-            $take                   = Input::get('take');
-            $result                 = $result->take($take);
-        }
+		if(Input::has('take'))
+		{
+			$take                   = Input::get('take');
+			$result                 = $result->take($take);
+		}
 
-        $result                     = $result->get()->toArray();
+		$result                     = $result->get()->toArray();
 
-        return new JSend('success', (array)['count' => $count, 'data' => $result]);
-    }
+		return new JSend('success', (array)['count' => $count, 'data' => $result]);
+	}
 
-    /**
-     * Display all labels
-     *
-     * @return Response
-     */
-    public function labels($type = null)
-    {
-        $result                 = \App\Models\ProductLabel::selectraw('lable as label')->groupby('label');
+	/**
+	 * Display all labels
+	 *
+	 * @return Response
+	 */
+	public function labels($type = null)
+	{
+		$result                 = \App\Models\ProductLabel::selectraw('lable as label')->groupby('label');
 
-        if(Input::has('search'))
-        {
-            $search                 = Input::get('search');
+		if(Input::has('search'))
+		{
+			$search                 = Input::get('search');
 
-            foreach ($search as $key => $value) 
-            {
-                switch (strtolower($key)) 
-                {
-                    case 'name' :
-                        $result     = $result->name($value);
-                    break;
-                    default:
-                        # code...
-                        break;
-                }
-            }
-        }
+			foreach ($search as $key => $value) 
+			{
+				switch (strtolower($key)) 
+				{
+					case 'name' :
+						$result     = $result->name($value);
+					break;
+					default:
+						# code...
+						break;
+				}
+			}
+		}
 
-        $count                      = count($result->get(['lable']));
+		$count                      = count($result->get(['lable']));
 
-        if(Input::has('skip'))
-        {
-            $skip                   = Input::get('skip');
-            $result                 = $result->skip($skip);
-        }
+		if(Input::has('skip'))
+		{
+			$skip                   = Input::get('skip');
+			$result                 = $result->skip($skip);
+		}
 
-        if(Input::has('take'))
-        {
-            $take                   = Input::get('take');
-            $result                 = $result->take($take);
-        }
+		if(Input::has('take'))
+		{
+			$take                   = Input::get('take');
+			$result                 = $result->take($take);
+		}
 
-        $result                     = $result->get()->toArray();
+		$result                     = $result->get()->toArray();
 
-        return new JSend('success', (array)['count' => $count, 'data' => $result]);
-    }
+		return new JSend('success', (array)['count' => $count, 'data' => $result]);
+	}
+
+	/**
+	 * Display all configs
+	 *
+	 * @return Response
+	 */
+	public function config($type = null)
+	{
+		$sliders					= \App\Models\Slider::ondate('now')->get()->toArray();
+		$storeinfo					= new \App\Models\Store;
+		$storepage					= new \App\Models\StorePage;
+		$storeinfo 					= $storeinfo->default(true)->get()->toArray();
+		$storepage 					= $storepage->default(true)->get()->toArray();
+
+		$store['sliders']			= $sliders;
+		$store['info']				= $storeinfo;
+
+		foreach ($storepage as $key => $value) 
+		{
+			$store[$value['type']]	= $value;
+		}
+
+		return new JSend('success', (array)$store);
+	}
 }
