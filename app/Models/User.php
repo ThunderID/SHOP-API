@@ -332,6 +332,6 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
 	 */	
 	public function scopeSSOMedia($query, $variable)
 	{
-		return $query->where('sso_media', $variable);
+		return $query->whereIn('sso_media', $variable);
 	}
 }
