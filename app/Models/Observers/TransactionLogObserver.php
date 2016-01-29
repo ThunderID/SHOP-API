@@ -138,7 +138,7 @@ class TransactionLogObserver
 		$errors                                 = new MessageBag();
 		
 		//A. Check if transaction is sale
-		if($model->transaction()->count() && $model->transaction->type=='sell')
+		if($model->sale()->count())
 		{
 		   /**
 			* Switch scheme
@@ -161,6 +161,11 @@ class TransactionLogObserver
 						return false;
 					}
 
+					if(!$model->sale->save())
+					{
+						$errors->add('Log', $model->sale->getError());
+					}
+
 					if($model->sale->bills==0)
 					{
 						$result                 = $model->ChangeStatus($model->sale, 'paid');
@@ -174,7 +179,7 @@ class TransactionLogObserver
 						return false;
 					}
 
-					$result                 = $model->AddPointForUpline($model->sale);
+					$result                 	= $model->AddPointForUpline($model->sale);
 				break;
 				case 'shipping' :
 				break;
