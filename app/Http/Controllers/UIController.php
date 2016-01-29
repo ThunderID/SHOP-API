@@ -236,7 +236,7 @@ class UIController extends Controller
 	 */
 	public function config($type = null)
 	{
-		$sliders					= \App\Models\Slider::ondate('now')->get()->toArray();
+		$sliders					= \App\Models\Slider::ondate('now')->with(['image'])->get()->toArray();
 		$storeinfo					= new \App\Models\Store;
 		$storepage					= new \App\Models\StorePage;
 		$storeinfo 					= $storeinfo->default(true)->get()->toArray();

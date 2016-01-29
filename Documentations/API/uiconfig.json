@@ -72,6 +72,28 @@ definitions:
         type: string
       ended_at:
         type: string
+      image:
+        type: array
+        items:
+          $ref: '#/definitions/image'
+  image:
+    properties:
+      id:
+        type: string
+      product_id:
+        type: string
+      thumbnail:
+        type: string
+      image_xs:
+        type: string
+      image_sm:
+        type: string
+      image_md:
+        type: string
+      image_lg:
+        type: string
+      is_default:
+        type: boolean
   info:
     properties:
       id:
