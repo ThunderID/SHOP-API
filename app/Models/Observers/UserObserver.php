@@ -115,6 +115,7 @@ class UserObserver
         if (Hash::needsRehash($model->password))
         {
             $model->password                = bcrypt($model->password);
+            $model->reset_password_link     = '';
         }
 
         //3. Check is active

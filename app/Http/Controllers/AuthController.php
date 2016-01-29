@@ -11,158 +11,288 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    /**
-     * Authenticate user
-     *
-     * @return Response
-     */
-    public function signin()
-    {
-        $email                          = Input::get('email');
-        $password                       = Input::get('password');
-        
-        $check                          = Auth::attempt(['email' => $email, 'password' => $password]);
+	/**
+	 * Authenticate user
+	 *
+	 * @return Response
+	 */
+	public function signin()
+	{
+		$email                          = Input::get('email');
+		$password                       = Input::get('password');
+		
+		$check                          = Auth::attempt(['email' => $email, 'password' => $password]);
 
-        if ($check)
-        {
-            $result['id']               = Auth::user()['id'];
-            $result['name']             = Auth::user()['name'];
-            $result['email']            = Auth::user()['email'];
-            $result['date_of_birth']    = Auth::user()['date_of_birth'];
-            $result['role']             = Auth::user()['role'];
-            $result['gender']           = Auth::user()['gender'];
+		if ($check)
+		{
+			$result['id']               = Auth::user()['id'];
+			$result['name']             = Auth::user()['name'];
+			$result['email']            = Auth::user()['email'];
+			$result['date_of_birth']    = Auth::user()['date_of_birth'];
+			$result['role']             = Auth::user()['role'];
+			$result['gender']           = Auth::user()['gender'];
 
-            return new JSend('success', (array)$result);
-        }
-        
-        return new JSend('error', (array)Input::all(), 'Username atau password tidak valid.');
-    }
+			return new JSend('success', (array)$result);
+		}
+		
+		return new JSend('error', (array)Input::all(), 'Username atau password tidak valid.');
+	}
 
-    /**
-     * Register customer
-     *
-     * @return Response
-     */
-    public function signup()
-    {
-        if(!Input::has('customer'))
-        {
-            return new JSend('error', (array)Input::all(), 'Tidak ada data customer.');
-        }
+	/**
+	 * Register customer
+	 *
+	 * @return Response
+	 */
+	public function signup()
+	{
+		if(!Input::has('customer'))
+		{
+			return new JSend('error', (array)Input::all(), 'Tidak ada data customer.');
+		}
 
-        $customer                   = Input::get('customer');
+		$customer                   = Input::get('customer');
 
-        $errors                     = new MessageBag();
+		$errors                     = new MessageBag();
 
-        DB::beginTransaction();
+		DB::beginTransaction();
 
-        //1. Validate User Parameter
-        if(is_null($customer['id']))
-        {
-            $is_new                 = true;
-        }
-        else
-        {
-            $is_new                 = false;
-        }
+		//1. Validate User Parameter
+		if(is_null($customer['id']))
+		{
+			$is_new                 = true;
+		}
+		else
+		{
+			$is_new                 = false;
+		}
 
-        $customer_rules             =   [
-                                            'name'                          => 'required|max:255',
-                                            'email'                         => 'required|max:255|unique:users,email,'.(!is_null($customer['id']) ? $customer['id'] : ''),
-                                            'password'                      => 'max:255',
-                                            'sso_id'                        => '',
-                                            'sso_media'                     => 'in:facebook',
-                                            'sso_data'                      => '',
-                                            'gender'                        => 'in:male,female',
-                                            'date_of_birth'                 => 'date_format:"Y-m-d H:i:s"',
-                                        ];
+		$customer_rules             =   [
+											'name'                          => 'required|max:255',
+											'email'                         => 'required|max:255|unique:users,email,'.(!is_null($customer['id']) ? $customer['id'] : ''),
+											'password'                      => 'max:255',
+											'sso_id'                        => '',
+											'sso_media'                     => 'in:facebook',
+											'sso_data'                      => '',
+											'gender'                        => 'in:male,female',
+											'date_of_birth'                 => 'date_format:"Y-m-d H:i:s"',
+										];
 
-        //1a. Get original data
-        $customer_data              = \App\Models\Customer::findornew($customer['id']);
+		//1a. Get original data
+		$customer_data              = \App\Models\Customer::findornew($customer['id']);
 
-        //1b. Validate Basic Customer Parameter
-        $validator                  = Validator::make($customer, $customer_rules);
+		//1b. Validate Basic Customer Parameter
+		$validator                  = Validator::make($customer, $customer_rules);
 
-        if (!$validator->passes())
-        {
-            $errors->add('Customer', $validator->errors());
-        }
-        else
-        {
-            //if validator passed, save customer
-            $customer_data           = $customer_data->fill($customer);
+		if (!$validator->passes())
+		{
+			$errors->add('Customer', $validator->errors());
+		}
+		else
+		{
+			//if validator passed, save customer
+			$customer_data           = $customer_data->fill($customer);
 
-            if(!$customer_data->save())
-            {
-                $errors->add('Customer', $customer_data->getError());
-            }
-        }
+			if(!$customer_data->save())
+			{
+				$errors->add('Customer', $customer_data->getError());
+			}
+		}
 
-        if($errors->count())
-        {
-            DB::rollback();
+		if($errors->count())
+		{
+			DB::rollback();
 
-            return new JSend('error', (array)Input::all(), $errors);
-        }
+			return new JSend('error', (array)Input::all(), $errors);
+		}
 
-        DB::commit();
-        
-        $final_customer                 = \App\Models\Customer::id($customer_data['id'])->first()->toArray();
+		DB::commit();
+		
+		$final_customer                 = \App\Models\Customer::id($customer_data['id'])->first()->toArray();
 
-        return new JSend('success', (array)$final_customer);
-    }
+		return new JSend('success', (array)$final_customer);
+	}
 
-    /**
-     * Register customer
-     *
-     * @return Response
-     */
-    public function activate()
-    {
-        if(!Input::has('link'))
-        {
-            return new JSend('error', (array)Input::all(), 'Tidak ada data customer.');
-        }
+	/**
+	 * Activate user account
+	 *
+	 * @return Response
+	 */
+	public function activate()
+	{
+		if(!Input::has('link'))
+		{
+			return new JSend('error', (array)Input::all(), 'Tidak ada data customer.');
+		}
 
-        $link                       = Input::get('link');
+		$link                       = Input::get('link');
 
-        $errors                     = new MessageBag();
+		$errors                     = new MessageBag();
 
-        DB::beginTransaction();
+		DB::beginTransaction();
 
-        //1. Check Link
-        $customer_data              = \App\Models\Customer::activationlink($link)->first();
+		//1. Check Link
+		$customer_data              = \App\Models\Customer::activationlink($link)->first();
 
-        if(!$customer_data)
-        {
-            $errors->add('Customer', 'Link tidak valid.');
-        }
-        elseif($customer_data->is_active)
-        {
-            $errors->add('Customer', 'Link tidak valid.');
-        }
-        else
-        {
-            //if validator passed, save customer
-            $customer_data           = $customer_data->fill(['is_active' => true, 'activation_link' => '', 'date_of_birth' => (($customer_data['date_of_birth']->format('Y-m-d H:i:s')) ? $customer_data['date_of_birth']->format('Y-m-d H:i:s') : '')]);
+		if(!$customer_data)
+		{
+			$errors->add('Customer', 'Link tidak valid.');
+		}
+		elseif($customer_data->is_active)
+		{
+			$errors->add('Customer', 'Link tidak valid.');
+		}
+		else
+		{
+			//if validator passed, save customer
+			$customer_data           = $customer_data->fill(['is_active' => true, 'activation_link' => '', 'date_of_birth' => (($customer_data['date_of_birth']->format('Y-m-d H:i:s')) ? $customer_data['date_of_birth']->format('Y-m-d H:i:s') : '')]);
 
-            if(!$customer_data->save())
-            {
-                $errors->add('Customer', $customer_data->getError());
-            }
-        }
+			if(!$customer_data->save())
+			{
+				$errors->add('Customer', $customer_data->getError());
+			}
+		}
 
-        if($errors->count())
-        {
-            DB::rollback();
+		if($errors->count())
+		{
+			DB::rollback();
 
-            return new JSend('error', (array)Input::all(), $errors);
-        }
+			return new JSend('error', (array)Input::all(), $errors);
+		}
 
-        DB::commit();
-        
-        $final_customer                 = \App\Models\Customer::id($customer_data['id'])->first()->toArray();
+		DB::commit();
+		
+		$final_customer                 = \App\Models\Customer::id($customer_data['id'])->first()->toArray();
 
-        return new JSend('success', (array)$final_customer);
-    }
+		return new JSend('success', (array)$final_customer);
+	}
+
+	/**
+	 * Get forgot link
+	 *
+	 * @return Response
+	 */
+	public function forgot()
+	{
+		if(!Input::has('email'))
+		{
+			return new JSend('error', (array)Input::all(), 'Tidak ada data customer.');
+		}
+
+		$email						= Input::get('email');
+
+		$errors                     = new MessageBag();
+
+		DB::beginTransaction();
+
+		//1. Check Link
+		$customer_data              = \App\Models\Customer::email($email)->first();
+
+		if(!$customer_data)
+		{
+			$errors->add('Customer', 'Email tidak valid.');
+		}
+		else
+		{
+			//if validator passed, save customer
+			$customer_data           = $customer_data->fill(['reset_password_link' => $customer_data->generateResetPasswordLink(), 'date_of_birth' => (($customer_data['date_of_birth']->format('Y-m-d H:i:s')) ? $customer_data['date_of_birth']->format('Y-m-d H:i:s') : '')]);
+
+			if(!$customer_data->save())
+			{
+				$errors->add('Customer', $customer_data->getError());
+			}
+		}
+
+		if($errors->count())
+		{
+			DB::rollback();
+
+			return new JSend('error', (array)Input::all(), $errors);
+		}
+
+		DB::commit();
+		
+		$final_customer                 = \App\Models\Customer::id($customer_data['id'])->first()->toArray();
+
+		return new JSend('success', (array)$final_customer);
+	}
+
+	/**
+	 * Validate Reset link
+	 *
+	 * @return Response
+	 */
+	public function reset($link = '')
+	{
+		$errors                     = new MessageBag();
+
+		//1. Check Link
+		$customer_data              = \App\Models\Customer::resetpasswordlink($link)->first();
+
+		if(!$customer_data)
+		{
+			$errors->add('Customer', 'Link tidak valid.');
+		}
+
+		if($errors->count())
+		{
+			return new JSend('error', (array)Input::all(), $errors);
+		}
+
+		return new JSend('success', (array)$customer_data->toArray());
+	}
+
+	/**
+	 * Change password
+	 *
+	 * @return Response
+	 */
+	public function change()
+	{
+		if(!Input::has('email') || !Input::has('password'))
+		{
+			return new JSend('error', (array)Input::all(), 'Tidak ada data customer.');
+		}
+
+		$email						= Input::get('email');
+		$password					= Input::get('password');
+
+		$errors                     = new MessageBag();
+
+		DB::beginTransaction();
+
+		//1. Check Email
+		$customer_data              = \App\Models\Customer::email($email)->first();
+
+		if(!$customer_data)
+		{
+			$errors->add('Customer', 'Email tidak valid.');
+		}
+		elseif(empty($customer_data->reset_password_link))
+		{
+			$errors->add('Customer', 'Email tidak valid.');
+		}
+		else
+		{
+			//if validator passed, save customer
+			$customer_data           = $customer_data->fill(['reset_password_link' => '', 'password' => $password, 'date_of_birth' => (($customer_data['date_of_birth']->format('Y-m-d H:i:s')) ? $customer_data['date_of_birth']->format('Y-m-d H:i:s') : '')]);
+
+			if(!$customer_data->save())
+			{
+				$errors->add('Customer', $customer_data->getError());
+			}
+		}
+
+		if($errors->count())
+		{
+			DB::rollback();
+
+			return new JSend('error', (array)Input::all(), $errors);
+		}
+
+		DB::commit();
+		
+		$final_customer                 = \App\Models\Customer::id($customer_data['id'])->first()->toArray();
+
+		return new JSend('success', (array)$final_customer);
+	}
 }

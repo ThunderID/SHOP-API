@@ -60,7 +60,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/login'
+              $ref: '#/definitions/user'
         default:
           description: Unexpected error
           schema:
@@ -160,6 +160,102 @@ paths:
       tags:
         - Account
         - Activate
+      responses:
+        '200':
+          description: user rich data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/user'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /customer/forgot/password:
+    post:
+      summary: generate reset password link
+      description: ' reset password link.'
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: number
+          format: integer
+        - name: email
+          in: query
+          description: email that forgotten by user.
+          required: true
+          type: string
+          format: string
+      tags:
+        - Account
+        - Forgot
+        - Password
+      responses:
+        '200':
+          description: user rich data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/user'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /customer/reset/link:
+    get:
+      summary: check reset link
+      description: 'check reset password link.'
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: number
+          format: integer
+        - name: link
+          in: query
+          description: forgot link.
+          required: true
+          type: string
+          format: string
+      tags:
+        - Account
+        - Reset
+        - Password
+      responses:
+        '200':
+          description: user rich data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/user'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /customer/change/password:
+    get:
+      summary: check reset link
+      description: 'check reset password link.'
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: number
+          format: integer
+        - name: email
+          in: query
+          description: email that forgotten by user.
+          required: true
+          type: string
+          format: string
+      tags:
+        - Account
+        - Change
+        - Password
       responses:
         '200':
           description: user rich data

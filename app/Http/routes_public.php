@@ -41,6 +41,24 @@ $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], fu
 		]
 	);
 
+	$app->post('/customer/forgot/password',
+		[
+			'uses'				=> 'AuthController@forgot'
+		]
+	);
+
+	$app->get('/customer/reset/{link}',
+		[
+			'uses'				=> 'AuthController@reset'
+		]
+	);
+
+	$app->post('/customer/change/password',
+		[
+			'uses'				=> 'AuthController@change'
+		]
+	);
+
 	// ------------------------------------------------------------------------------------
 	// PRODUCTS
 	// ------------------------------------------------------------------------------------

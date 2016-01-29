@@ -31,7 +31,7 @@ use Carbon\Carbon;
  */
 class User extends BaseModel implements AuthenticatableContract, CanResetPasswordContract 
 {
-    use Authenticatable, CanResetPassword;
+	use Authenticatable, CanResetPassword;
 
 	/**
 	 * Relationship Traits.
@@ -107,10 +107,10 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
 	 */	
 	public static function boot() 
 	{
-        parent::boot();
+		parent::boot();
  
-        User::observe(new UserObserver());
-    }
+		User::observe(new UserObserver());
+	}
 
 	/**
 	 * generate referral code
@@ -118,135 +118,144 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
 	 * @param model of user
 	 * @return referral_code
 	 */	
-    public function generateReferralCode($user)
+	public function generateReferralCode($user)
 	{
 		$letters 							= 'abcefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
 		
 		if(!is_null($user->referral_code))
-        {
-        	return $user->referral_code;
-        }
-        else
-        {
-            do
-            {
-    			$names							= explode(' ', $user->name);
-    			$fnames 						= [];
-    			$lnames 						= [];
-    			$lostcode 						= [];
-            	if(isset($names[0]))
-            	{
-    				$fname 						= str_split($names[0]);
+		{
+			return $user->referral_code;
+		}
+		else
+		{
+			do
+			{
+				$names							= explode(' ', $user->name);
+				$fnames 						= [];
+				$lnames 						= [];
+				$lostcode 						= [];
+				if(isset($names[0]))
+				{
+					$fname 						= str_split($names[0]);
 
-    				foreach ($fname as $key => $value) 
-    				{
-    					if($key <= 2)
-    					{
-    						$fnames[$key]		= $value;
-    					}
-    				}
-            	}
+					foreach ($fname as $key => $value) 
+					{
+						if($key <= 2)
+						{
+							$fnames[$key]		= $value;
+						}
+					}
+				}
 
-            	if(count($fnames) < 3)
-            	{
-            		foreach (range((count($fnames)-1), 2) as $key) 
-            		{
-            			$fnames[$key] 			= substr(str_shuffle($letters), 0, 1);
-            		}
-            	}
+				if(count($fnames) < 3)
+				{
+					foreach (range((count($fnames)-1), 2) as $key) 
+					{
+						$fnames[$key] 			= substr(str_shuffle($letters), 0, 1);
+					}
+				}
 
-            	if(isset($names[count($names)-1]))
-            	{
-    				$lname 						= str_split($names[count($names)-1]);
-    				foreach ($lname as $key => $value) 
-    				{
-    					if($key <= 2)
-    					{
-    						$lnames[$key]		= $value;
-    					}
-    				}
-            	}
+				if(isset($names[count($names)-1]))
+				{
+					$lname 						= str_split($names[count($names)-1]);
+					foreach ($lname as $key => $value) 
+					{
+						if($key <= 2)
+						{
+							$lnames[$key]		= $value;
+						}
+					}
+				}
 
-            	if(count($lnames) < 3)
-            	{
-            		foreach (range((count($lnames)-1), 2) as $key) 
-            		{
-            			$lnames[$key] 			= substr(str_shuffle($letters), 0, 1);
-            		}
-            	}
+				if(count($lnames) < 3)
+				{
+					foreach (range((count($lnames)-1), 2) as $key) 
+					{
+						$lnames[$key] 			= substr(str_shuffle($letters), 0, 1);
+					}
+				}
 
-            	foreach (range(0, 1) as $key) 
-        		{
-        			$lostcode[$key] 			= substr(str_shuffle($letters), 0, 1);
-        		}
+				foreach (range(0, 1) as $key) 
+				{
+					$lostcode[$key] 			= substr(str_shuffle($letters), 0, 1);
+				}
 
-        		$lcode 							= implode('', $lnames);
-        		$fcode 							= implode('', $fnames);
-        		$locode 						= implode('', $lostcode);
+				$lcode 							= implode('', $lnames);
+				$fcode 							= implode('', $fnames);
+				$locode 						= implode('', $lostcode);
 
-    			$referral_code 		            = strtolower($fcode.$lcode.$locode);
+				$referral_code 		            = strtolower($fcode.$lcode.$locode);
  
-                $referral                       = User::referralcode($fcode.$lcode.$locode)->first();
-            }
-            while($referral);
+				$referral                       = User::referralcode($fcode.$lcode.$locode)->first();
+			}
+			while($referral);
 
-            return $referral_code;
-        }
+			return $referral_code;
+		}
 	}
 
+	/**
+	 * generate reset password link
+	 * 
+	 * @return reset_password_link
+	 */	
+	public function generateResetPasswordLink()
+	{
+		return md5(uniqid(rand(), TRUE));
+	}
 	/**
 	 * save referral code
 	 * 
 	 * @param model of user, referral_code
 	 * @return boolean
 	 */	
-    public function giveReferralCode($user, $referral)
+	public function giveReferralCode($user, $referral)
 	{
 		//save voucher referral
 		$newvoucher						= new Referral;
-    	$newvoucher->fill([
-    		'user_id'					=> $user->id,
+		$newvoucher->fill([
+			'user_id'					=> $user->id,
 			'code'		    			=> $referral,
 			'type'						=> 'referral',
 			'value'						=> 0,
-            'started_at'				=> null,
+			'started_at'				=> null,
 			'expired_at'				=> null,
-    		]);
+			]);
 
-        if(!$newvoucher->save())
-        {
-        	$this->errors				= $newvoucher->getError();
+		if(!$newvoucher->save())
+		{
+			$this->errors				= $newvoucher->getError();
 
-        	return false;
-        }
-        else
-        {
-        	//save quota referral
-        	$quota 						= StoreSetting::type('first_quota')->Ondate('now')->first();
+			return false;
+		}
+		else
+		{
+			//save quota referral
+			$quota 						= StoreSetting::type('first_quota')->Ondate('now')->first();
 
-	        if(!$quota)
-	        {
-	        	$this->errors			= 'Tidak dapat melakukan registrasi saat ini.';
-	        	
-	        	return false;
-	        }
-	        else
-	        {
-	        	$newquota 				= new QuotaLog;
-	        	$newquota->fill([
-	        		'voucher_id'		=> $newvoucher['id'],
+			if(!$quota)
+			{
+				$this->errors			= 'Tidak dapat melakukan registrasi saat ini.';
+				
+				return false;
+			}
+			else
+			{
+				$newquota 				= new QuotaLog;
+				$newquota->fill([
+					'voucher_id'		=> $newvoucher['id'],
 					'amount'			=> $quota->value,
 					'notes'				=> 'Hadiah registrasi',
-	        		]);
+					]);
 
-	        	if(!$newquota->save())
-	        	{
-		        	$this->errors				= $newquota->getError();
-        			
-        			return false;
-	            }
-	        }
-        }
+				if(!$newquota->save())
+				{
+					$this->errors				= $newquota->getError();
+					
+					return false;
+				}
+			}
+		}
 
 		return true;
 	}
@@ -257,22 +266,22 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
 	 * @param model of user
 	 * @return boolean
 	 */	
-    public function giveWelcomeGift($user)
+	public function giveWelcomeGift($user)
 	{
 		$gift                    		= StoreSetting::type('welcome_gift')->Ondate('now')->first();
 
 		$store                    		= StoreSetting::type('voucher_point_expired')->Ondate('now')->first();
 
-        if($gift)
-        {
-        	if($store)
-        	{
-            	$expired_at 			= new Carbon($store->value);
-        	}
-        	else
-        	{
-            	$expired_at 			= new Carbon('+ 3 months');
-        	}
+		if($gift)
+		{
+			if($store)
+			{
+				$expired_at 			= new Carbon($store->value);
+			}
+			else
+			{
+				$expired_at 			= new Carbon('+ 3 months');
+			}
 
 			$point 						= new PointLog;
 
@@ -304,5 +313,15 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
 	public function scopeEmail($query, $variable)
 	{
 		return $query->where('email', $variable);
+	}
+
+	/**
+	 * find reset password link
+	 * 
+	 * @param reset password link
+	 */	
+	public function scopeResetPasswordLink($query, $variable)
+	{
+		return $query->where('reset_password_link', $variable);
 	}
 }
