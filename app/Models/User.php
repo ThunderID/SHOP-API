@@ -324,4 +324,14 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
 	{
 		return $query->where('reset_password_link', $variable);
 	}
+
+	/**
+	 * find sso media
+	 * 
+	 * @param sso media
+	 */	
+	public function scopeSSOMedia($query, $variable)
+	{
+		return $query->where('sso_media', $variable);
+	}
 }
