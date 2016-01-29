@@ -10,7 +10,7 @@ basePath: /v1
 produces:
   - application/json
 paths:
-  /balin/public/store configs:
+  /balin/public/configs:
     get:
       summary: Store Config Lists
       description: |
