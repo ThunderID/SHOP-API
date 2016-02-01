@@ -79,10 +79,7 @@ class Product extends BaseModel
 	 *
 	 * @var array
 	 */
-	protected $appends				=	[
-											// 'price',
-											// 'promo_price',
-	];
+	protected $appends				=	[];
 
 	/**
 	 * The attributes excluded from the model's JSON form.

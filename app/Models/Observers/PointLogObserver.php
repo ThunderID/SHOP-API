@@ -96,7 +96,7 @@ class PointLogObserver
                 //check if there were referral setting, let it be
                 elseif($model->reference->referral->value!=0)
                 {
-                    $model->amount          = $model->reference->voucher->value;
+                    $model->amount          = $model->reference->referral->value;
                     $model->notes           = 'Referensi promo '.$model->reference->name;
                 }
                 //check if there were no referral setting, let it be gift
@@ -109,7 +109,7 @@ class PointLogObserver
 
             if(!$errors->count())
             {
-                $result                     = $model->CreditQuota($model->reference, 'Mereferensikan '.$model->user->name);
+                $result                     = $model->CreditQuota($model->reference->referral, 'Mereferensikan '.$model->user->name);
                 if(!$result)
                 {
                     return false;
