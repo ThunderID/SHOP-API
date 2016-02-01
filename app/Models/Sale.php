@@ -62,7 +62,7 @@ class Sale extends Transaction
 											'user_id'						=> 'exists:users,id',
 											'type'							=> 'in:sell',
 											'ref_number'					=> 'max:255',
-											'transact_at'					=> 'date_format:"Y-m-d H:i:s"',
+											// 'transact_at'					=> 'date_format:"Y-m-d H:i:s"',
 											'unique_number'					=> 'numeric',
 											'shipping_cost'					=> 'numeric',
 											'voucher_discount'				=> 'numeric',

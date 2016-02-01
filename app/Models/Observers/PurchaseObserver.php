@@ -24,7 +24,10 @@ class PurchaseObserver
 		$errors 							= new MessageBag();
 
         //1. generate transaction date
-        $model->transact_at  				= Carbon::now()->format('Y-m-d H:i:s');
+        if(!isset($model->transact_at))
+        {
+            $model->transact_at             = Carbon::now()->format('Y-m-d H:i:s');
+        }
 
         //2. generate transaction ref_number
         $model->ref_number                  = $model->generateRefNumber($model);
