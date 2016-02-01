@@ -22,7 +22,6 @@ class AuthController extends Controller
 		$password                       = Input::get('password');
 		
 		$check                          = Auth::attempt(['email' => $email, 'password' => $password]);
-		$is_new							= false;
 
 		if ($check)
 		{
@@ -32,7 +31,6 @@ class AuthController extends Controller
 			$result['date_of_birth']    = Auth::user()['date_of_birth'];
 			$result['role']             = Auth::user()['role'];
 			$result['gender']           = Auth::user()['gender'];
-			$result['is_new']           = $is_new;
 
 			return new JSend('success', (array)$result);
 		}
@@ -73,7 +71,6 @@ class AuthController extends Controller
 			$result['date_of_birth']    = Auth::user()['date_of_birth'];
 			$result['role']             = Auth::user()['role'];
 			$result['gender']           = Auth::user()['gender'];
-			$result['is_new']           = $is_new;
 
 			return new JSend('success', (array)$result);
 		}
@@ -187,7 +184,7 @@ class AuthController extends Controller
 		else
 		{
 			//if validator passed, save customer
-			$customer_data           = $customer_data->fill(['is_active' => true, 'activation_link' => '', 'date_of_birth' => (($customer_data['date_of_birth']->format('Y-m-d H:i:s')) ? $customer_data['date_of_birth']->format('Y-m-d H:i:s') : '')]);
+			$customer_data           = $customer_data->fill(['is_active' => true, 'activation_link' => '', 'date_of_birth' => ((strtotime($customer_data['date_of_birth'])) ? $customer_data['date_of_birth']->format('Y-m-d H:i:s') : '')]);
 
 			if(!$customer_data->save())
 			{
