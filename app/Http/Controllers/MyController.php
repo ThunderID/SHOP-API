@@ -152,7 +152,11 @@ class MyController extends Controller
 		DB::beginTransaction();
 
 		//1. Check Link
-		$voucher_data              = \App\Models\Campaign::code($code)->type(['referral', 'promo_referral'])->first();
+		$voucher_data              = \App\Models\Referral::code($code)->first();
+		if(!$voucher_data)
+		{
+			$voucher_data			= \App\Models\Voucher::code($code)->type('promo_referral')->ondate('now')->first();
+		}
 
 		if(!$voucher_data)
 		{
@@ -160,7 +164,7 @@ class MyController extends Controller
 		}
 		elseif($voucher_data->quota <= 0)
 		{
-			$errors->add('Redeem', 'Quota sudah habis.');
+			$errors->add('Redeem', 'Quota referral sudah habis.');
 		}
 		else
 		{
@@ -176,10 +180,21 @@ class MyController extends Controller
 			}
 
 			//if validator passed, save voucher
+			if($voucher_data['type']=='referral')
+			{
+				$reference_id 			= $voucher_data['user_id'];
+				$reference_type			= 'App\Models\User';
+			}
+			else
+			{
+				$reference_id 			= $voucher_data['id'];
+				$reference_type			= 'App\Models\Voucher';
+			}
+
 			$point                  =   [
 											'user_id'               => $user_id,
-											'reference_id'          => $voucher_data['user_id'],
-											'reference_type'        => 'App\Models\User',
+											'reference_id'        	=> $reference_id,
+											'reference_type'        => $reference_type,
 											'expired_at'            => $expired_at->format('Y-m-d H:i:s'),
 										];
 

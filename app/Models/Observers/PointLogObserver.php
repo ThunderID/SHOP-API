@@ -60,7 +60,7 @@ class PointLogObserver
         if($model->reference_type=='App\Models\User')
         {
             //1a. Check referee
-            $reference                  = PointLog::referenceid($model->reference_id)->referencetype('App\Models\User')->first();
+            $reference                  = PointLog::userid($model->reference_id)->referencetype('App\Models\User')->first();
             $user                       = PointLog::userid($model->user_id)->referencetype('App\Models\User')->first();
             $alreadyhasvoucher          = PointLog::userid($model->user_id)->referencetype('App\Models\Voucher')->first();
 
@@ -120,7 +120,7 @@ class PointLogObserver
         //2. Check if reference were from voucher
         elseif($model->reference_type=='App\Models\Voucher')
         {
-            $reference                      = PointLog::referenceid($model->reference->user_id)->referencetype('App\Models\User')->first();
+            $reference                      = PointLog::userid($model->reference->user_id)->referencetype('App\Models\User')->first();
             $user                           = PointLog::userid($model->reference->user_id)->referencetype('App\Models\User')->first();
             $alreadyhasvoucher              = PointLog::userid($model->user_id)->referencetype('App\Models\Voucher')->first();
             $alreadyhasreferral             = PointLog::userid($model->user_id)->referencetype('App\Models\User')->first();
@@ -171,7 +171,7 @@ class PointLogObserver
                 
                 if(!$errors->count())
                 {
-                    $result                     = $model->CreditQuota(App\Models\Voucher::findorfail($prev_reference), 'Mereferensikan '.$model->user->name);
+                    $result                     = $model->CreditQuota(\App\Models\Voucher::findorfail($prev_reference), 'Mereferensikan '.$model->user->name);
                     if(!$result)
                     {
                         return false;

@@ -113,7 +113,7 @@ class VoucherController extends Controller
 		$voucher_rules             =   [
 											'user_id'		=> 'exists:users,id',
 											'code'			=> 'required|max:255|unique:tmp_vouchers,code,'.(!is_null($voucher['id']) ? $voucher['id'] : ''),
-											'type'			=> 'required|in:debit_point,free_shipping_cost',
+											'type'			=> 'required|in:debit_point,free_shipping_cost,promo_referral',
 											'value'			=> 'required|numeric',
 											'started_at'	=> 'date_format:"Y-m-d H:i:s"',
 											'expired_at'	=> 'date_format:"Y-m-d H:i:s"',
@@ -169,7 +169,7 @@ class VoucherController extends Controller
 					$log_rules		=   [
 											'voucher_id'	=> 'exists:tmp_vouchers,id|'.($is_new ? '' : 'in:'.$voucher_data['id']),
 											'amount'		=> 'required|numeric',
-											'notes'			=> 'required|max:512',
+											'notes'			=> 'max:512',
 										];
 
 					$validator      = Validator::make($value, $log_rules);
