@@ -31,6 +31,12 @@ $app->group(['middleware' => 'oauth|me', 'namespace' => 'App\Http\Controllers'],
 		]
 	);
 
+	$app->get('/me/{user_id}/addresses',
+		[
+			'uses'				=> 'MyController@addresses'
+		]
+	);
+
 	$app->post('/me/{user_id}/update',
 		[
 			'uses'				=> 'MyController@store'

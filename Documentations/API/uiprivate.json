@@ -88,6 +88,51 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /me/user_id/addresses:
+    get:
+      summary: Get customer addresses
+      description: >
+        Get customer addresses
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+        - name: user_id
+          in: query
+          description: customer id
+          required: true
+          type: string
+          format: string
+        - name: skip
+          in: query
+          description: How many records are going to be skipped
+          required: false
+          type: number
+          format: integer
+        - name: take
+          in: query
+          description: How many records are going to be taken from resource
+          required: false
+          type: number
+          format: integer
+      tags:
+        - Account
+        - Addresses
+        - Private
+      responses:
+        '200':
+          description: An array of addresses
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/addresses'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
   /me/user_id/update:
     post:
       summary: Update my profile
@@ -803,6 +848,10 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/shipment'
+      voucher:
+        type: array
+        items:
+          $ref: '#/definitions/voucher'
   cart:
     properties:
       id:
@@ -922,6 +971,20 @@ definitions:
       id:
         type: string
       name:
+        type: string
+  voucher:
+    properties:
+      id:
+        type: string
+      code:
+        type: string
+      type:
+        type: string
+      quota:
+        type: number
+      started_at:
+        type: string
+      expired_at:
         type: string
   Error:
     type: object

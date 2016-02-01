@@ -47,7 +47,7 @@ class MyOrderController extends Controller
 	 */
 	public function detail($user_id = null, $order_id = null)
 	{
-		$result                 = \App\Models\Sale::userid($user_id)->id($order_id)->status(['wait', 'canceled', 'paid', 'shipping', 'packed', 'delivered'])->with(['orderlogs', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'shipment', 'shipment.courier', 'shipment.address'])->first();
+		$result                 = \App\Models\Sale::userid($user_id)->id($order_id)->status(['wait', 'canceled', 'paid', 'shipping', 'packed', 'delivered'])->with(['orderlogs', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'shipment', 'shipment.courier', 'shipment.address', 'voucher'])->first();
 
 		if($result)
 		{
@@ -104,6 +104,18 @@ class MyOrderController extends Controller
 		else
 		{
 			$is_new                 = false;
+		}
+
+		if(isset($order['voucher_code']))
+		{
+			$voucher 				= \App\Models\Voucher::code($order['voucher_code'])->first();
+
+			if(!$voucher)
+			{
+				return new JSend('error', (array)Input::all(), ['Voucher tidak valid.']);
+			}
+
+			$order['voucher_id']	= $voucher['id'];
 		}
 
 		$order_rules                =   [
@@ -301,7 +313,7 @@ class MyOrderController extends Controller
 
 		DB::commit();
 		
-		$final_order                 = \App\Models\Sale::userid($user_id)->id($order_data['id'])->status(['cart', 'wait', 'canceled', 'paid', 'shipping', 'packed', 'delivered'])->with(['orderlogs', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'shipment', 'shipment.courier', 'shipment.address'])->first()->toArray();
+		$final_order                 = \App\Models\Sale::userid($user_id)->id($order_data['id'])->status(['cart', 'wait', 'canceled', 'paid', 'shipping', 'packed', 'delivered'])->with(['orderlogs', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'shipment', 'shipment.courier', 'shipment.address', 'voucher'])->first()->toArray();
 
 		return new JSend('success', (array)$final_order);
 	}

@@ -60,6 +60,34 @@ class MyController extends Controller
 	}
 
 	/**
+	 * Display my addresses
+	 *
+	 * @return Response
+	 */
+	public function addresses($user_id = null)
+	{
+		$result                     = \App\Models\Address::ownerid($user_id)->ownertype('App\Models\Customer');
+
+		$count                      = $result->count();
+
+		if(Input::has('skip'))
+		{
+			$skip                   = Input::get('skip');
+			$result                 = $result->skip($skip);
+		}
+
+		if(Input::has('take'))
+		{
+			$take                   = Input::get('take');
+			$result                 = $result->take($take);
+		}
+
+		$result                     = $result->get()->toArray();
+
+		return new JSend('success', (array)['count' => $count, 'data' => $result]);
+	}
+
+	/**
 	 * Register customer
 	 *
 	 * @return Response

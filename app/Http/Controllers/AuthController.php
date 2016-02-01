@@ -314,7 +314,7 @@ class AuthController extends Controller
 		else
 		{
 			//if validator passed, save customer
-			$customer_data           = $customer_data->fill(['reset_password_link' => '', 'password' => $password, 'date_of_birth' => (($customer_data['date_of_birth']->format('Y-m-d H:i:s')) ? $customer_data['date_of_birth']->format('Y-m-d H:i:s') : '')]);
+			$customer_data           = $customer_data->fill(['reset_password_link' => '', 'password' => $password, 'date_of_birth' => (strtotime($customer_data['date_of_birth']) ? $customer_data['date_of_birth']->format('Y-m-d H:i:s') : '')]);
 
 			if(!$customer_data->save())
 			{
