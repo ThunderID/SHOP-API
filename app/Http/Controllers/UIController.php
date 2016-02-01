@@ -8,6 +8,7 @@ use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use App\Events\ProductSearched;
 
 /**
@@ -24,6 +25,9 @@ class UIController extends Controller
 	 */
 	public function products()
 	{
+		$user						= \LucaDegasperi\OAuth2Server\Facades\Authorizer::getResourceOwnerId();
+		$user						= json_decode($user, true)['data'];
+
 		$result                     = new \App\Models\Product;
 
 		if(Input::has('search'))
@@ -40,18 +44,18 @@ class UIController extends Controller
 					case 'slug':
 						$result     = $result->slug($value);
 
-						if(Auth::check())
+						if($user)
 						{
-							$data['user_id']    = Auth::user()->id;
+							$data['user_id']    = $user['id'];
 						}
 						$data['slug']           = $value;
 						$data['type']           = 'product';
 						break;
 					case 'categories':
-						$result     = $result->categoriesslug($value);                        
-						if(Auth::check())
+						$result     = $result->categoriesslug($value);
+						if($user)
 						{
-							$data['user_id']    = Auth::user()->id;
+							$data['user_id']    = $user['id'];
 						}
 						$data['slug']           = $value;
 						$data['type']           = 'category';
@@ -59,9 +63,9 @@ class UIController extends Controller
 					case 'tags':
 						$result     = $result->tagsslug($value);
 
-						if(Auth::check())
+						if($user)
 						{
-							$data['user_id']    = Auth::user()->id;
+							$data['user_id']    = $user['id'];
 						}
 						$data['slug']           = $value;
 						$data['type']           = 'tag';

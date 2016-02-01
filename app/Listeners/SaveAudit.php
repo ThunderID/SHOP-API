@@ -36,9 +36,12 @@ class SaveAudit
     public function handle(AuditStore $event)
     {
         //1. save audit
-        if(Auth::check())
+        $user                       = \LucaDegasperi\OAuth2Server\Facades\Authorizer::getResourceOwnerId();
+        $user                       = json_decode($user, true)['data'];
+
+        if($user)
         {
-            $userid             = Auth::user()->id;
+            $userid             = $user['id'];
         }
         else
         {
