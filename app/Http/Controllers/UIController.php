@@ -70,6 +70,9 @@ class UIController extends Controller
 						$data['slug']           = $value;
 						$data['type']           = 'tag';
 						break;
+					case 'notid':
+						$result     = $result->notid($value);
+						break;
 					default:
 						# code...
 						break;
