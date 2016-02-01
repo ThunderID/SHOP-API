@@ -22,6 +22,7 @@ class AuthController extends Controller
 		$password                       = Input::get('password');
 		
 		$check                          = Auth::attempt(['email' => $email, 'password' => $password]);
+		$is_new							= false;
 
 		if ($check)
 		{
@@ -31,6 +32,7 @@ class AuthController extends Controller
 			$result['date_of_birth']    = Auth::user()['date_of_birth'];
 			$result['role']             = Auth::user()['role'];
 			$result['gender']           = Auth::user()['gender'];
+			$result['is_new']           = $is_new;
 
 			return new JSend('success', (array)$result);
 		}
@@ -59,6 +61,8 @@ class AuthController extends Controller
 				{
 					return new JSend('error', (array)Input::all(), $sso->getError());
 				}
+
+				$is_new					= true;
 			}
 			
 			Auth::loginUsingId($sso['id']);
@@ -69,6 +73,7 @@ class AuthController extends Controller
 			$result['date_of_birth']    = Auth::user()['date_of_birth'];
 			$result['role']             = Auth::user()['role'];
 			$result['gender']           = Auth::user()['gender'];
+			$result['is_new']           = $is_new;
 
 			return new JSend('success', (array)$result);
 		}

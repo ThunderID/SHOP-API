@@ -128,7 +128,7 @@ class MyController extends Controller
 
 		DB::commit();
 		
-		$final_customer                 = \App\Models\Customer::id($user_id)->with(['myreferrals', 'myreferrals.user'])->toArray();
+		$final_customer                 = \App\Models\Customer::id($user_id)->with(['myreferrals', 'myreferrals.user'])->first()->toArray();
 
 		return new JSend('success', (array)$final_customer);
 	}
