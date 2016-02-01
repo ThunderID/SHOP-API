@@ -88,7 +88,7 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
 	 *
 	 * @var array
 	 */
-	protected $hidden 				= ['password', 'remember_token', 'reset_password_link', 'expired_at'];
+	protected $hidden 				= ['password', 'remember_token', 'expired_at'];
 
 	/* ---------------------------------------------------------------------------- RELATIONSHIP ----------------------------------------------------------------------------*/
 	
@@ -333,5 +333,15 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
 	public function scopeSSOMedia($query, $variable)
 	{
 		return $query->whereIn('sso_media', $variable);
+	}
+
+	/**
+	 * find not sso media
+	 * 
+	 * @param sso media
+	 */	
+	public function scopeNotSSOMedia($query, $variable)
+	{
+		return $query->whereNotIn('sso_media', $variable);
 	}
 }

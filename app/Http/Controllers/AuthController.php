@@ -225,7 +225,7 @@ class AuthController extends Controller
 		DB::beginTransaction();
 
 		//1. Check Link
-		$customer_data              = \App\Models\Customer::email($email)->first();
+		$customer_data              = \App\Models\Customer::email($email)->notSSOMedia(['facebook'])->first();
 
 		if(!$customer_data)
 		{
@@ -234,7 +234,7 @@ class AuthController extends Controller
 		else
 		{
 			//if validator passed, save customer
-			$customer_data           = $customer_data->fill(['reset_password_link' => $customer_data->generateResetPasswordLink(), 'date_of_birth' => (($customer_data['date_of_birth']->format('Y-m-d H:i:s')) ? $customer_data['date_of_birth']->format('Y-m-d H:i:s') : '')]);
+			$customer_data           = $customer_data->fill(['reset_password_link' => $customer_data->generateResetPasswordLink(), 'date_of_birth' => (strtotime($customer_data['date_of_birth']) ? $customer_data['date_of_birth']->format('Y-m-d H:i:s') : '')]);
 
 			if(!$customer_data->save())
 			{
@@ -266,7 +266,7 @@ class AuthController extends Controller
 		$errors                     = new MessageBag();
 
 		//1. Check Link
-		$customer_data              = \App\Models\Customer::resetpasswordlink($link)->first();
+		$customer_data              = \App\Models\Customer::resetpasswordlink($link)->notSSOMedia(['facebook'])->first();
 
 		if(!$customer_data)
 		{
@@ -301,7 +301,7 @@ class AuthController extends Controller
 		DB::beginTransaction();
 
 		//1. Check Email
-		$customer_data              = \App\Models\Customer::email($email)->first();
+		$customer_data              = \App\Models\Customer::email($email)->notSSOMedia(['facebook'])->first();
 
 		if(!$customer_data)
 		{
