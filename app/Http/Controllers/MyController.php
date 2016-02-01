@@ -64,7 +64,7 @@ class MyController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store($user_id = null)
 	{
 		if(!Input::has('customer'))
 		{
