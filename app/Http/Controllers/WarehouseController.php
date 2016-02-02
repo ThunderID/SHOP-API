@@ -116,6 +116,9 @@ class WarehouseController extends Controller
 					case 'ondate':
 						$result     = $result->TransactionLogChangedAt($value);
 						break;
+					case 'name':
+						$result     = $result->ProductName($value);
+						break;
 					default:
 						# code...
 						break;

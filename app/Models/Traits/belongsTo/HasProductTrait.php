@@ -57,6 +57,14 @@ trait HasProductTrait
 	 **/
 	public function scopeProductName($query, $variable)
 	{
-		return $query->whereHas('product', function($q)use($variable){$q->name($variable);});
+		return $query
+		 ->join('products', function ($join) use($variable) 
+			 {
+                                    $join->on ( $this->getTable().'.product_id', '=', 'products.id' )
+                                    ->where('products.name', 'like', '%'.$variable.'%')
+                                    ->wherenull('products.deleted_at')
+                                    ;
+			})
+		;
 	}
 }
