@@ -33,6 +33,12 @@ class PurchaseController extends Controller
 			{
 				switch (strtolower($key)) 
 				{
+					case 'ondate':
+						$result		= $result->TransactionLogChangedAt($value);
+						break;
+					case 'refnumber':
+						$result		= $result->refnumber($value);
+						break;
 					default:
 						# code...
 						break;
