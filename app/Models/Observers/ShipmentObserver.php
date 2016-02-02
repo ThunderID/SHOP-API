@@ -26,7 +26,7 @@ class ShipmentObserver
         $errors                             = new MessageBag();
 
         //1. check haven't been paid
-        if($model->sale()->count() && !in_array($model->sale->status, ['na', 'cart', 'wait']))
+        if($model->sale()->count() && !in_array($model->sale->status, ['na', 'cart', 'wait']) && count($model->getDirty()))
         {
             $errors->add('Shipment', 'Tidak dapat mengubah destinasi pengiriman.');
         }
