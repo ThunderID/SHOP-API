@@ -95,12 +95,12 @@ trait HasPaidTrait
 			$whoisupline                    = $upline->reference->referral->value;
 		}
 
-		if($upline && $quota && $whoisupline == 0)
+		if($upline && $quota && $whoisupline == 0 && $upline->reference()->count() && $upline->reference->referral()->count())
 		{
 			$quotalog                       = new QuotaLog;
 
 			$quotalog->fill([
-					'voucher_id'            => $upline->reference->voucher->id,
+					'voucher_id'            => $upline->reference->referral->id,
 					'amount'                => $quota->value,
 					'notes'                 => 'Bonus belanja '.$transaction->user->name.' nomor nota #'.$transaction->ref_number,
 				]);
@@ -133,13 +133,13 @@ trait HasPaidTrait
 
 		$whoisupline                        = 0;
 
-		if($upline && $upline->reference()->count())
+		if($upline  && $upline->reference()->count() && $upline->reference->referral()->count())
 		{
-			$whoisupline                    = $upline->reference->voucher->value;
+			$whoisupline                    = $upline->reference->referral->value;
 		}
 		
 
-		if($upline && $point && $expired  && $whoisupline == 0)
+		if($upline && $point && $expired  && $whoisupline == 0 && $upline->reference()->count() && $upline->reference->referral()->count())
 		{
 			$pointlog                       = new PointLog;
 
