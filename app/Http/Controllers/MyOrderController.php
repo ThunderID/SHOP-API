@@ -155,7 +155,7 @@ class MyOrderController extends Controller
 			$detail_current_ids         = [];
 			foreach ($order['transactiondetails'] as $key => $value) 
 			{
-				if(!$errors->count())
+				if(!$errors->count() && isset($value['quantity']) && $value['quantity']>0)
 				{
 					$detail_data		= \App\Models\TransactionDetail::findornew($value['id']);
 
