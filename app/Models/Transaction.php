@@ -91,10 +91,10 @@ class Transaction extends BaseModel
 	 */	
 	public static function boot() 
 	{
-        parent::boot();
+		parent::boot();
  
-        Transaction::observe(new TransactionObserver());
-    }
+		Transaction::observe(new TransactionObserver());
+	}
 
 	/**
 	 * generate ref number
@@ -102,56 +102,57 @@ class Transaction extends BaseModel
 	 * @param model of transaction
 	 * @return ref number
 	 */	
-    public function generateRefNumber($transaction) 
+	public function generateRefNumber($transaction) 
 	{
 		if(is_null($transaction->id) || $transaction->ref_number=='0000000000')
-        {
-            if($transaction->type=='sell' && in_array($transaction->status, ['na', 'cart', 'abandoned']))
-            {
-                return '0000000000';
-            }
-            else
-            {
-                $prefix                         = $transaction->type[0].date("ym");
+		{
+			if($transaction->type=='sell' && in_array($transaction->status, ['na', 'cart', 'abandoned']))
+			{
+				return '0000000000';
+			}
+			else
+			{
+				$prefix                         = $transaction->type[0].date("ym");
 
-                $latest_transaction             = Transaction::select('ref_number')
-                                                    ->refnumber($prefix)
-                                                    ->status(['wait', 'paid', 'packed', 'shipping', 'delivered', 'canceled'])
-                                                    ->orderBy('ref_number', 'DESC')
-                                                    ->first();
+				$latest_transaction             = Transaction::select('ref_number')
+													->where('ref_number', 'like', $prefix.'%')
+													->status(['wait', 'paid', 'packed', 'shipping', 'delivered', 'canceled'])
+													->orderBy('ref_number', 'DESC')
+													->first();
+				\Log::error($prefix);
 
-                if(date('Y')=='2015')
-                {
-                    if(empty($latest_transaction))
-                    {
-                        $number                     = 47;
-                    }
-                    else
-                    {
-                        $number                     = 1 + (int)substr($latest_transaction['ref_number'],6);
-                    }
-                }
-                else
-                {
-                    if(empty($latest_transaction))
-                    {
-                        $number                     = 1;
-                    }
-                    else
-                    {
-                        $number                     = 1 + (int)substr($latest_transaction['ref_number'],6);
-                    }
-                }
+				if(date('Y')=='2015')
+				{
+					if(empty($latest_transaction))
+					{
+						$number                     = 47;
+					}
+					else
+					{
+						$number                     = 1 + (int)substr($latest_transaction['ref_number'],5);
+					}
+				}
+				else
+				{
+					if(empty($latest_transaction))
+					{
+						$number                     = 1;
+					}
+					else
+					{
+						$number                     = 1 + (int)substr($latest_transaction['ref_number'],5);
+					}
+				}
 
 
-                return $prefix . str_pad($number,4,"0",STR_PAD_LEFT);
-            }
-        }
-        else
-        {
-        	return $transaction->ref_number;
-        }
-    }
+				return $prefix . str_pad($number,4,"0",STR_PAD_LEFT);
+			}
+		}
+		else
+		{
+			return $transaction->ref_number;
+		}
+	}
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
 

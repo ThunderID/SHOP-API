@@ -38,9 +38,9 @@ class MyController extends Controller
 	 */
 	public function points($user_id = null)
 	{
-		$result                     = \App\Models\PointLog::userid($user_id);
+		$result                     = \App\Models\PointLog::summary($user_id)->orderby('created_at', 'desc');
 
-		$count                      = $result->count();
+		$count                      = count($result->get(['id']));
 
 		if(Input::has('skip'))
 		{

@@ -129,7 +129,6 @@ class PointLog extends BaseModel
 		return $query->where('expired_at', '>=', date('Y-m-d H:i:s', strtotime($variable[0])))->where('expired_at', '<=', date('Y-m-d H:i:s', strtotime($variable[1])));
 	}
 
-
 	/**
 	 * scope to find debit amount for user
 	 *
@@ -138,5 +137,20 @@ class PointLog extends BaseModel
 	public  function scopeDebit($query, $variable)
 	{
 		return $query->where('amount', '>', 0);
+	}
+
+	/**
+	 * scope to find point summary for user
+	 *
+	 * @param user id
+	 */
+	public function scopeSummary($query, $variable)
+	{
+		return 	$query->selectraw('point_logs.*')
+						->selectraw('IFNULL(SUM(point_logs.amount),0) as amount')
+						->selectraw('(SELECT IFNULL(SUM(plogs.amount),0) FROM point_logs as plogs where user_id = '.$variable.' and point_logs.created_at > plogs.created_at and plogs.deleted_at is null and plogs.expired_at > NOW()) as prev_amount')
+						->userid($variable)
+						->groupby(['point_logs.reference_type', 'point_logs.reference_id'])
+		;
 	}
 }
