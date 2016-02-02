@@ -38,6 +38,9 @@ class UIController extends Controller
 			{
 				switch (strtolower($key)) 
 				{
+					case 'recommended':
+						$result     = $result->stats($value);
+						break;
 					case 'name':
 						$result     = $result->name($value);
 						break;

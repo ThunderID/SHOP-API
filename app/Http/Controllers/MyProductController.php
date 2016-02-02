@@ -105,9 +105,9 @@ class MyProductController extends Controller
 
         $productids                 = array_unique($purchased_prods);
 
-        $result                     = \App\Models\Varian::productid($productids);
+        $result                     = \App\Models\Product::id($productids)->sellable(true);
 
-        $count                      = count($result->get());
+        $count                      = count($result->get(['id']));
 
         if(Input::has('skip'))
         {
@@ -121,7 +121,7 @@ class MyProductController extends Controller
             $result                 = $result->take($take);
         }
 
-        $result                     = $result->with(['product'])->get()->toArray();
+        $result                     = $result->with(['varians'])->get()->toArray();
 
         return new JSend('success', (array)['count' => $count, 'data' => $result]);
     }
@@ -146,9 +146,9 @@ class MyProductController extends Controller
 
         $productids                 = array_unique($viewed_prods);
 
-        $result                     = \App\Models\Product::id($productids);
+        $result                     = \App\Models\Product::id($productids)->sellable(true);
 
-        $count                      = count($result->get());
+        $count                      = count($result->get(['id']));
 
         if(Input::has('skip'))
         {

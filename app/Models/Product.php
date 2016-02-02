@@ -29,6 +29,7 @@ class Product extends BaseModel
 	use \App\Models\Traits\hasMany\HasVariansTrait;
 	use \App\Models\Traits\hasMany\HasPricesTrait;
 	use \App\Models\Traits\hasMany\HasLabelsTrait;
+	use \App\Models\Traits\HasStatableTrait;
 
 	use \App\Models\Traits\belongsToMany\HasClustersTrait;
 
