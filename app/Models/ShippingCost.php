@@ -36,7 +36,7 @@ class ShippingCost extends BaseModel
 	 *
 	 * @var array
 	 */
-	protected $dates				=	['created_at', 'updated_at', 'deleted_at'];
+	protected $dates				=	['created_at', 'updated_at', 'deleted_at', 'started_at'];
 
 	/**
 	 * The appends attributes from mutator and accessor

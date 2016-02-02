@@ -53,7 +53,7 @@ trait HasVoucherQuotaTrait
 
         if($transaction->voucher()->count() && $transaction->status=='paid')
         {
-            switch($transaction->voucher->type)
+            switch($transaction->voucher['attributes']['type'])
             {
                 case 'debit_point' :
                     $result					= $transaction->DebitPoint($transaction, $transaction->voucher->value);

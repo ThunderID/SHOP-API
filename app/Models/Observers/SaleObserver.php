@@ -80,7 +80,7 @@ class SaleObserver
         {
             $result                         = $model->CountVoucherDiscount($model);
 
-            if(!$result)
+            if(!$result && !empty($model['errors']))
             {
                 return false;
             }
@@ -111,7 +111,7 @@ class SaleObserver
     public function saved($model)
     {
         $errors                             = new MessageBag();
-        
+
         //1. credit voucher's quota
         if($model->voucher()->count())
         {
