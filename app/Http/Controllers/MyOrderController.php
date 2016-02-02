@@ -118,6 +118,11 @@ class MyOrderController extends Controller
 			$order['voucher_id']	= $voucher['id'];
 		}
 
+		if(isset($order['voucher_id']) && ($order['voucher_id'])==0)
+		{
+			$order['voucher_id']	= '';
+		}
+
 		$order_rules                =   [
 											// 'user_id'                   => 'required|exists:users,id',
 											'voucher_id'                => 'exists:tmp_vouchers,id',
@@ -249,44 +254,47 @@ class MyOrderController extends Controller
 					$errors->add('Sale', $address_data->getError());
 				}
 			}
+		}
 
-			//2b. save shipment
-			if(!$errors->count())
+		//2b. save shipment
+		if(!$errors->count() && isset($order['shipment']))
+		{
+			if($order_data->shipment()->count())
 			{
-				if($order_data->shipment()->count())
+				$shipment_data      = \App\Models\Shipment::findorfail($order_data->shipment->id);
+			}
+			else
+			{
+				$shipment_data      = \App\Models\Shipment::findornew($order['shipment']['id']);
+			}
+
+			$shipment_rules     	=   [
+											'courier_id'	=> 'required|exists:couriers,id',
+											'receiver_name'	=> 'required|max:255',
+										];
+
+			$validator				= Validator::make($order['shipment'], $shipment_rules);
+
+			//2a. save shipment
+			//if there was shipment and validator false
+			if (!$validator->passes())
+			{
+				$errors->add('Sale', $validator->errors());
+			}
+			else
+			{
+				//if validator passed, save shipment
+				$order['shipment']['transaction_id']    = $order['id'];
+				if(isset($address_data['id']))
 				{
-					$shipment_data      = \App\Models\Shipment::findorfail($order_data->shipment->id);
+					$order['shipment']['address_id']	= $address_data['id'];
 				}
-				else
+
+				$shipment_data       = $shipment_data->fill($order['shipment']);
+
+				if(!$shipment_data->save())
 				{
-					$shipment_data      = \App\Models\Shipment::findornew($order['shipment']['id']);
-				}
-
-				$shipment_rules     	=   [
-												'courier_id'	=> 'required|exists:couriers,id',
-												'receiver_name'	=> 'required|max:255',
-											];
-
-				$validator				= Validator::make($order['shipment'], $shipment_rules);
-
-				//2a. save shipment
-				//if there was shipment and validator false
-				if (!$validator->passes())
-				{
-					$errors->add('Sale', $validator->errors());
-				}
-				else
-				{
-					//if validator passed, save shipment
-					$order['shipment']['transaction_id']    = $order['id'];
-					$order['shipment']['address_id']        = $address_data['id'];
-
-					$shipment_data       = $shipment_data->fill($order['shipment']);
-
-					if(!$shipment_data->save())
-					{
-						$errors->add('Sale', $shipment_data->getError());
-					}
+					$errors->add('Sale', $shipment_data->getError());
 				}
 			}
 		}

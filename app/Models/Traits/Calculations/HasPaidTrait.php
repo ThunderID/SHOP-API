@@ -179,9 +179,9 @@ trait HasPaidTrait
 
         $idx                                = 0;
         $currentamount                      = 0;
-        $transactionamount                  = $transaction->amount;
+        $transactionamount                  = $transaction['bills'];
 
-        while($transactionamount <= $transaction->amount && $points && isset($points[$idx]) && $transactionamount > 0)
+        while($transactionamount <= $transaction['bills'] && $points && isset($points[$idx]) && $transactionamount > 0)
         {
             //count left over point per debit to credit
             $currentamount                  = $points[$idx]['amount'];
