@@ -15,140 +15,143 @@ use Illuminate\Support\Facades\DB;
  */
 class AdminController extends Controller
 {
-    /**
-     * Display all admins
-     *
-     * @param search, skip, take
-     * @return JSend Response
-     */
-    public function index()
-    {
-        $result                 = new \App\Models\Admin;
+	/**
+	 * Display all admins
+	 *
+	 * @param search, skip, take
+	 * @return JSend Response
+	 */
+	public function index()
+	{
+		$result                 = new \App\Models\Admin;
 
-        if(Input::has('search'))
-        {
-            $search                 = Input::get('search');
+		if(Input::has('search'))
+		{
+			$search                 = Input::get('search');
 
-            foreach ($search as $key => $value) 
-            {
-                switch (strtolower($key)) 
-                {
-                    case 'name':
-                        $result     = $result->name($value);
-                        break;
-                    default:
-                        # code...
-                        break;
-                }
-            }
-        }
+			foreach ($search as $key => $value) 
+			{
+				switch (strtolower($key)) 
+				{
+					case 'name':
+						$result     = $result->name($value);
+						break;
+					case 'role':
+						$result     = $result->role($value);
+						break;
+					default:
+						# code...
+						break;
+				}
+			}
+		}
 
-        $count                      = count($result->get(['id']));
+		$count                      = count($result->get(['id']));
 
-        if(Input::has('skip'))
-        {
-            $skip                   = Input::get('skip');
-            $result                 = $result->skip($skip);
-        }
+		if(Input::has('skip'))
+		{
+			$skip                   = Input::get('skip');
+			$result                 = $result->skip($skip);
+		}
 
-        if(Input::has('take'))
-        {
-            $take                   = Input::get('take');
-            $result                 = $result->take($take);
-        }
+		if(Input::has('take'))
+		{
+			$take                   = Input::get('take');
+			$result                 = $result->take($take);
+		}
 
-        $result                     = $result->with(['audits'])->get()->toArray();
+		$result                     = $result->with(['audits'])->get()->toArray();
 
-        return new JSend('success', (array)['count' => $count, 'data' => $result]);
-    }
+		return new JSend('success', (array)['count' => $count, 'data' => $result]);
+	}
 
-    /**
-     * Display an admin
-     *
-     * @param admin id
-     * @return Response
-     */
-    public function detail($id = null)
-    {
-        $result                 = \App\Models\Admin::id($id)->with(['audits'])->first();
+	/**
+	 * Display an admin
+	 *
+	 * @param admin id
+	 * @return Response
+	 */
+	public function detail($id = null)
+	{
+		$result                 = \App\Models\Admin::id($id)->with(['audits'])->first();
 
-        if($result)
-        {
-            return new JSend('success', (array)$result->toArray());
-        }
+		if($result)
+		{
+			return new JSend('success', (array)$result->toArray());
+		}
 
-        return new JSend('error', (array)Input::all(), 'ID Tidak Valid.');
-    }
+		return new JSend('error', (array)Input::all(), 'ID Tidak Valid.');
+	}
 
-    /**
-     * Store an admin
-     *
-     * @return Response
-     */
-    public function store()
-    {
-        if(!Input::has('admin'))
-        {
-            return new JSend('error', (array)Input::all(), 'Tidak ada data admin.');
-        }
+	/**
+	 * Store an admin
+	 *
+	 * @return Response
+	 */
+	public function store()
+	{
+		if(!Input::has('admin'))
+		{
+			return new JSend('error', (array)Input::all(), 'Tidak ada data admin.');
+		}
 
-        $errors                     = new MessageBag();
+		$errors                     = new MessageBag();
 
-        DB::beginTransaction();
+		DB::beginTransaction();
 
-        //1. Validate Admin Parameter
-        $admin                      = Input::get('admin');
-        
-        if(is_null($admin['id']))
-        {
-            $is_new                 = true;
-        }
-        else
-        {
-            $is_new                 = false;
-        }
+		//1. Validate Admin Parameter
+		$admin                      = Input::get('admin');
+		
+		if(is_null($admin['id']))
+		{
+			$is_new                 = true;
+		}
+		else
+		{
+			$is_new                 = false;
+		}
 
-        $admin_rules                =   [
-                                            'name'                          => 'required|max:255',
-                                            'email'                         => 'required|max:255|unique:users,email,'.(!is_null($admin['id']) ? $admin['id'] : ''),
-                                            'role'                          => 'required|in:admin,store_manager,staff',
-                                            'is_active'                     => 'boolean',
-                                            'gender'                        => 'in:male,female',
-                                            'date_of_birth'                 => 'date_format:"Y-m-d H:i:s"',
-                                        ];
+		$admin_rules                =   [
+											'name'                          => 'required|max:255',
+											'email'                         => 'required|max:255|unique:users,email,'.(!is_null($admin['id']) ? $admin['id'] : ''),
+											'role'                          => 'required|in:admin,store_manager,staff',
+											'is_active'                     => 'boolean',
+											'gender'                        => 'in:male,female',
+											'date_of_birth'                 => 'date_format:"Y-m-d H:i:s"',
+										];
 
-        //1a. Get original data
-        $admin_data                 = \App\Models\Admin::findornew($admin['id']);
+		//1a. Get original data
+		$admin_data                 = \App\Models\Admin::findornew($admin['id']);
 
-        //1b. Validate Basic Admin Parameter
-        $validator                  = Validator::make($admin, $admin_rules);
+		//1b. Validate Basic Admin Parameter
+		$validator                  = Validator::make($admin, $admin_rules);
 
-        if (!$validator->passes())
-        {
-            $errors->add('Admin', $validator->errors());
-        }
-        else
-        {
-            //if validator passed, save admin
-            $admin_data           = $admin_data->fill($admin);
+		if (!$validator->passes())
+		{
+			$errors->add('Admin', $validator->errors());
+		}
+		else
+		{
+			//if validator passed, save admin
+			$admin_data           = $admin_data->fill($admin);
 
-            if(!$admin_data->save())
-            {
-                $errors->add('Admin', $admin_data->getError());
-            }
-        }
+			if(!$admin_data->save())
+			{
+				$errors->add('Admin', $admin_data->getError());
+			}
+		}
 
-        if($errors->count())
-        {
-            DB::rollback();
+		if($errors->count())
+		{
+			DB::rollback();
 
-            return new JSend('error', (array)Input::all(), $errors);
-        }
+			return new JSend('error', (array)Input::all(), $errors);
+		}
 
-        DB::commit();
-        
-        $final_admin                 = \App\Models\Admin::id($admin_data['id'])->with(['audits'])->first()->toArray();
+		DB::commit();
+		
+		$final_admin                 = \App\Models\Admin::id($admin_data['id'])->with(['audits'])->first()->toArray();
 
-        return new JSend('success', (array)$final_admin);
-    }
+		return new JSend('success', (array)$final_admin);
+	}
 }

@@ -243,19 +243,23 @@ class UIController extends Controller
 	 */
 	public function config($type = null)
 	{
-		$sliders					= \App\Models\Slider::ondate('now')->with(['image'])->get()->toArray();
-		$storeinfo					= new \App\Models\Store;
-		$storepage					= new \App\Models\StorePage;
-		$storeinfo 					= $storeinfo->default(true)->get()->toArray();
-		$storepage 					= $storepage->default(true)->get()->toArray();
+		$sliders						= \App\Models\Slider::ondate('now')->with(['image'])->get()->toArray();
+		$storeinfo						= new \App\Models\Store;
+		$storepage						= new \App\Models\StorePage;
+		$storepolicy					= new \App\Models\Policy;
+		$storeinfo 						= $storeinfo->default(true)->get()->toArray();
+		$storepage 						= $storepage->default(true)->get()->toArray();
+		$storepolicy 					= $storepolicy->default(true)->type('expired_paid')->first()->toArray();
 
-		$store['sliders']			= $sliders;
-		$store['info']				= $storeinfo;
+		$store['sliders']				= $sliders;
+		$store['info']					= $storeinfo;
 
 		foreach ($storepage as $key => $value) 
 		{
-			$store[$value['type']]	= $value;
+			$store[$value['type']]		= $value;
 		}
+
+		$store['info']['expired_paid']	= $storepolicy;
 
 		return new JSend('success', (array)$store);
 	}

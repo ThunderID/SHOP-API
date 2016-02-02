@@ -23,7 +23,7 @@ class VoucherController extends Controller
 	 */
 	public function index()
 	{
-		$result                 = new \App\Models\Voucher;
+		$result						= new \App\Models\Voucher;
 
 		if(Input::has('search'))
 		{
@@ -35,6 +35,9 @@ class VoucherController extends Controller
 				{
 					case 'code':
 						$result     = $result->code($value);
+						break;
+					case 'type':
+						$result     = $result->type($value);
 						break;
 					default:
 						# code...

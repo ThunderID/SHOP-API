@@ -316,6 +316,26 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
 	}
 
 	/**
+	 * scope search based on role
+	 *
+	 * @param string or array of role
+	 */	
+	public function scopeRole($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return 	$query->whereIn($query->getModel()->table.'.role', $variable);
+		}
+
+		if(is_null($variable))
+		{
+			return $query;
+		}
+
+		return 	$query->where($query->getModel()->table.'.role', $variable);
+	}
+
+	/**
 	 * find reset password link
 	 * 
 	 * @param reset password link
