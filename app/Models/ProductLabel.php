@@ -109,6 +109,11 @@ class ProductLabel extends BaseModel
 	 */
 	public function scopeName($query, $variable)
 	{
+		if(is_array($variable))
+		{
+			return 	$query->whereIn($query->getModel()->table.'.lable', $variable);
+		}
+
 		return 	$query->where($query->getModel()->table.'.lable', 'like', '%'.$variable.'%');
 	}
 }
