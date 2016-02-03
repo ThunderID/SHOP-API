@@ -54,10 +54,9 @@ class StoreSettingController extends Controller
 						{
 							$result = $result->default($value);
 						}
-						else
-						{
-							$result = $result->ondate('now');
-						}
+						break;
+					case 'ondate':
+						$result = $result->ondate($value);
 						break;
 					default:
 						# code...
@@ -208,8 +207,8 @@ class StoreSettingController extends Controller
 					$image_data		= \App\Models\Image::findornew($value['id']);
 
 					$image_rules	=   [
-											'imageable_id'              => 'exists:couriers,id|'.($is_new ? '' : 'in:'.$setting_data['id']),
-											'imageable_type'			=> ($is_new ? '' : 'in:'.get_class($setting_data)),
+											// 'imageable_id'              => 'exists:tmp_store_settings,id|'.($is_new ? '' : 'in:'.$setting_data['id']),
+											// 'imageable_type'			=> ($is_new ? '' : 'in:'.get_class($setting_data)),
 											'thumbnail'                 => 'required|max:255',
 											'image_xs'                  => 'required|max:255',
 											'image_sm'                  => 'required|max:255',
