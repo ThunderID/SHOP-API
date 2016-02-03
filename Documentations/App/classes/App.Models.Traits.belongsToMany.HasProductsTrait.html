@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/App.html">\App</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">480</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1607044633"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-1607044633" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1480116130"></a>
+                                <a href="../namespaces/App.html" style="margin-left: 30px; padding-left: 0">App</a>
+            </div>
+            <div id="namespace-1480116130" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-48047346"></a>
+                                <a href="../namespaces/App.Console.html" style="margin-left: 30px; padding-left: 0">Console</a>
+            </div>
+            <div id="namespace-48047346" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/App.Console.Kernel.html">Kernel</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-535679130"></a>
+                                <a href="../namespaces/App.Events.html" style="margin-left: 30px; padding-left: 0">Events</a>
+            </div>
+            <div id="namespace-535679130" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/App.Events.AuditStore.html">AuditStore</a></li>
+                                                    <li class="class"><a href="../classes/App.Events.Event.html">Event</a></li>
+                                                    <li class="class"><a href="../classes/App.Events.ProductSearched.html">ProductSearched</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1779269700"></a>
+                                <a href="../namespaces/App.Exceptions.html" style="margin-left: 30px; padding-left: 0">Exceptions</a>
+            </div>
+            <div id="namespace-1779269700" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/App.Exceptions.Handler.html">Handler</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1821697292"></a>
+                                <a href="../namespaces/App.Http.html" style="margin-left: 30px; padding-left: 0">Http</a>
+            </div>
+            <div id="namespace-1821697292" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-240753709"></a>
+                                <a href="../namespaces/App.Http.Controllers.html" style="margin-left: 30px; padding-left: 0">Controllers</a>
+            </div>
+            <div id="namespace-240753709" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/App.Http.Controllers.AdminController.html">AdminController</a></li>
+                                                    <li class="class"><a href="../classes/App.Http.Controllers.AuthController.html">AuthController</a></li>
+                                                    <li class="class"><a href="../classes/App.Http.Controllers.ClusterController.html">ClusterController</a></li>
+                                                    <li class="class"><a href="../classes/App.Http.Controllers.Controller.html">Controller</a></li>
+                                                    <li class="class"><a href="../classes/App.Http.Controllers.CourierController.html">CourierController</a></li>
+                                                    <li class="class"><a href="../classes/App.Http.Controllers.CustomerController.html">CustomerController</a></li>
+                                                    <li class="class"><a href="../classes/App.Http.Controllers.MyController.html">MyController</a></li>
+                                                    <li class="class"><a href="../classes/App.Http.Controllers.MyOrderController.html">MyOrderController</a></li>
+                                                    <li class="class"><a href="../classes/App.Http.Controllers.MyProductController.html">MyProductController</a></li>
+                                                    <li class="class"><a href="../classes/App.Http.Controllers.PointController.html">PointController</a></li>
+                                                    <li class="class"><a href="../classes/App.Http.Controllers.ProductController.html">ProductController</a></li>
+                                                    <li class="class"><a href="../classes/App.Http.Controllers.PurchaseController.html">PurchaseController</a></li>
+                                                    <li class="class"><a href="../classes/App.Http.Controllers.ReportController.html">ReportController</a></li>
+                                                    <li class="class"><a href="../classes/App.Http.Controllers.SaleController.html">SaleController</a></li>
+                                                    <li class="class"><a href="../classes/App.Http.Controllers.StoreSettingController.html">StoreSettingController</a></li>
+                                                    <li class="class"><a href="../classes/App.Http.Controllers.SupplierController.html">SupplierController</a></li>
+                                                    <li class="class"><a href="../classes/App.Http.Controllers.UIController.html">UIController</a></li>
+                                                    <li class="class"><a href="../classes/App.Http.Controllers.VoucherController.html">VoucherController</a></li>
+                                                    <li class="class"><a href="../classes/App.Http.Controllers.WarehouseController.html">WarehouseController</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-297834824"></a>
+                                <a href="../namespaces/App.Http.Middleware.html" style="margin-left: 30px; padding-left: 0">Middleware</a>
+            </div>
+            <div id="namespace-297834824" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/App.Http.Middleware.AdminAuth.html">AdminAuth</a></li>
+                                                    <li class="class"><a href="../classes/App.Http.Middleware.CustomerAndAccessor.html">CustomerAndAccessor</a></li>
+                                                    <li class="class"><a href="../classes/App.Http.Middleware.ExampleMiddleware.html">ExampleMiddleware</a></li>
+                                                    <li class="class"><a href="../classes/App.Http.Middleware.ManagerAndAccessor.html">ManagerAndAccessor</a></li>
+                                                    <li class="class"><a href="../classes/App.Http.Middleware.StaffAndAccessor.html">StaffAndAccessor</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1721283280"></a>
+                                <a href="../namespaces/App.Jobs.html" style="margin-left: 30px; padding-left: 0">Jobs</a>
+            </div>
+            <div id="namespace-1721283280" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/App.Jobs.Job.html">Job</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-321703338"></a>
+                                <a href="../namespaces/App.Libraries.html" style="margin-left: 30px; padding-left: 0">Libraries</a>
+            </div>
+            <div id="namespace-321703338" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/App.Libraries.InvalidJSendException.html">InvalidJSendException</a></li>
+                                                    <li class="class"><a href="../classes/App.Libraries.JSend.html">JSend</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-313144065"></a>
+                                <a href="../namespaces/App.Listeners.html" style="margin-left: 30px; padding-left: 0">Listeners</a>
+            </div>
+            <div id="namespace-313144065" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/App.Listeners.Listener.html">Listener</a></li>
+                                                    <li class="class"><a href="../classes/App.Listeners.SaveAudit.html">SaveAudit</a></li>
+                                                    <li class="class"><a href="../classes/App.Listeners.StatProductViewed.html">StatProductViewed</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2094510756"></a>
+                                <a href="../namespaces/App.Models.html" style="margin-left: 30px; padding-left: 0">Models</a>
+            </div>
+            <div id="namespace-2094510756" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1416078002"></a>
+                                <a href="../namespaces/App.Models.Observers.html" style="margin-left: 30px; padding-left: 0">Observers</a>
+            </div>
+            <div id="namespace-1416078002" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/App.Models.Observers.AddressObserver.html">AddressObserver</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Observers.ClusterObserver.html">ClusterObserver</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Observers.CourierObserver.html">CourierObserver</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Observers.ImageObserver.html">ImageObserver</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Observers.PaymentObserver.html">PaymentObserver</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Observers.PointLogObserver.html">PointLogObserver</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Observers.PolicyObserver.html">PolicyObserver</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Observers.PriceObserver.html">PriceObserver</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Observers.ProductObserver.html">ProductObserver</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Observers.PurchaseObserver.html">PurchaseObserver</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Observers.QuotaLogObserver.html">QuotaLogObserver</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Observers.SaleObserver.html">SaleObserver</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Observers.ShipmentObserver.html">ShipmentObserver</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Observers.ShippingCostObserver.html">ShippingCostObserver</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Observers.StoreSettingObserver.html">StoreSettingObserver</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Observers.SupplierObserver.html">SupplierObserver</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Observers.TransactionDetailObserver.html">TransactionDetailObserver</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Observers.TransactionLogObserver.html">TransactionLogObserver</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Observers.TransactionObserver.html">TransactionObserver</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Observers.UserObserver.html">UserObserver</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Observers.VarianObserver.html">VarianObserver</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Observers.VoucherObserver.html">VoucherObserver</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-983696001"></a>
+                                <a href="../namespaces/App.Models.Scopes.html" style="margin-left: 30px; padding-left: 0">Scopes</a>
+            </div>
+            <div id="namespace-983696001" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/App.Models.Scopes.AmountScope.html">AmountScope</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Scopes.BillAmountScope.html">BillAmountScope</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Scopes.ContactScope.html">ContactScope</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Scopes.CurrentPriceScope.html">CurrentPriceScope</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Scopes.CurrentStatusScope.html">CurrentStatusScope</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Scopes.CurrentStockScope.html">CurrentStockScope</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Scopes.DefaultAddressScope.html">DefaultAddressScope</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Scopes.DefaultImageScope.html">DefaultImageScope</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Scopes.QuotaScope.html">QuotaScope</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Scopes.ReferencedByScope.html">ReferencedByScope</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Scopes.ReferralOfScope.html">ReferralOfScope</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Scopes.SelectAllScope.html">SelectAllScope</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Scopes.TotalPointScope.html">TotalPointScope</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Scopes.TypeScope.html">TypeScope</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1595158341"></a>
+                                <a href="../namespaces/App.Models.Traits.html" style="margin-left: 30px; padding-left: 0">Traits</a>
+            </div>
+            <div id="namespace-1595158341" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1901108084"></a>
+                                <a href="../namespaces/App.Models.Traits.belongsTo.html" style="margin-left: 30px; padding-left: 0">belongsTo</a>
+            </div>
+            <div id="namespace-1901108084" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                            <li class="trait"><a href="../classes/App.Models.Traits.belongsTo.HasAddressTrait.html">HasAddressTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.belongsTo.HasClusterTrait.html">HasClusterTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.belongsTo.HasCourierTrait.html">HasCourierTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.belongsTo.HasPointLogTrait.html">HasPointLogTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.belongsTo.HasProductTrait.html">HasProductTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.belongsTo.HasSupplierTrait.html">HasSupplierTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.belongsTo.HasTransactionTrait.html">HasTransactionTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.belongsTo.HasUserTrait.html">HasUserTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.belongsTo.HasVarianTrait.html">HasVarianTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.belongsTo.HasVoucherTrait.html">HasVoucherTrait</a></li>
+                                                                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2011655721"></a>
+                                <a href="../namespaces/App.Models.Traits.belongsToMany.html" style="margin-left: 30px; padding-left: 0">belongsToMany</a>
+            </div>
+            <div id="namespace-2011655721" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                            <li class="trait"><a href="../classes/App.Models.Traits.belongsToMany.HasClustersTrait.html">HasClustersTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.belongsToMany.HasProductsTrait.html">HasProductsTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.belongsToMany.HasTransactionsTrait.html">HasTransactionsTrait</a></li>
+                                                                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1485989700"></a>
+                                <a href="../namespaces/App.Models.Traits.Calculations.html" style="margin-left: 30px; padding-left: 0">Calculations</a>
+            </div>
+            <div id="namespace-1485989700" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                            <li class="trait"><a href="../classes/App.Models.Traits.Calculations.HasPaidTrait.html">HasPaidTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.Calculations.HasShipCostTrait.html">HasShipCostTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.Calculations.HasVoucherQuotaTrait.html">HasVoucherQuotaTrait</a></li>
+                                                                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-938857948"></a>
+                                <a href="../namespaces/App.Models.Traits.Changes.html" style="margin-left: 30px; padding-left: 0">Changes</a>
+            </div>
+            <div id="namespace-938857948" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                            <li class="trait"><a href="../classes/App.Models.Traits.Changes.HasStatusLogTrait.html">HasStatusLogTrait</a></li>
+                                                                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-630508291"></a>
+                                <a href="../namespaces/App.Models.Traits.hasMany.html" style="margin-left: 30px; padding-left: 0">hasMany</a>
+            </div>
+            <div id="namespace-630508291" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                            <li class="trait"><a href="../classes/App.Models.Traits.hasMany.HasAddressesTrait.html">HasAddressesTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.hasMany.HasAuditorsTrait.html">HasAuditorsTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.hasMany.HasLabelsTrait.html">HasLabelsTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.hasMany.HasPointLogsTrait.html">HasPointLogsTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.hasMany.HasPricesTrait.html">HasPricesTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.hasMany.HasQuotaLogsTrait.html">HasQuotaLogsTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.hasMany.HasShipmentsTrait.html">HasShipmentsTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.hasMany.HasShippingCostsTrait.html">HasShippingCostsTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.hasMany.HasTransactionDetailsTrait.html">HasTransactionDetailsTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.hasMany.HasTransactionLogsTrait.html">HasTransactionLogsTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.hasMany.HasTransactionsTrait.html">HasTransactionsTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.hasMany.HasVariansTrait.html">HasVariansTrait</a></li>
+                                                                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-236122969"></a>
+                                <a href="../namespaces/App.Models.Traits.hasOne.html" style="margin-left: 30px; padding-left: 0">hasOne</a>
+            </div>
+            <div id="namespace-236122969" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                            <li class="trait"><a href="../classes/App.Models.Traits.hasOne.HasImageTrait.html">HasImageTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.hasOne.HasPaymentTrait.html">HasPaymentTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.hasOne.HasReferralTrait.html">HasReferralTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.hasOne.HasShipmentTrait.html">HasShipmentTrait</a></li>
+                                                                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1346864674"></a>
+                                <a href="../namespaces/App.Models.Traits.morphMany.html" style="margin-left: 30px; padding-left: 0">morphMany</a>
+            </div>
+            <div id="namespace-1346864674" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                            <li class="trait"><a href="../classes/App.Models.Traits.morphMany.HasImagesTrait.html">HasImagesTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.morphMany.HasPointLogsTrait.html">HasPointLogsTrait</a></li>
+                                                                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-620294677"></a>
+                                <a href="../namespaces/App.Models.Traits.morphTo.html" style="margin-left: 30px; padding-left: 0">morphTo</a>
+            </div>
+            <div id="namespace-620294677" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                            <li class="trait"><a href="../classes/App.Models.Traits.morphTo.HasImageableTrait.html">HasImageableTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.morphTo.HasOwnerTrait.html">HasOwnerTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.morphTo.HasReferenceTrait.html">HasReferenceTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.morphTo.HasStatableTrait.html">HasStatableTrait</a></li>
+                                                                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                            <li class="trait"><a href="../classes/App.Models.Traits.HasAmountTrait.html">HasAmountTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.HasBillAmountTrait.html">HasBillAmountTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.HasCurrentPriceTrait.html">HasCurrentPriceTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.HasCurrentStatusTrait.html">HasCurrentStatusTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.HasCurrentStockTrait.html">HasCurrentStockTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.HasDefaultAddressTrait.html">HasDefaultAddressTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.HasDefaultImageTrait.html">HasDefaultImageTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.HasNameTrait.html">HasNameTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.HasQuotaTrait.html">HasQuotaTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.HasReferencedByTrait.html">HasReferencedByTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.HasReferralOfTrait.html">HasReferralOfTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.HasSelectAllTrait.html">HasSelectAllTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.HasSellableTrait.html">HasSellableTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.HasSlugTrait.html">HasSlugTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.HasStatableTrait.html">HasStatableTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.HasStockTrait.html">HasStockTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.HasTotalPointTrait.html">HasTotalPointTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.HasTransactionStatusTrait.html">HasTransactionStatusTrait</a></li>
+                                                    <li class="trait"><a href="../classes/App.Models.Traits.HasTypeTrait.html">HasTypeTrait</a></li>
+                                                                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/App.Models.Address.html">Address</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Admin.html">Admin</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Auditor.html">Auditor</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.BaseModel.html">BaseModel</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Campaign.html">Campaign</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Category.html">Category</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.CategoryProduct.html">CategoryProduct</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Cluster.html">Cluster</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Courier.html">Courier</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Customer.html">Customer</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Image.html">Image</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Payment.html">Payment</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.PointLog.html">PointLog</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Policy.html">Policy</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Price.html">Price</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Product.html">Product</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.ProductLabel.html">ProductLabel</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Purchase.html">Purchase</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.QuotaLog.html">QuotaLog</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Referral.html">Referral</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Sale.html">Sale</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Shipment.html">Shipment</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.ShipmentLog.html">ShipmentLog</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.ShippingCost.html">ShippingCost</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Slider.html">Slider</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.StatUserView.html">StatUserView</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Store.html">Store</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.StorePage.html">StorePage</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.StoreSetting.html">StoreSetting</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Supplier.html">Supplier</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Tag.html">Tag</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Transaction.html">Transaction</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.TransactionDetail.html">TransactionDetail</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.TransactionLog.html">TransactionLog</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.User.html">User</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.UserCampaign.html">UserCampaign</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Varian.html">Varian</a></li>
+                                                    <li class="class"><a href="../classes/App.Models.Voucher.html">Voucher</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-825956919"></a>
+                                <a href="../namespaces/App.Providers.html" style="margin-left: 30px; padding-left: 0">Providers</a>
+            </div>
+            <div id="namespace-825956919" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/App.Providers.AppServiceProvider.html">AppServiceProvider</a></li>
+                                                    <li class="class"><a href="../classes/App.Providers.EventServiceProvider.html">EventServiceProvider</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/App.Models.Traits.belongsToMany.html">\App\Models\Traits\belongsToMany</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\App\Models\Traits\belongsToMany</small>HasProductsTrait</h1>
+                    <p><em>Trait for models belongs to many Products.</em></p>
+                    
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/App.Models.Traits.belongsToMany.HasProductsTrait.html#method_HasProductsTraitConstructor" class="">HasProductsTraitConstructor()</a><br />
+                                                                    <a href="../classes/App.Models.Traits.belongsToMany.HasProductsTrait.html#method_Products" class="">Products()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No public properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No constants found</em>
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <em>No protected methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No protected properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <em>No private methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No private properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/Models.Traits.belongsToMany.HasProductsTrait.html"><div class="path-wrapper">Models/Traits/belongsToMany/HasProductsTrait.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">Default</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                    <div class="namespace-wrapper">\App\Models\Traits\belongsToMany\HasProductsTrait</div>
+                            </dd>
+
+                        
+                        
+                        
+                        
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr>
+                            <th>
+                                author
+                            </th>
+                            <td>
+                                                                    <p>cmooy</p>
+                                                            </td>
+                        </tr>
+                                        </table>
+                </aside>
+            </div>
+
+                        
+                        
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_HasProductsTraitConstructor" name="method_HasProductsTraitConstructor" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">HasProductsTraitConstructor()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">HasProductsTraitConstructor() : void</pre>
+                <p><em>boot</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                    <dt>File</dt>
+                    <dd><a href="../files/Models.Traits.belongsToMany.HasProductsTrait.html"><div class="path-wrapper">Models/Traits/belongsToMany/HasProductsTrait.php</div></a></dd>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_Products" name="method_Products" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">Products()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">Products() </pre>
+                <p><em>call belongsto many relationship products</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                    <dt>File</dt>
+                    <dd><a href="../files/Models.Traits.belongsToMany.HasProductsTrait.html"><div class="path-wrapper">Models/Traits/belongsToMany/HasProductsTrait.php</div></a></dd>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">HasProductsTrait.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/Models/Traits/belongsToMany/HasProductsTrait.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/App.html">\App</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on February 3rd, 2016 at 09:47.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>
