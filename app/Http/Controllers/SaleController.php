@@ -52,7 +52,7 @@ class SaleController extends Controller
 			}
 		}
 
-		$count                      = $result->count();
+		$count                      = count($result->get(['id']));
 
 		if(Input::has('skip'))
 		{
