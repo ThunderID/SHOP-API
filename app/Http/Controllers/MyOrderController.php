@@ -64,7 +64,7 @@ class MyOrderController extends Controller
 	 */
 	public function incart($user_id = null)
 	{
-		$result                 = \App\Models\Sale::userid($user_id)->status('cart')->with(['transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'voucher', 'shipment', 'shipment.address'])->first();
+		$result                 = \App\Models\Sale::userid($user_id)->status('cart')->with(['payment', 'orderlogs', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'shipment', 'shipment.courier', 'shipment.address', 'voucher', 'user'])->first();
 
 		if($result)
 		{
