@@ -26,11 +26,11 @@ class ShipmentObserver
 		$errors                             = new MessageBag();
 
 		//1. check haven't been paid
-		if($model->sale()->count() && !in_array($model->sale->status, ['na', 'cart', 'wait']) && count($model->getDirty()))
+		if($model->sale()->count() && !in_array($model->sale->status, ['na', 'cart', 'wait']) && isset($model->getDirty()['address_id']))
 		{
 			$errors->add('Shipment', 'Tidak dapat mengubah destinasi pengiriman.');
 		}
-\Log::info($model->address_id);
+
 		//2. recalculate shipping_cost
 		if($model->address()->count())
 		{
