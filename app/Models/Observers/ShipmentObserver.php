@@ -12,114 +12,128 @@ use App\Models\Sale;
  */
 class ShipmentObserver 
 {
-    /** 
-     * observe payment event saving
-     * 1. check haven't been paid
-     * 2. recalculate shipping_cost
-     * 3. act, accept or refuse
-     * 
-     * @param $model
-     * @return bool
-     */
-    public function saving($model)
-    {
-        $errors                             = new MessageBag();
+	/** 
+	 * observe payment event saving
+	 * 1. check haven't been paid
+	 * 2. recalculate shipping_cost
+	 * 3. act, accept or refuse
+	 * 
+	 * @param $model
+	 * @return bool
+	 */
+	public function saving($model)
+	{
+		$errors                             = new MessageBag();
 
-        //1. check haven't been paid
-        if($model->sale()->count() && !in_array($model->sale->status, ['na', 'cart', 'wait']) && count($model->getDirty()))
-        {
-            $errors->add('Shipment', 'Tidak dapat mengubah destinasi pengiriman.');
-        }
+		//1. check haven't been paid
+		if($model->sale()->count() && !in_array($model->sale->status, ['na', 'cart', 'wait']) && count($model->getDirty()))
+		{
+			$errors->add('Shipment', 'Tidak dapat mengubah destinasi pengiriman.');
+		}
+\Log::info($model->address_id);
+		//2. recalculate shipping_cost
+		if($model->address()->count())
+		{
+			$shippingcost                       = ShippingCost::courierid($model->courier_id)->postalcode($model->address->zipcode)->first();
 
-        //2. recalculate shipping_cost
-        $shippingcost                       = ShippingCost::courierid($model->courier_id)->postalcode($model->address->zipcode)->first();
+			if($shippingcost && $model->sale()->count() && $model->sale->transactiondetails()->count())
+			{
+				$shipping_cost                  = $model->CountShippingCost($model->sale->transactiondetails, $shippingcost['cost']);
+			   
+				$sale							= Sale::findorfail($model->transaction_id);
 
-        if($shippingcost && $model->transaction()->count() && $model->transaction->transactiondetails()->count())
-        {
-            $shipping_cost                  = $model->CountShippingCost($model->transaction->transactiondetails, $shippingcost['cost']);
-           
-            $transaction                    = Sale::findorfail($model->transaction_id);
+				$sale->fill(['shipping_cost' => $shipping_cost]);
+				
+				if(!$sale->save())
+				{
+					$errors->add('Shipment', $sale->getError());
+				}
+			}
+			else
+			{
+				$errors->add('Shipment', 'Tidak ada kurir ke tempat anda (Silahkan periksa kembali kode pos anda).');
+			}
+		}
+		elseif($model->sale()->count())
+		{
+			$sale							= Sale::findorfail($model->transaction_id);
 
-            $transaction->fill(['shipping_cost' => $shipping_cost]);
-            
-            if(!$transaction->save())
-            {
-                $errors->add('Shipment', $transaction->getError());
-            }
-        }
-        else
-        {
-            $errors->add('Shipment', 'Tidak ada kurir ke tempat anda (Silahkan periksa kembali kode pos anda).');
-        }
+			$sale->fill(['shipping_cost' => 0]);
+			
+			if(!$sale->save())
+			{
+				$errors->add('Shipment', $sale->getError());
+			}
+		}
 
-        if($errors->count())
-        {
-            $model['errors']                = $errors;
+		if($errors->count())
+		{
+			$model['errors']                = $errors;
 
-            return false;
-        }
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    /** 
-     * observe payment event updated
-     * 1. recalculate shipping_cost
-     * 2. act, accept or refuse
-     * 
-     * @param $model
-     * @return bool
-     */
-    public function updated($model)
-    {
-        $errors                             = new MessageBag();
+	/** 
+	 * observe payment event updated
+	 * 1. recalculate shipping_cost
+	 * 2. act, accept or refuse
+	 * 
+	 * @param $model
+	 * @return bool
+	 */
+	public function updated($model)
+	{
+		$errors                             = new MessageBag();
 
-        //1. check receipt_number
-        if(!is_null($model->receipt_number) && $model->transaction()->count())
-        {
-            $result                             = $model->ChangeStatus($model->transaction, 'shipping');
+		//1. check receipt_number
+		if(!is_null($model->receipt_number) && $model->sale()->count())
+		{
+			$result                             = $model->ChangeStatus($model->sale, 'shipping');
 
-            if(!$result)
-            {
-                return false;
-            }
-        }
+			if(!$result)
+			{
+				return false;
+			}
+		}
 
-        if($errors->count())
-        {
-            $model['errors']                = $errors;
+		if($errors->count())
+		{
+			$model['errors']                = $errors;
 
-            return false;
-        }
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    /** 
-     * observe payment event deleting
-     * 1. recalculate shipping_cost
-     * 2. act, accept or refuse
-     * 
-     * @param $model
-     * @return bool
-     */
-    public function deleting($model)
-    {
-        $errors                             = new MessageBag();
+	/** 
+	 * observe payment event deleting
+	 * 1. recalculate shipping_cost
+	 * 2. act, accept or refuse
+	 * 
+	 * @param $model
+	 * @return bool
+	 */
+	public function deleting($model)
+	{
+		$errors                             = new MessageBag();
 
-        //1. check receipt_number
-        if(!is_null($model->receipt_number))
-        {
-            $errors->add('Shipment', 'Tidak dapat menghapus data barang yang telah dikirim.');
-        }
+		//1. check receipt_number
+		if(!is_null($model->receipt_number))
+		{
+			$errors->add('Shipment', 'Tidak dapat menghapus data barang yang telah dikirim.');
+		}
 
-        if($errors->count())
-        {
-            $model['errors']                = $errors;
+		if($errors->count())
+		{
+			$model['errors']                = $errors;
 
-            return false;
-        }
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 }
