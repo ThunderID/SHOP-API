@@ -29,6 +29,11 @@ trait HasVoucherTrait
 
 	public function scopeVoucherID($query, $variable)
 	{
-		return $query->whereHas('voucher', function($q)use($variable){$q->id($variable);});
+		if(is_array($variable))
+		{
+			return $query->whereIn('voucher_id', $variable);
+		}
+
+		return $query->where('voucher_id', $variable);
 	}
 }

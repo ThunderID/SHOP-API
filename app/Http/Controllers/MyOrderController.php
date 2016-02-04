@@ -108,7 +108,7 @@ class MyOrderController extends Controller
 
 		if(isset($order['voucher_code']))
 		{
-			$voucher 				= \App\Models\Voucher::code($order['voucher_code'])->first();
+			$voucher 				= \App\Models\Voucher::code($order['voucher_code'])->type(['free_shipping_cost', 'debit_point'])->first();
 
 			if(!$voucher)
 			{

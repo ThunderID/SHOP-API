@@ -96,4 +96,24 @@ class QuotaLog extends BaseModel
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
+	
+	/**
+	 * scope to find history of date
+	 *
+	 * @param string of history
+	 */
+	public  function scopeOndate($query, $variable)
+	{
+		if(!is_array($variable))
+		{
+			return $query->where('created_at', '<=', date('Y-m-d H:i:s', strtotime($variable)))->orderBy('created_at', 'desc');
+		}
+
+		if(!strtotime($variable[1]) && strtotime($variable[0]))
+		{
+			return $query->where('created_at', '<=',date('Y-m-d H:i:s', strtotime($variable[0])));
+		}
+
+		return $query->where('created_at', '>=', date('Y-m-d H:i:s', strtotime($variable[0])))->where('created_at', '<=', date('Y-m-d H:i:s', strtotime($variable[1])))->orderBy('created_at', 'asc');
+	}
 }
