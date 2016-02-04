@@ -30,12 +30,12 @@ trait HasTransactionLogsTrait
 	}
 
 	/**
-	 * call has many relationship in orderlogs where status in wait, paid, packing, shipping, delivered
+	 * call has many relationship in orderlogs where status in wait, paid, packed, shipping, delivered
 	 *
 	 **/
 	public function OrderLogs()
 	{
-		return $this->hasMany('App\Models\TransactionLog', 'transaction_id')->wherein('status', ['wait', 'paid', 'packing', 'shipping', 'delivered', 'canceled']);
+		return $this->hasMany('App\Models\TransactionLog', 'transaction_id')->wherein('status', ['wait', 'paid', 'packed', 'shipping', 'delivered', 'canceled']);
 	}
 
 	/**
