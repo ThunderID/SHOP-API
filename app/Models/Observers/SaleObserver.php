@@ -80,7 +80,7 @@ class SaleObserver
         {
             $result                         = $model->CountVoucherDiscount($model);
 
-            if(!$result && !empty($model['errors']))
+            if(!$result && count($model['errors']))
             {
                 return false;
             }
