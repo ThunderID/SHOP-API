@@ -71,12 +71,12 @@ class WarehouseController extends Controller
 		}
 		else
 		{
-			$critical               = $setting['value'];
+			$critical               = 0 - $setting['value'];
 		}
 
 		$result                     = \App\Models\Varian::critical($critical);
 		
-		$count                      = $result->count();
+		$count                      = count($result->get(['id']));
 
 		if(Input::has('skip'))
 		{
