@@ -152,6 +152,11 @@ class TransactionLogObserver
 			switch($model->status)
 			{
 				case 'cart' :
+					$prev_sale 					= \App\Models\Sale::notid($model->sale_id)->userid($model->sale->user_id)->status('cart')->first();
+					if($prev_sale)
+					{
+						$result                 = $model->ChangeStatus($prev_sale, 'abandoned');
+					}
 				break;
 				case 'wait' :
 					$result                     = $model->CreditPoint($model->sale);
