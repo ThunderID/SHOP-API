@@ -251,7 +251,7 @@ class SaleController extends Controller
 
 		DB::commit();
 		
-		$final_sale                 = \App\Models\Sale::id($sale_data['id'])->with(['voucher', 'transactionlogs', 'user', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product'])->first()->toArray();
+		$final_sale                 = \App\Models\Sale::id($sale_data['id'])->with(['voucher', 'transactionlogs', 'user', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'paidpointlogs', 'payment', 'shipment', 'shipment.address', 'shipment.courier'])->first()->toArray();
 
 		return new JSend('success', (array)$final_sale);
 	}
