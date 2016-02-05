@@ -119,7 +119,6 @@ class Transaction extends BaseModel
 													->status(['wait', 'paid', 'packed', 'shipping', 'delivered', 'canceled'])
 													->orderBy('ref_number', 'DESC')
 													->first();
-				\Log::error($prefix);
 
 				if(date('Y')=='2015')
 				{

@@ -132,7 +132,7 @@ class PurchaseController extends Controller
 		else
 		{
 			//if validator passed, save purchase
-			$purchase_data           = $purchase_data->fill(['supplier_id' => $purchase['supplier_id'], 'type' => 'buy']);
+			$purchase_data           = $purchase_data->fill(['supplier_id' => $purchase['supplier_id'], 'type' => 'buy', 'transact_at' => isset($purchase['transact_at']) ? $purchase['transact_at'] : '']);
 
 			if(!$purchase_data->save())
 			{
