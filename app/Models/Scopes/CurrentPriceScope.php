@@ -27,10 +27,10 @@ class CurrentPriceScope implements ScopeInterface
 		->selectraw('IFNULL(prices.price, 0) as price')
 		->selectraw('IFNULL(prices.promo_price, 0) as promo_price')
 		->selectraw('IFNULL(prices.started_at, NOW()) as price_start')
-		->leftjoin('prices', function ($join) 
+		->leftjoin('prices', function ($join)
 		 {
             $join->on ( 'prices.product_id', '=', 'products.id' )
-			->on(DB::raw('(prices.id = (select id from prices as tl2 where tl2.product_id = prices.product_id and tl2.deleted_at is null and tl2.started_at <= "'.date('Y-m-d H:i:s').' order by tl2.started_at limit 1"))'), DB::raw(''), DB::raw(''))
+			->on(DB::raw('(prices.id = (select id from prices as tl2 where tl2.product_id = prices.product_id and tl2.deleted_at is null and tl2.started_at <= "'.date('Y-m-d H:i:s').'" order by tl2.started_at desc limit 1))'), DB::raw(''), DB::raw(''))
             ->where('prices.started_at', '<=', date('Y-m-d H:i:s'))
             ->wherenull('prices.deleted_at')
             ;
