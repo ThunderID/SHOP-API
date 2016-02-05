@@ -72,7 +72,7 @@ class Price extends BaseModel
 	protected $rules				=	[
 											'product_id'					=> 'exists:products,id',
 											'price'							=> 'numeric',
-											'promo_price'					=> 'numeric',
+											'promo_price'					=> 'numeric|max:price',
 											'started_at'					=> 'date_format:"Y-m-d H:i:s"',
 										];
 	

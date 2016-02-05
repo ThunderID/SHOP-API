@@ -290,7 +290,7 @@ class ProductController extends Controller
 					$price_rules		=   [
 												'product_id'	=> 'exists:products,id|'.($is_new ? '' : 'in:'.$product_data['id']),
 												'price'			=> 'required|numeric',
-												'promo_price'	=> 'numeric',
+												'promo_price'	=> 'numeric|max:price',
 												'started_at'	=> 'required|date_format:"Y-m-d H:i:s"',
 											];
 
