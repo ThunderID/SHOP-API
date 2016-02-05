@@ -458,9 +458,9 @@ class ProductController extends Controller
 												'ended_at'		=> 'date_format:"Y-m-d H:i:s"',
 											];
 
-					if(!strtotime($value['ended_at']))
+					if(!isset($value['ended_at']) || !strtotime($value['ended_at']))
 					{
-						$value['ended_at']	= null;
+						unset($value['ended_at']);
 					}
 
 					$validator      = Validator::make($value, $label_rules);

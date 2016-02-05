@@ -26,9 +26,11 @@ class PriceObserver
         $errors                             = new MessageBag();
 
         //1. audit
-        if($model->product()->count())
+        if($model->product_id != 0)
         {
-            event(new AuditStore($model, 'price_changed', 'Perubahan harga '.$model->product->name));
+        	// $product 						= \App\Models\Product::id($model->product_id)->first();
+
+            event(new AuditStore($model, 'price_changed', 'Perubahan harga '));
         }
 
         if($errors->count())
