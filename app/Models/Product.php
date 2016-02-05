@@ -9,6 +9,7 @@ use App\Models\Traits\HasDefaultImageTrait;
 use App\Models\Traits\HasSlugTrait;
 use App\Models\Traits\HasNameTrait;
 use App\Models\Traits\HasSelectAllTrait;
+use \App\Models\Traits\HasStatableTrait;
 
 use App\Models\Traits\HasStockTrait;
 use App\Models\Traits\HasSellableTrait;
@@ -29,7 +30,6 @@ class Product extends BaseModel
 	use \App\Models\Traits\hasMany\HasVariansTrait;
 	use \App\Models\Traits\hasMany\HasPricesTrait;
 	use \App\Models\Traits\hasMany\HasLabelsTrait;
-	use \App\Models\Traits\HasStatableTrait;
 
 	use \App\Models\Traits\belongsToMany\HasClustersTrait;
 
@@ -53,6 +53,7 @@ class Product extends BaseModel
 	use HasTransactionStatusTrait;
 	use HasSlugTrait;
 	use HasNameTrait;
+	use HasStatableTrait;
 
 	/**
 	 * The database table used by the model.

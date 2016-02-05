@@ -9,6 +9,7 @@ use App\Models\Traits\HasStockTrait;
 use App\Models\Traits\HasNameTrait;
 use App\Models\Traits\HasSlugTrait;
 use App\Models\Traits\HasTransactionStatusTrait;
+use \App\Models\Traits\HasStatableTrait;
 
 /**
  * Used for Category and Tag Models
@@ -33,6 +34,12 @@ class Cluster extends BaseModel
 	use HasNameTrait;
 	use HasSlugTrait;
 	use HasTransactionStatusTrait;
+
+	/**
+	 * Global traits used as scope (plugged scope).
+	 *
+	 */
+	use HasStatableTrait;
 
 	/**
 	 * The database table used by the model.

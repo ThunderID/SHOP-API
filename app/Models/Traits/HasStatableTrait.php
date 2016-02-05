@@ -21,15 +21,15 @@ trait HasStatableTrait
 	 * call has many relationship
 	 *
 	 **/
-	public function scopeStats($query, $variable)
+	public function scopeStats($query, $variable = 0)
 	{
 		return $query->selectraw('IFNULL(SUM(view), 0) as views')
 			->leftjoin('stat_user_views', function ($join) use($variable) 
 			{
-				$join->on ( 'products.id', '=', 'stat_user_views.statable_id' )
+				$join->on ( $this->getTable().'.id', '=', 'stat_user_views.statable_id' )
 					->where('statable_type', '=', get_class($this))
-					->where('statable_id', '=', $variable)
-					->where('ondate', '=', date('Y-m-d H:i:s'))
+					->where('stat_user_views.user_id', '=', $variable)
+					->where('ondate', '=', date('Y-m-d'))
 					->wherenull('stat_user_views.deleted_at')
 					;
 			})
