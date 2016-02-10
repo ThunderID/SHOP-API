@@ -12,7 +12,7 @@ class CreateStatUserViewTable extends Migration
      */
     public function up()
     {
-        Schema::table('stat_user_views', function (Blueprint $table) {
+        Schema::create('stat_user_views', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
             $table->integer('statable_id')->unsigned()->index();
