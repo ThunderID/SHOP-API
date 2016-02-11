@@ -8,6 +8,7 @@ use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class AuthController extends Controller
 {
@@ -114,6 +115,7 @@ class AuthController extends Controller
 											'sso_media'                     => 'in:facebook',
 											'sso_data'                      => '',
 											'gender'                        => 'in:male,female',
+											'role'							=> 'required|in:customer',
 											'date_of_birth'                 => 'date_format:"Y-m-d H:i:s"',
 										];
 
@@ -135,6 +137,52 @@ class AuthController extends Controller
 			if(!$customer_data->save())
 			{
 				$errors->add('Customer', $customer_data->getError());
+			}
+		}
+
+
+		//2. check invitation
+		if(!$errors->count() && isset($customer['invited_by']))
+		{
+			$referral_data					= \App\Models\Referral::userid($customer['invited_by'])->first();
+
+			if(!$referral_data)
+			{
+				$errors->add('Redeem', 'Link tidak valid. Silahkan mendaftar dengan menu biasa.');
+			}
+			elseif($referral_data->quota <= 0)
+			{
+				$errors->add('Redeem', 'Quota referral sudah habis.');
+			}
+			else
+			{
+				$store                      = \App\Models\StoreSetting::type('voucher_point_expired')->Ondate('now')->first();
+
+				if($store)
+				{
+					$expired_at             = new Carbon($store->value);
+				}
+				else
+				{
+					$expired_at             = new Carbon('+ 3 months');
+				}
+
+				//if validator passed, save referral
+				$point                  =   [
+												'user_id'               => $customer_data['id'],
+												'reference_id'        	=> $referral_data['user_id'],
+												'reference_type'        => 'App\Models\User',
+												'expired_at'            => $expired_at->format('Y-m-d H:i:s'),
+											];
+
+				$point_data             = new \App\Models\PointLog;
+				
+				$point_data->fill($point);
+
+				if(!$point_data->save())
+				{
+					$errors->add('Redeem', $point_data->getError());
+				}
 			}
 		}
 

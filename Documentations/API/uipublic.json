@@ -125,6 +125,12 @@ paths:
           required: false
           type: string
           format: string
+        - name: invited_by
+          in: query
+          description: id of referral.
+          required: false
+          type: string
+          format: string
       tags:
         - Account
         - Sign
