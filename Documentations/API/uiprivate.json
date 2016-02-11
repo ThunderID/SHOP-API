@@ -88,6 +88,51 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /me/user_id/invitations:
+    get:
+      summary: Get customer invitations
+      description: >
+        Get customer invitations
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+        - name: user_id
+          in: query
+          description: customer id
+          required: true
+          type: string
+          format: string
+        - name: skip
+          in: query
+          description: How many records are going to be skipped
+          required: false
+          type: number
+          format: integer
+        - name: take
+          in: query
+          description: How many records are going to be taken from resource
+          required: false
+          type: number
+          format: integer
+      tags:
+        - Account
+        - Invitation
+        - Private
+      responses:
+        '200':
+          description: An array of invitations
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/invitations'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
   /me/user_id/addresses:
     get:
       summary: Get customer addresses
@@ -128,7 +173,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/addresses'
+              $ref: '#/definitions/address'
         default:
           description: Unexpected error
           schema:
@@ -243,7 +288,46 @@ paths:
         - Private
       responses:
         '200':
-          description: An array of points
+          description: An array of user
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/user'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /me/user_id/invite:
+    post:
+      summary: Invite friends 
+      description: >
+        Invite friends 
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+        - name: user_id
+          in: query
+          description: customer id
+          required: true
+          type: string
+          format: string
+        - name: invitations
+          in: query
+          description: array email (invitations without id)
+          required: true
+          type: string
+          format: string
+      tags:
+        - Account
+        - Invitation
+        - Private
+      responses:
+        '200':
+          description: An array of user
           schema:
             type: array
             items:
@@ -985,6 +1069,14 @@ definitions:
       started_at:
         type: string
       expired_at:
+        type: string
+  invitations:
+    properties:
+      id:
+        type: string
+      email:
+        type: string
+      is_used:
         type: string
   Error:
     type: object

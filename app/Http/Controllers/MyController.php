@@ -59,6 +59,35 @@ class MyController extends Controller
 		return new JSend('success', (array)['count' => $count, 'data' => $result]);
 	}
 
+
+	/**
+	 * Display my invitations
+	 *
+	 * @return Response
+	 */
+	public function invitations($user_id = null)
+	{
+		$result                     = \App\Models\UserInvitationLog::id($user_id)->orderby('created_at', 'desc');
+
+		$count                      = count($result->get(['id']));
+
+		if(Input::has('skip'))
+		{
+			$skip                   = Input::get('skip');
+			$result                 = $result->skip($skip);
+		}
+
+		if(Input::has('take'))
+		{
+			$take                   = Input::get('take');
+			$result                 = $result->take($take);
+		}
+
+		$result                     = $result->get()->toArray();
+
+		return new JSend('success', (array)['count' => $count, 'data' => $result]);
+	}
+
 	/**
 	 * Display my addresses
 	 *
@@ -236,6 +265,74 @@ class MyController extends Controller
 			}
 		}
 
+		if($errors->count())
+		{
+			DB::rollback();
+
+			return new JSend('error', (array)Input::all(), $errors);
+		}
+
+		DB::commit();
+		
+		$final_costumer                 = \App\Models\Customer::id($user_id)->with(['myreferrals', 'myreferrals.user'])->first()->toArray();
+
+		return new JSend('success', (array)$final_costumer);
+	}
+
+
+	/**
+	 * Invite friend
+	 *
+	 * @return Response
+	 */
+	public function invite($user_id = null)
+	{
+		if(!Input::has('invitations'))
+		{
+			return new JSend('error', (array)Input::all(), 'Tidak ada data invitations.');
+		}
+
+		$invitations					= Input::get('invitations');
+
+		$errors						= new MessageBag();
+
+		DB::beginTransaction();
+
+		//1. Store mail
+		if(!$errors->count())
+		{
+			foreach ($invitations as $key => $value) 
+			{
+				if(!$errors->count())
+				{
+					$log_data		= new \App\Models\UserInvitationLog;
+
+					$log_rules		=   [
+												'email'			=> 'required|email',
+											];
+
+					$validator			= Validator::make($value, $log_rules);
+
+					//if there was log and validator false
+					if (!$validator->passes())
+					{
+						$errors->add('log', $validator->errors());
+					}
+					else
+					{
+						$value['user_id']		= $user_id;
+
+						$log_data				= $log_data->fill($value);
+
+						if(!$log_data->save())
+						{
+							$errors->add('Log', $log_data->getError());
+						}
+					}
+				}
+			}
+		}
+		
 		if($errors->count())
 		{
 			DB::rollback();

@@ -7,11 +7,11 @@
 *
 * Here is where you can register all of the routes for Private resources who can be accessed only by `me`.
 *
-* MY SUMMARY				: Line 44 - 66 
+* MY SUMMARY				: Line 23 - 62 
 *
-* MY PRODUCT 				: Line 57 - 73
+* MY PRODUCT 				: Line 67 - 83
 *	
-* MY PURCHASE ORDER 		: Line 78 - 100
+* MY PURCHASE ORDER 		: Line 88 - 110
 */
 
 $app->group(['middleware' => 'oauth|me', 'namespace' => 'App\Http\Controllers'], function ($app) 
@@ -31,6 +31,12 @@ $app->group(['middleware' => 'oauth|me', 'namespace' => 'App\Http\Controllers'],
 		]
 	);
 
+	$app->get('/me/{user_id}/invitations',
+		[
+			'uses'				=> 'MyController@invitations'
+		]
+	);
+
 	$app->get('/me/{user_id}/addresses',
 		[
 			'uses'				=> 'MyController@addresses'
@@ -46,6 +52,12 @@ $app->group(['middleware' => 'oauth|me', 'namespace' => 'App\Http\Controllers'],
 	$app->post('/me/{user_id}/redeem',
 		[
 			'uses'				=> 'MyController@redeem'
+		]
+	);
+
+	$app->post('/me/{user_id}/invite',
+		[
+			'uses'				=> 'MyController@invite'
 		]
 	);
 
