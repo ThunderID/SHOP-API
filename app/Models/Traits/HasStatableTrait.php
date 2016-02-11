@@ -23,13 +23,12 @@ trait HasStatableTrait
 	 **/
 	public function scopeStats($query, $variable = 0)
 	{
-		return $query->selectraw('IFNULL(SUM(view), 0) as views')
+		return $query->selectraw('IFNULL(SUM(stat_user_views.statable_id), 0) as views')
 			->leftjoin('stat_user_views', function ($join) use($variable) 
 			{
 				$join->on ( $this->getTable().'.id', '=', 'stat_user_views.statable_id' )
 					->where('statable_type', '=', get_class($this))
 					->where('stat_user_views.user_id', '=', $variable)
-					->where('ondate', '=', date('Y-m-d'))
 					->wherenull('stat_user_views.deleted_at')
 					;
 			})

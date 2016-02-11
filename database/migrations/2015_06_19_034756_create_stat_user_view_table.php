@@ -17,13 +17,11 @@ class CreateStatUserViewTable extends Migration
             $table->integer('user_id')->unsigned()->index();
             $table->integer('statable_id')->unsigned()->index();
             $table->string('statable_type', 255);
-            $table->integer('view');
-            $table->date('ondate');
             $table->timestamps();
             $table->softDeletes();
             
-            $table->index(['deleted_at', 'ondate', 'statable_id']);
-            $table->index(['deleted_at', 'ondate', 'user_id']);
+            $table->index(['deleted_at', 'statable_id', 'created_at']);
+            $table->index(['deleted_at', 'user_id', 'created_at']);
         });
     }
 

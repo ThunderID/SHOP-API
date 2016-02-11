@@ -86,24 +86,11 @@ class StatProductViewed
 
 		foreach ($checkslug as $key => $value) 
 		{
-			$statuser                   = \App\Models\StatUserView::userid($userid)->statableid($value['id'])->statabletype(get_class($data))->ondate('now')->first();
+			$statuser					= new \App\Models\StatUserView;
 
-			 //4. if there were no error save
-			if($statuser)
-			{
-				$statuser->view         = $statuser->view + 1;
-				$statuser->ondate		= $statuser->ondate->format('Y-m-d H:i:s');
-
-				$statuser->save();
-			} 
-			else
-			{
-				$statuser               = new \App\Models\StatUserView;
-
-				$statuser->fill(['user_id' => $userid, 'statable_id' => $value['id'], 'statable_type' => get_class($data), 'view' => 1, 'ondate' => Carbon::now()->format('Y-m-d H:i:s')]);
-				
-				$statuser->save();
-			}
+			$statuser->fill(['user_id' => $userid, 'statable_id' => $value['id'], 'statable_type' => get_class($data)]);
+			
+			$statuser->save();
 		}
 
 		return true;
