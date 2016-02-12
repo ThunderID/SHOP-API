@@ -7,23 +7,31 @@ use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
-    /**
-     * The Artisan commands provided by your application.
-     *
-     * @var array
-     */
-    protected $commands = [
-        //
-    ];
+	/**
+	 * The Artisan commands provided by your application.
+	 *
+	 * @var array
+	 */
+	protected $commands = [
+		'App\Console\Commands\QueueCommand',
+		'App\Console\Commands\PointExpireQueueCommand',
+		'App\Console\Commands\PointExpireCommand',
+	];
 
-    /**
-     * Define the application's command schedule.
-     *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
-     * @return void
-     */
-    protected function schedule(Schedule $schedule)
-    {
-        //
-    }
+	/**
+	 * Define the application's command schedule.
+	 *
+	 * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+	 * @return void
+	 */
+	protected function schedule(Schedule $schedule)
+	{
+		//running queue (every five minutes)
+		$schedule->command('run:queue QueueCommand')
+				 ->everyFiveMinutes();
+
+		//running queue (every five minutes)
+		$schedule->command('point:expirequeue PointExpireQueueCommand')
+				 ->dailyAt('06:00');
+	}
 }

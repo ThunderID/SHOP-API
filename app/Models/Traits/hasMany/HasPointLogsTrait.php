@@ -62,4 +62,19 @@ trait HasPointLogsTrait
 	{
 		return $this->hasMany('App\Models\PointLog', 'reference_id')->where('reference_type', '=', 'App\Models\Transaction')->where('amount', '<', 0);
 	}
+
+	/**
+	 * scope to find point doesnt havent get cut
+	 *
+	 * @param user id
+	 */
+	public function scopeHaventGetCut($query, $variable)
+	{
+		return 	$query
+						->selectraw('point_logs.*')
+						->selectraw("SUM(IFNULL((SELECT sum(amount) FROM point_logs as point_logs2 WHERE point_logs2.point_log_id = point_logs.id and point_logs2.deleted_at is null),0) + point_logs.amount) as amount")
+						->havingraw("IFNULL((SELECT abs(sum(amount)) FROM point_logs as point_logs2 WHERE point_logs2.point_log_id = point_logs.id and point_logs2.deleted_at is null),0) < point_logs.amount")
+						->groupby('point_logs.user_id')
+		;
+	}
 }
