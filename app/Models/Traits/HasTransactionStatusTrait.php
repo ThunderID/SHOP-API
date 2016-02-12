@@ -29,9 +29,9 @@ trait HasTransactionStatusTrait
 		return $query
 		 ->join('transactions', function ($join) use($variable) 
 			 {
-                                    $join->on ( 'suppliers.id', '=', 'transactions.supplier_id' )
-                                    ->wherenull('transactions.deleted_at')
-                                    ;
+									$join->on ( 'suppliers.id', '=', 'transactions.supplier_id' )
+									->wherenull('transactions.deleted_at')
+									;
 			})
 		;
 	}
@@ -45,9 +45,9 @@ trait HasTransactionStatusTrait
 		return $query
 		 ->join('transactions', function ($join) use($variable) 
 			 {
-                                    $join->on ( 'shipments.transaction_id', '=', 'transactions.id' )
-                                    ->wherenull('transactions.deleted_at')
-                                    ;
+									$join->on ( 'shipments.transaction_id', '=', 'transactions.id' )
+									->wherenull('transactions.deleted_at')
+									;
 			})
 		;
 	}
@@ -61,9 +61,9 @@ trait HasTransactionStatusTrait
 		return $query
 		 ->join('transactions', function ($join) use($variable) 
 			 {
-                                    $join->on ( 'transaction_details.transaction_id', '=', 'transactions.id' )
-                                    ->wherenull('transactions.deleted_at')
-                                    ;
+									$join->on ( 'transaction_details.transaction_id', '=', 'transactions.id' )
+									->wherenull('transactions.deleted_at')
+									;
 			})
 		;
 	}
@@ -77,10 +77,10 @@ trait HasTransactionStatusTrait
 		return $query
 		 ->leftjoin('transactions', function ($join) use($variable) 
 			 {
-                                    $join->on ( 'transaction_details.transaction_id', '=', 'transactions.id' )
-                                    ->wherenull('transactions.deleted_at')
-                                    
-                                    ;
+									$join->on ( 'transaction_details.transaction_id', '=', 'transactions.id' )
+									->wherenull('transactions.deleted_at')
+									
+									;
 			})
 		;
 	}
@@ -98,11 +98,11 @@ trait HasTransactionStatusTrait
 			return $query
 			 ->join('transaction_logs', function ($join) use($variable) 
 			 {
-                                    $join->on ( 'transaction_logs.transaction_id', '=', 'transactions.id' )
+									$join->on ( 'transaction_logs.transaction_id', '=', 'transactions.id' )
 									->on(DB::raw('(transaction_logs.id = (select id from transaction_logs as tl2 where tl2.transaction_id = transaction_logs.transaction_id and tl2.deleted_at is null order by tl2.changed_at desc limit 1))'), DB::raw(''), DB::raw(''))
-                                    ->where('transaction_logs.status', '=', $variable)
-                                    ->wherenull('transaction_logs.deleted_at')
-                                    ;
+									->where('transaction_logs.status', '=', $variable)
+									->wherenull('transaction_logs.deleted_at')
+									;
 			})
 			;
 		}
@@ -111,11 +111,11 @@ trait HasTransactionStatusTrait
 			return $query
 			 ->join('transaction_logs', function ($join) use($variable) 
 			 {
-                                    $join->on ( 'transaction_logs.transaction_id', '=', 'transactions.id' )
+									$join->on ( 'transaction_logs.transaction_id', '=', 'transactions.id' )
 									->on(DB::raw('(transaction_logs.id = (select id from transaction_logs as tl2 where tl2.transaction_id = transaction_logs.transaction_id and tl2.deleted_at is null order by tl2.changed_at desc limit 1))'), DB::raw(''), DB::raw(''))
-                                    ->whereIn('transaction_logs.status', $variable)
-                                    ->wherenull('transaction_logs.deleted_at')
-                                    ;
+									->whereIn('transaction_logs.status', $variable)
+									->wherenull('transaction_logs.deleted_at')
+									;
 			})
 			;
 		}
@@ -134,11 +134,11 @@ trait HasTransactionStatusTrait
 			return $query
 			 ->leftjoin('transaction_logs', function ($join) use($variable) 
 			 {
-                                    $join->on ( 'transaction_logs.transaction_id', '=', 'transactions.id' )
+									$join->on ( 'transaction_logs.transaction_id', '=', 'transactions.id' )
 									->on(DB::raw('(transaction_logs.id = (select id from transaction_logs as tl2 where tl2.transaction_id = transaction_logs.transaction_id and tl2.deleted_at is null order by tl2.changed_at desc limit 1))'), DB::raw(''), DB::raw(''))
-                                    ->where('transaction_logs.status', '=', $variable)
-                                    ->wherenull('transaction_logs.deleted_at')
-                                    ;
+									->where('transaction_logs.status', '=', $variable)
+									->wherenull('transaction_logs.deleted_at')
+									;
 			})
 			;
 		}
@@ -147,11 +147,11 @@ trait HasTransactionStatusTrait
 			return $query
 			 ->leftjoin('transaction_logs', function ($join) use($variable) 
 			 {
-                                    $join->on ( 'transaction_logs.transaction_id', '=', 'transactions.id' )
+									$join->on ( 'transaction_logs.transaction_id', '=', 'transactions.id' )
 									->on(DB::raw('(transaction_logs.id = (select id from transaction_logs as tl2 where tl2.transaction_id = transaction_logs.transaction_id and tl2.deleted_at is null order by tl2.changed_at desc limit 1))'), DB::raw(''), DB::raw(''))
-                                    ->whereIn('transaction_logs.status', $variable)
-                                    ->wherenull('transaction_logs.deleted_at')
-                                    ;
+									->whereIn('transaction_logs.status', $variable)
+									->wherenull('transaction_logs.deleted_at')
+									;
 			})
 			;
 		}
@@ -260,9 +260,9 @@ trait HasTransactionStatusTrait
 		return $query
 		 ->join('varians', function ($join) use($variable) 
 		 {
-            $join->on ( 'varians.product_id', '=', 'products.id' )
-            ->wherenull('varians.deleted_at')
-            ;
+			$join->on ( 'varians.product_id', '=', 'products.id' )
+			->wherenull('varians.deleted_at')
+			;
 		})
 		;
 	}
@@ -276,9 +276,9 @@ trait HasTransactionStatusTrait
 		return $query
 		 ->leftjoin('varians', function ($join) use($variable) 
 		 {
-            $join->on ( 'varians.product_id', '=', 'products.id' )
-            ->wherenull('varians.deleted_at')
-            ;
+			$join->on ( 'varians.product_id', '=', 'products.id' )
+			->wherenull('varians.deleted_at')
+			;
 		})
 		;
 	}
@@ -292,15 +292,15 @@ trait HasTransactionStatusTrait
 		return $query
 		->join('varians', function ($join) use($variable) 
 			 {
-                                    $join->on ( 'varians.product_id', '=', 'products.id' )
-                                    ->wherenull('varians.deleted_at')
-                                    ;
+									$join->on ( 'varians.product_id', '=', 'products.id' )
+									->wherenull('varians.deleted_at')
+									;
 			})
 		->join('transaction_details', function ($join) use($variable) 
 			 {
-                                    $join->on ( 'transaction_details.varian_id', '=', 'varians.id' )
-                                    ->wherenull('transaction_details.deleted_at')
-                                    ;
+									$join->on ( 'transaction_details.varian_id', '=', 'varians.id' )
+									->wherenull('transaction_details.deleted_at')
+									;
 			})
 		;
 	}
@@ -314,9 +314,9 @@ trait HasTransactionStatusTrait
 		return $query
 		->join('transaction_details', function ($join) use($variable) 
 			 {
-                                    $join->on ( 'transaction_details.varian_id', '=', 'varians.id' )
-                                    ->wherenull('transaction_details.deleted_at')
-                                    ;
+									$join->on ( 'transaction_details.varian_id', '=', 'varians.id' )
+									->wherenull('transaction_details.deleted_at')
+									;
 			})
 		;
 	}
@@ -330,9 +330,9 @@ trait HasTransactionStatusTrait
 		return $query
 		 ->leftjoin('transaction_details', function ($join) use($variable) 
 		 {
-            $join->on ( 'transaction_details.varian_id', '=', 'varians.id' )
-            ->wherenull('transaction_details.deleted_at')
-            ;
+			$join->on ( 'transaction_details.varian_id', '=', 'varians.id' )
+			->wherenull('transaction_details.deleted_at')
+			;
 		})
 		;
 	}
@@ -346,9 +346,9 @@ trait HasTransactionStatusTrait
 		return $query
 		->join('varians', function ($join) use($variable) 
 			 {
-                                    $join->on ( 'varians.id', '=', 'transaction_details.varian_id' )
-                                    ->wherenull('varians.deleted_at')
-                                    ;
+									$join->on ( 'varians.id', '=', 'transaction_details.varian_id' )
+									->wherenull('varians.deleted_at')
+									;
 			})
 		;
 	}
@@ -365,12 +365,12 @@ trait HasTransactionStatusTrait
 			return $query
 			 ->rightjoin('categories', function ($join) use($variable) 
 			 {
-                                    $join->on( 'categories.id', '=', 'categories_products.category_id' )
-                                    // ->oron('categories.id', '=', 'categories_products.category_id')
-                                    // ->where('categories.category_id', '=', $variable)
-                                    ->where('categories.id', '=', $variable)
-                                    ->wherenull('categories.deleted_at')
-                                    ;
+									$join->on( 'categories.id', '=', 'categories_products.category_id' )
+									// ->oron('categories.id', '=', 'categories_products.category_id')
+									// ->where('categories.category_id', '=', $variable)
+									->where('categories.id', '=', $variable)
+									->wherenull('categories.deleted_at')
+									;
 			})
 			;
 		}
@@ -379,12 +379,12 @@ trait HasTransactionStatusTrait
 			return $query
 			 ->rightjoin('categories', function ($join) use($variable) 
 			 {
-                                    $join->on ( 'categories.id', '=', 'categories_products.category_id' )
-                                    ->oron('categories.id', 'categories_products.category_id')
-                                    ->where('categories.category_id', '=', $variable)
-                                    ->orwhere('categories.id', '=', $variable)
-                                    ->wherenull('categories.deleted_at')
-                                    ;
+									$join->on ( 'categories.id', '=', 'categories_products.category_id' )
+									->oron('categories.id', 'categories_products.category_id')
+									->where('categories.category_id', '=', $variable)
+									->orwhere('categories.id', '=', $variable)
+									->wherenull('categories.deleted_at')
+									;
 			})
 			;
 		}
@@ -397,11 +397,11 @@ trait HasTransactionStatusTrait
 	public function scopeJoinTransactionDetailFromTransaction($query, $variable)
 	{
 		return $query
-		 ->leftjoin('transaction_details', function ($join) use($variable) 
+		 ->join('transaction_details', function ($join) use($variable) 
 		 {
-            $join->on ( 'transaction_details.transaction_id', '=', 'transactions.id' )
-            ->wherenull('transaction_details.deleted_at')
-            ;
+			$join->on ( 'transaction_details.transaction_id', '=', 'transactions.id' )
+			->wherenull('transaction_details.deleted_at')
+			;
 		})
 		;
 	}
@@ -415,10 +415,42 @@ trait HasTransactionStatusTrait
 		return $query
 		 ->join('products', function ($join) use($variable) 
 			 {
-                                    $join->on ( 'varians.product_id', '=', 'products.id' )
-                                    ->wherenull('products.deleted_at')
-                                    ;
+									$join->on ( 'varians.product_id', '=', 'products.id' )
+									->wherenull('products.deleted_at')
+									;
 			})
+		;
+	}
+
+	/**
+	 * joining shipment from transaction
+	 *
+	 **/
+	public function scopeJoinShipmentFromTransaction($query, $variable)
+	{
+		return $query
+		->join('shipments', function ($join) use($variable) 
+		 {
+			$join->on ( 'shipments.transaction_id', '=', 'transactions.id' )
+			->wherenull('shipments.deleted_at')
+			;
+		})
+		;
+	}
+
+	/**
+	 * joining shipment from transaction
+	 *
+	 **/
+	public function scopeJoinAddressFromShipment($query, $variable)
+	{
+		return $query
+		->join('addresses', function ($join) use($variable) 
+		 {
+			$join->on ( 'addresses.id', '=', 'shipments.address_id' )
+			->wherenull('addresses.deleted_at')
+			;
+		})
 		;
 	}
 }

@@ -35,19 +35,22 @@ class SaleController extends Controller
 				{
 					case 'ondate':
 						$result 	= $result->TransactionLogChangedAt($value);
-                        break;
+						break;
 					case 'productnotes':
 						$result 	= $result->ProductNotes(true);
-                        break;
+						break;
+					case 'addressnotes':
+						$result 	= $result->AddressNotes(true);
+						break;
 					case 'bills':
 						$result 	= $result->bills($value);
-                        break;
-                    case 'status':
+						break;
+					case 'status':
 						$result 	= $result->status($value);
-                        break;
-                    case 'refnumber':
+						break;
+					case 'refnumber':
 						$result 	= $result->refnumber($value);
-                        break;
+						break;
 					default:
 						# code...
 						break;

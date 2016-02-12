@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\HasBillAmountTrait;
 use App\Models\Traits\HasProductExtendTrait;
+use App\Models\Traits\HasAddressExtendTrait;
 use App\Models\Traits\Calculations\HasVoucherQuotaTrait;
 use App\Models\Observers\SaleObserver;
 
@@ -35,6 +36,7 @@ class Sale extends Transaction
 	 *
 	 */
 	use HasProductExtendTrait;
+	use HasAddressExtendTrait;
 
 	/**
 	 * The public variable that assigned type of inheritance model
