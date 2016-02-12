@@ -18,9 +18,25 @@
 					Anda Memiliki BALIN Point sebesar @thunder_mail_money_indo($data['point']['amount']) dari total point Anda yang akan expire tanggal {{date('d-m-Y H:i', strtotime($data['point']['expired_at']))}}.
 				</p>
 
+				<h4>Anda Mungkin Suka</h4>
 				<p>
-					Silahkan gunakan point Anda.
+					<table>
+						<tr>
+							@foreach($data['product'] as $key => $value)
+								@if($key%2==0 && $key!=0)
+									</tr>
+									<tr>
+								@endif
+									<td>
+										<a href="{{$data['balin']['action'].'/'.$value['slug']}}">
+											<img src="{{ $message->embed($value['thumbnail']) }}" style="max-width:150px; text-align:left;">
+										</a>
+									</td>
+							@endforeach
+						</tr>
+					</table>
 				</p>
+				<h4>ATAU</h4>
 			</td>
 			<td width="10%"></td>
 		</tr>
