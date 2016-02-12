@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
-use  Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Handle Protected Resource of product

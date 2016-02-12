@@ -130,6 +130,9 @@ paths:
 definitions:
   search:
     properties:
+      productnotes:
+        type: string
+        description: 'display product notes'
       ondate:
         type: string
         description: 'write in format : mm-dd-yyyy to mm-dd-yyyy where first date was start date and last one was end date'

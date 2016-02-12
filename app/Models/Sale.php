@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\HasBillAmountTrait;
+use App\Models\Traits\HasProductExtendTrait;
 use App\Models\Traits\Calculations\HasVoucherQuotaTrait;
 use App\Models\Observers\SaleObserver;
 
@@ -28,6 +29,12 @@ class Sale extends Transaction
 	 */
 	use HasBillAmountTrait;
 	use HasVoucherQuotaTrait;
+	
+	/**
+	 * Global traits used as query builder (plugin scope).
+	 *
+	 */
+	use HasProductExtendTrait;
 
 	/**
 	 * The public variable that assigned type of inheritance model

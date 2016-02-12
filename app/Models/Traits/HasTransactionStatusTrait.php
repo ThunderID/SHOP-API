@@ -389,4 +389,36 @@ trait HasTransactionStatusTrait
 			;
 		}
 	}
+
+	/**
+	 * joining transaction detail from transaction
+	 *
+	 **/
+	public function scopeJoinTransactionDetailFromTransaction($query, $variable)
+	{
+		return $query
+		 ->leftjoin('transaction_details', function ($join) use($variable) 
+		 {
+            $join->on ( 'transaction_details.transaction_id', '=', 'transactions.id' )
+            ->wherenull('transaction_details.deleted_at')
+            ;
+		})
+		;
+	}
+
+	/**
+	 * joining product from varian
+	 *
+	 **/
+	public function scopeJoinProductFromVarian($query, $variable)
+	{
+		return $query
+		 ->join('products', function ($join) use($variable) 
+			 {
+                                    $join->on ( 'varians.product_id', '=', 'products.id' )
+                                    ->wherenull('products.deleted_at')
+                                    ;
+			})
+		;
+	}
 }

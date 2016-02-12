@@ -36,6 +36,9 @@ class SaleController extends Controller
 					case 'ondate':
 						$result 	= $result->TransactionLogChangedAt($value);
                         break;
+					case 'productnotes':
+						$result 	= $result->ProductNotes(true);
+                        break;
 					case 'bills':
 						$result 	= $result->bills($value);
                         break;

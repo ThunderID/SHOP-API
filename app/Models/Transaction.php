@@ -34,10 +34,14 @@ class Transaction extends BaseModel
 	use HasSelectAllTrait;
 	use HasAmountTrait;
 	use HasCurrentStatusTrait;
+	use HasTypeTrait;
+	
+	/**
+	 * Global traits used as query builder (plugin scope).
+	 *
+	 */
 	use HasTransactionStatusTrait;
 	use HasStatusLogTrait;
-
-	use HasTypeTrait;
 
 	/**
 	 * The database table used by the model.
