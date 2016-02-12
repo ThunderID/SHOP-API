@@ -42,6 +42,9 @@ class SaleController extends Controller
 					case 'addressnotes':
 						$result 	= $result->AddressNotes(true);
 						break;
+					case 'shippingnotes':
+						$result 	= $result->ShippingNotes(true);
+						break;
 					case 'bills':
 						$result 	= $result->bills($value);
 						break;
