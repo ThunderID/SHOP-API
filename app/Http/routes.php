@@ -30,3 +30,8 @@ include('routes_private_resource.php');
 * Routes Authorized used only for registered client public
 */
 include('routes_public.php');
+
+/**
+* Routes to send mail
+*/
+include('routes_mail.php');
