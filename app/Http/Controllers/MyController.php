@@ -67,9 +67,9 @@ class MyController extends Controller
 	 */
 	public function invitations($user_id = null)
 	{
-		$result                     = \App\Models\UserInvitationLog::id($user_id)->orderby('created_at', 'desc');
+		$result                     = \App\Models\UserInvitationLog::userid($user_id)->orderby('created_at', 'desc');
 
-		$count                      = count($result->get(['id']));
+		$count                      = count($result->get());
 
 		if(Input::has('skip'))
 		{
@@ -292,7 +292,7 @@ class MyController extends Controller
 			return new JSend('error', (array)Input::all(), 'Tidak ada data invitations.');
 		}
 
-		$invitations					= Input::get('invitations');
+		$invitations				= Input::get('invitations');
 
 		$errors						= new MessageBag();
 

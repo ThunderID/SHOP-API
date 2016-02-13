@@ -125,9 +125,9 @@ paths:
           required: false
           type: string
           format: string
-        - name: invited_by
+        - name: reference_name
           in: query
-          description: id of referral.
+          description: code of referral.
           required: false
           type: string
           format: string

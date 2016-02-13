@@ -93,4 +93,14 @@ class UserInvitationLog extends BaseModel
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
+
+	/**
+	 * find email
+	 * 
+	 * @param email
+	 */	
+	public function scopeEmail($query, $variable)
+	{
+		return $query->where('email', $variable);
+	}
 }

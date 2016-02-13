@@ -142,9 +142,9 @@ class AuthController extends Controller
 
 
 		//2. check invitation
-		if(!$errors->count() && isset($customer['invited_by']))
+		if(!$errors->count() && isset($customer['reference_code']))
 		{
-			$referral_data					= \App\Models\Referral::userid($customer['invited_by'])->first();
+			$referral_data					= \App\Models\Referral::code($customer['reference_code'])->first();
 
 			if(!$referral_data)
 			{
@@ -182,6 +182,21 @@ class AuthController extends Controller
 				if(!$point_data->save())
 				{
 					$errors->add('Redeem', $point_data->getError());
+				}
+			}
+		}
+
+		if(!$errors->count())
+		{
+			$invitation 				= \App\Mail\UserInvitationLog::email($customer_data['email'])->userid($referral_data['user_id'])->first();
+
+			if($invitation)
+			{
+				$invitation->is_used 	= true;
+
+				if(!$invitation->save())
+				{
+					$errors->add('Invitation', $invitation->getError());
 				}
 			}
 		}
