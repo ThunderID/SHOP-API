@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
 		'App\Console\Commands\QueueCommand',
 		'App\Console\Commands\PointExpireQueueCommand',
 		'App\Console\Commands\PointExpireCommand',
+		'App\Console\Commands\BroadcastDiscountCommand',
 	];
 
 	/**

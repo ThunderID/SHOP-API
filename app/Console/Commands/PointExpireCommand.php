@@ -93,7 +93,7 @@ class PointExpireCommand extends Command {
 
 		$errors 					= new MessageBag;
 
-		//check work active on that day, please consider if that queue were written days
+		//check point expire on that day that havent get cut by transaction (or even left over)
 		$points 					= PointLog::debit(true)->onactive([Carbon::parse($parameters['on'])->startOfDay()->format('Y-m-d H:i:s'), Carbon::parse($parameters['on'])->endOfDay()->format('Y-m-d H:i:s')])->haventgetcut(true)->with(['user'])->get()->toArray();
 
 		foreach ($points as $idx => $point) 

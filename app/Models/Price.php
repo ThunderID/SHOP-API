@@ -36,7 +36,7 @@ class Price extends BaseModel
 	 *
 	 * @var array
 	 */
-	protected $dates				=	['created_at', 'updated_at', 'deleted_at'];
+	protected $dates				=	['created_at', 'updated_at', 'deleted_at', 'started_at'];
 
 	/**
 	 * The appends attributes from mutator and accessor
@@ -98,4 +98,22 @@ class Price extends BaseModel
     }
 
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
+
+	public function scopeOnDate($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			$started_at 	= date('Y-m-d H:i:s', strtotime($variable[0]));
+			$ended_at 		= date('Y-m-d H:i:s', strtotime($variable[1]));
+
+			return $query->where('started_at', '>=', $started_at)
+						->where('started_at', '<=', $ended_at);
+		}
+		else
+		{
+			$ondate 	= date('Y-m-d H:i:s', strtotime($variable));
+
+			return $query->where('started_at', '<=', $ondate);
+		}
+	}
 }

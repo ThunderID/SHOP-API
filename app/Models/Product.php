@@ -11,6 +11,7 @@ use App\Models\Traits\HasNameTrait;
 use App\Models\Traits\HasSelectAllTrait;
 use \App\Models\Traits\HasStatableTrait;
 
+use App\Models\Traits\HasPriceTrait;
 use App\Models\Traits\HasStockTrait;
 use App\Models\Traits\HasSellableTrait;
 use App\Models\Traits\HasTransactionStatusTrait;
@@ -50,6 +51,7 @@ class Product extends BaseModel
 	 */
 	use HasStockTrait;
 	use HasSellableTrait;
+	use HasPriceTrait;
 	use HasTransactionStatusTrait;
 	use HasSlugTrait;
 	use HasNameTrait;

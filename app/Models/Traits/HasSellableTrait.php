@@ -24,7 +24,7 @@ trait HasSellableTrait
 	 **/
 	public function scopeSellable($query, $variable)
 	{
-		return $query->HavingCurrentStock(1);
+		return $query->HavingCurrentStock(1)->HavingPrice(true);
 		;
 	}
 }

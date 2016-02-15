@@ -345,3 +345,15 @@ $app->group(['middleware' => 'oauth|admin', 'namespace' => 'App\Http\Controllers
 		]
 	);
 });
+
+$app->group(['middleware' => 'oauth|staff', 'namespace' => 'App\Http\Controllers'], function ($app) 
+{
+	// ------------------------------------------------------------------------------------
+	// TOOLS
+	// ------------------------------------------------------------------------------------
+	$app->post('/broadcast/price',
+		[
+			'uses'				=> 'BroadcastController@price'
+		]
+	);
+});

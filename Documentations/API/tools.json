@@ -1,0 +1,88 @@
+swagger: '2.0'
+info:
+  title: Broadcast API
+  description: Tool to help broadcasting
+  version: 1.0.0
+host: localhost:8800
+schemes:
+  - https
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /broadcast/price:
+    post:
+      summary: Post Broadcast price 
+      description: |
+        Tool to change price of sellable products` group. That can be discount percentage, or discount amount.
+        Change will be placed on queue and running as queue cron scheduled.
+        Category ids & tag ids will be identifier wether product were clustered in certain group.
+      parameters:
+        - name: price
+          in: query
+          description: price parameter (look down).
+          required: true
+          type: array
+          items:
+            type: string
+      tags:
+        - Price
+        - Broadcast
+      responses:
+        '200':
+          description: An array of queue' data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/queue'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  price:
+    properties:
+      discount_amount:
+        type: number
+      discount_percentage:
+        type: number
+      started_at:
+        type: string
+      ended_at:
+        type: string
+      category_ids:
+        type: array
+      tag_ids:
+        type: array
+      is_labeled:
+        type: boolean
+  queue:
+    properties:
+      process_name:
+        type: string
+      process_option:
+        type: string
+      parameter:
+        type: string
+      total_process:
+        type: number
+      task_per_process:
+        type: number
+      process_number:
+        type: number
+      total_task:
+        type: number
+      message:
+        type: string
+  Error:
+    type: object
+    properties:
+      status:
+        type: string
+      data:
+        type: string
+      message:
+        type: string
+      code:
+        type: integer
+        format: int32

@@ -51,7 +51,19 @@ trait HasClustersTrait
 	 **/
 	public function scopeCategoriesID($query, $variable)
 	{
+		if(is_array($variable))
+		{
+			foreach ($variable as $key => $value) 
+			{
+				$query = $query->whereHas('categories', function($q)use($value){$q->id($value);});
+			}
+
+			return $query;
+		}
+
 		return $query->whereHas('categories', function($q)use($variable){$q->id($variable);});
+
+		// return $query->whereHas('categories', function($q)use($variable){$q->id($variable);});
 	}
 
 	/**
@@ -90,7 +102,20 @@ trait HasClustersTrait
 	 **/
 	public function scopeTagsID($query, $variable)
 	{
+		if(is_array($variable))
+		{
+			foreach ($variable as $key => $value) 
+			{
+				$query = $query->whereHas('tags', function($q)use($value){$q->id($value);});
+			}
+
+			return $query;
+		}
+
 		return $query->whereHas('tags', function($q)use($variable){$q->id($variable);});
+
+
+		// return $query->whereHas('tags', function($q)use($variable){$q->id($variable);});
 	}
 
 	/**
