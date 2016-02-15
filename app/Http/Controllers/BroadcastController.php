@@ -17,6 +17,92 @@ use Illuminate\Support\Facades\Log;
 class BroadcastController extends Controller
 {
 	/**
+	 * Display all queues
+	 *
+	 * @param search, skip, take
+	 * @return JSend Response
+	 */
+	public function queue()
+	{
+		$user						= \LucaDegasperi\OAuth2Server\Facades\Authorizer::getResourceOwnerId();
+		$user						= json_decode($user, true)['data'];
+
+		if($user)
+		{
+			$userid					= $user['id'];
+		}
+		else
+		{
+			\App::abort(404);
+		}
+
+		$result						= new \App\Models\Queue;
+		
+		$result 					= $result->userid($userid);
+
+		if(Input::has('search'))
+		{
+			$search                 = Input::get('search');
+
+			foreach ($search as $key => $value) 
+			{
+				switch (strtolower($key)) 
+				{
+					case 'running':
+						$result     = $result->running($value);
+						break;
+					case 'complete':
+						$result     = $result->complete($value);
+						break;
+					default:
+						# code...
+						break;
+				}
+			}
+		}
+
+		if(Input::has('sort'))
+		{
+			$sort                 = Input::get('sort');
+
+			foreach ($sort as $key => $value) 
+			{
+				if(!in_array($value, ['asc', 'desc']))
+				{
+					return new JSend('error', (array)Input::all(), $key.' harus bernilai asc atau desc.');
+				}
+				switch (strtolower($key)) 
+				{
+					case 'newest':
+						$result     = $result->orderby('created_at', $value);
+						break;
+					default:
+						# code...
+						break;
+				}
+			}
+		}
+
+		$count                      = count($result->get());
+
+		if(Input::has('skip'))
+		{
+			$skip                   = Input::get('skip');
+			$result                 = $result->skip($skip);
+		}
+
+		if(Input::has('take'))
+		{
+			$take                   = Input::get('take');
+			$result                 = $result->take($take);
+		}
+
+		$result                     = $result->get()->toArray();
+
+		return new JSend('success', (array)['count' => $count, 'data' => $result]);
+	}
+
+	/**
 	 * Store a queue
 	 *
 	 * 1. Validate Price Parameter
@@ -29,6 +115,19 @@ class BroadcastController extends Controller
 		{
 			return new JSend('error', (array)Input::all(), 'Tidak ada data price.');
 		}
+		
+		$user                       = \LucaDegasperi\OAuth2Server\Facades\Authorizer::getResourceOwnerId();
+		$user                       = json_decode($user, true)['data'];
+
+		if($user)
+		{
+			$userid             = $user['id'];
+		}
+		else
+		{
+			\App::abort(404);
+		}
+
 
 		$errors						= new MessageBag();
 
@@ -73,6 +172,7 @@ class BroadcastController extends Controller
 
 			$queue 					= new \App\Models\Queue;
 			$queue->fill([
+				'user_id'			=> $userid,
 				'process_name'		=> 'broadcast:discount',
 				'parameter'			=> json_encode($parameter),
 				'total_process'		=> count($products),
@@ -87,7 +187,7 @@ class BroadcastController extends Controller
 				$errors->add('Product', $queue->getError());
 			}
 		}
-		//End of validate product
+		//End of validate price
 
 		if($errors->count())
 		{

@@ -10,6 +10,51 @@ basePath: /v1
 produces:
   - application/json
 paths:
+  /broadcast/queue:
+    get:
+      summary: Queue Lists
+      description: |
+        Display queue process running by user.
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: number
+          format: integer
+        - name: search
+          in: query
+          description: search parameter (look down).
+          required: false
+          type: array
+          items:
+            type: string
+        - name: skip
+          in: query
+          description: How many records are going to be skipped
+          required: false
+          type: number
+          format: integer
+        - name: take
+          in: query
+          description: How many records are going to be taken from resource
+          required: false
+          type: number
+          format: integer
+      tags:
+        - Broadcast
+        - Queue
+      responses:
+        '200':
+          description: An array of queues' data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/queue'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
   /broadcast/price:
     post:
       summary: Post Broadcast price 
@@ -28,6 +73,7 @@ paths:
       tags:
         - Price
         - Broadcast
+        - Queue
       responses:
         '200':
           description: An array of queue' data
@@ -40,6 +86,14 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 definitions:
+  search:
+    properties:
+      running:
+        type: string
+        description: 'Search queue currently running'
+      complete:
+        type: string
+        description: 'Search queue completely running'
   price:
     properties:
       discount_amount:

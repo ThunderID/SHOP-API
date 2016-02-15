@@ -12,6 +12,12 @@ namespace App\Models;
 class Queue extends BaseModel
 {
 	/**
+	 * Relationship Traits.
+	 *
+	 */
+	use \App\Models\Traits\belongsTo\HasUserTrait;
+	
+	/**
 	 * The database table used by the model.
 	 *
 	 * @var string
@@ -52,6 +58,7 @@ class Queue extends BaseModel
 	 * @var array
 	 */
 	protected $fillable				=	[
+											'user_id'						,
 											'process_name'					,
 											'process_option'				,
 											'parameter'						,
@@ -110,4 +117,15 @@ class Queue extends BaseModel
 	{
 		return $query->whereRaw('`process_number` < `total_process`');
 	}
+
+	/**
+	 * scope to check complete queue
+	 *
+	 * @param none
+	 */
+	public function scopeComplete($query, $variable)
+	{
+		return $query->whereRaw('`process_number` = `total_process`');
+	}
+
 }

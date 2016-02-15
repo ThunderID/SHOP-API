@@ -351,6 +351,13 @@ $app->group(['middleware' => 'oauth|staff', 'namespace' => 'App\Http\Controllers
 	// ------------------------------------------------------------------------------------
 	// TOOLS
 	// ------------------------------------------------------------------------------------
+	
+	$app->get('/broadcast/queue',
+		[
+			'uses'				=> 'BroadcastController@queue'
+		]
+	);
+
 	$app->post('/broadcast/price',
 		[
 			'uses'				=> 'BroadcastController@price'

@@ -14,6 +14,7 @@ class CreateTmpQueuesTable extends Migration {
 	{
 		Schema::create('tmp_queues', function(Blueprint $table) {
 			$table->increments('id');
+            $table->integer('user_id')->unsigned()->index();
 			$table->string('process_name', 255);
 			$table->string('process_option', 255);
 			$table->text('parameter');
