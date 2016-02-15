@@ -302,13 +302,28 @@ class MyOrderController extends Controller
 		//3. update status
 		if(!$errors->count() && isset($order['status']) && $order_data['status'] != $order['status'])
 		{
-			$log_data                    = new \App\Models\TransactionLog;
-
-			$log_data                    = $log_data->fill(['status' => $order['status'], 'transaction_id' => $order_data['id']]);
-
-			if(!$log_data->save())
+			//3a. check cart price and product current price
+			if($order['status']=='wait')
 			{
-				$errors->add('Log', $log_data->getError());
+				foreach ($order_data['transactiondetails'] as $key => $value) 
+				{
+					if($value['price'] != $value['varian']['product']['price'])
+					{
+						$errors->add('Price', 'Price of '. $value['varian']['product']['name'].' changed since '.$value['varian']['product']['price_start']);
+					}
+				}
+			}
+
+			if(!$errors->count())
+			{
+				$log_data			= new \App\Models\TransactionLog;
+
+				$log_data			= $log_data->fill(['status' => $order['status'], 'transaction_id' => $order_data['id']]);
+
+				if(!$log_data->save())
+				{
+					$errors->add('Log', $log_data->getError());
+				}
 			}
 		}
 
