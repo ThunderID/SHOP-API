@@ -44,6 +44,28 @@ class CourierController extends Controller
 			}
 		}
 
+		if(Input::has('sort'))
+		{
+			$sort                 = Input::get('sort');
+
+			foreach ($sort as $key => $value) 
+			{
+				if(!in_array($value, ['asc', 'desc']))
+				{
+					return new JSend('error', (array)Input::all(), $key.' harus bernilai asc atau desc.');
+				}
+				switch (strtolower($key)) 
+				{
+					case 'name':
+						$result     = $result->orderby($key, $value);
+						break;
+					default:
+						# code...
+						break;
+				}
+			}
+		}
+		
 		$count                      = $result->count();
 
 		if(Input::has('skip'))

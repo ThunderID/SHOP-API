@@ -127,6 +127,11 @@ definitions:
       name:
         type: string
         description: 'Search courier that hath certain name'
+  sort:
+    properties:
+      name:
+        type: string
+        description: 'sort by product name, value must be asc or desc'
   couriers:
     properties:
       count:
