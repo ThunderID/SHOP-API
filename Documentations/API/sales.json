@@ -136,6 +136,17 @@ definitions:
       ondate:
         type: string
         description: 'write in format : mm-dd-yyyy to mm-dd-yyyy where first date was start date and last one was end date'
+  sort:
+    properties:
+      refnumber:
+        type: string
+        description: 'sort by ref number, value must be asc or desc'
+      bills:
+        type: string
+        description: 'sort by purchases` current bills, value must be asc or desc'
+      newest:
+        type: string
+        description: 'sort by purchases` transact at, value must be asc or desc'
   sales:
     properties:
       count:

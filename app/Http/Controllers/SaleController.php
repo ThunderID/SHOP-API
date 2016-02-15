@@ -61,6 +61,34 @@ class SaleController extends Controller
 			}
 		}
 
+		if(Input::has('sort'))
+		{
+			$sort                 = Input::get('sort');
+
+			foreach ($sort as $key => $value) 
+			{
+				if(!in_array($value, ['asc', 'desc']))
+				{
+					return new JSend('error', (array)Input::all(), $key.' harus bernilai asc atau desc.');
+				}
+				switch (strtolower($key)) 
+				{
+					case 'refnumber':
+						$result     = $result->orderby('ref_number', $value);
+						break;
+					case 'bills':
+						$result     = $result->orderby($key, $value);
+						break;
+					case 'newest':
+						$result     = $result->orderby('transact_at', $value);
+						break;
+					default:
+						# code...
+						break;
+				}
+			}
+		}
+
 		$count                      = count($result->get(['id']));
 
 		if(Input::has('skip'))

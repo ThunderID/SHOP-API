@@ -302,14 +302,14 @@ class MyOrderController extends Controller
 		//3. update status
 		if(!$errors->count() && isset($order['status']) && $order_data['status'] != $order['status'])
 		{
-			//3a. check cart price and product current price
+			//3a. check cart price and product current  price
 			if($order['status']=='wait')
 			{
 				foreach ($order_data['transactiondetails'] as $key => $value) 
 				{
 					if($value['price'] != $value['varian']['product']['price'])
 					{
-						$errors->add('Price', 'Price of '. $value['varian']['product']['name'].' changed since '.$value['varian']['product']['price_start']);
+						$errors->add('Price', 'Harga item '. $value['varian']['product']['name'].' telah berubah sejak '.$value['varian']['product']['price_start'].'. Silahkan update keranjang Anda.');
 					}
 				}
 			}
