@@ -61,6 +61,11 @@ definitions:
       name:
         type: string
         description: 'Search Cluster that hath likely name'
+  sort:
+    properties:
+      label:
+        type: string
+        description: 'sort by label, value must be asc or desc'
   label:
     properties:
       count:

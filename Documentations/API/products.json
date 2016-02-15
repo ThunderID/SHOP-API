@@ -236,6 +236,9 @@ definitions:
       newest:
         type: string
         description: 'sort by products` created at, value must be asc or desc'
+      stock:
+        type: string
+        description: 'sort by products` current stock, value must be asc or desc'
   products:
     properties:
       count:

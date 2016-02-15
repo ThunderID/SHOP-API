@@ -80,7 +80,9 @@ class ProductController extends Controller
 					case 'newest':
 						$result     = $result->orderby('created_at', $value);
 						break;
-					
+					case 'stock':
+						$result     = $result->orderby('current_stock', $value);
+						break;
 					default:
 						# code...
 						break;

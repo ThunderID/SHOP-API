@@ -220,6 +220,25 @@ class UIController extends Controller
 			}
 		}
 
+		if(Input::has('sort'))
+		{
+			$sort                 = Input::get('sort');
+
+			foreach ($sort as $key => $value) 
+			{
+				if(!in_array($value, ['asc', 'desc']))
+				{
+					return new JSend('error', (array)Input::all(), $key.' harus bernilai asc atau desc.');
+				}
+				switch (strtolower($key)) 
+				{
+					case 'label':
+						$result     = $result->orderby('lable', $value);
+						break;
+				}
+			}
+		}
+
 		$count                      = count($result->get(['lable']));
 
 		if(Input::has('skip'))
