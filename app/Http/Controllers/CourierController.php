@@ -308,7 +308,7 @@ class CourierController extends Controller
 					//if there was image and validator false
 					if (!$validator->passes())
 					{
-						$errors->add('Image', $validator->errors);
+						$errors->add('Image', $validator->errors());
 					}
 					else
 					{
