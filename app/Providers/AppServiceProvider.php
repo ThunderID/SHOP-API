@@ -14,8 +14,12 @@ class AppServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
-		//
-		
+		// blade extens date indo
+		Blade::directive('thunder_mail_date_indo', function($expression)
+		{
+			return "<?php echo date('d-m-Y H:i', strtotime($expression)); ?>";
+		});
+
 		// blade extens money indonesia
 		Blade::directive('thunder_mail_money_indo', function($expression)
 		{

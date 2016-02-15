@@ -90,4 +90,10 @@ $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers\Mail'
 		]
 	);
 
+	$app->post('/abandoned',
+		[
+			'uses'				=> 'CRMController@abandoned'
+		]
+	);
+
 });

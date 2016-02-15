@@ -66,4 +66,38 @@ class CRMController extends Controller
 		
 		return new JSend('success', (array)Input::all());
 	}
+
+	/**
+	 * Send balin abandoned
+	 *
+	 * @param user, store
+	 * @return JSend Response
+	 */
+	public function abandoned()
+	{
+		$cart 					= Input::get('cart');
+		$store 					= Input::get('store');
+
+		// checking cart data
+		if(empty($cart))
+		{
+			throw new Exception('Sent variable must be array of a record.');
+		}
+
+		// checking store data
+		if(empty($store))
+		{
+			throw new Exception('Sent variable must be array of a record.');
+		}
+
+		$data						= ['cart' => $cart, 'balin' => $store];
+
+		//send mail
+		Mail::send('mail.'.$this->template.'.crm.abandoned', ['data' => $data], function($message) use($cart)
+		{
+			$message->to($cart['user']['email'], $cart['user']['name'])->subject(strtoupper($this->template).' - FRIENDLY REMINDER');
+		}); 
+		
+		return new JSend('success', (array)Input::all());
+	}
 }

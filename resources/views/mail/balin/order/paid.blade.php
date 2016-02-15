@@ -68,9 +68,9 @@
 							<p> 
 								Pembayaran untuk pesanan <strong>#{{$data['paid']['ref_number']}}</strong> telah kami terima pada tanggal 
 								@if(count($data['paid']['payment'])) 
-									@balin_mail_date_indo($data['paid']['payment']['ondate']) 
+									@thunder_mail_date_indo($data['paid']['payment']['ondate']) 
 								@else 
-									@balin_mail_date_indo($data['paid']['updated_at']) 
+									@thunder_mail_date_indo($data['paid']['updated_at']) 
 								@endif
 							</p>
 							@if($data['paid']['payment'])
