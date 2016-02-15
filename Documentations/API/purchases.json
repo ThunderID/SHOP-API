@@ -140,6 +140,17 @@ definitions:
       name:
         type: string
         description: 'Search Purchase that hath certain name'
+  sort:
+    properties:
+      refnumber:
+        type: string
+        description: 'sort by ref number, value must be asc or desc'
+      amount:
+        type: string
+        description: 'sort by purchases` current amount, value must be asc or desc'
+      newest:
+        type: string
+        description: 'sort by purchases` transact at, value must be asc or desc'
   purchases:
     properties:
       count:
