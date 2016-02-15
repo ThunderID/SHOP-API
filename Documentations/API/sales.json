@@ -136,6 +136,24 @@ definitions:
       ondate:
         type: string
         description: 'write in format : mm-dd-yyyy to mm-dd-yyyy where first date was start date and last one was end date'
+      addressnotes:
+        type: string
+        description: 'display address notes'
+      shippingnotes:
+        type: string
+        description: 'display shipping notes'
+      bills:
+        type: string
+        description: 'display bills in certain number notes'
+      status:
+        type: string
+        description: 'in abandoned, cart, wait, paid, packed, shipping and delivered'
+      userid:
+        type: string
+        description: 'display sales of one or more user id'
+      refnumber:
+        type: string
+        description: 'certain ref number'
   sort:
     properties:
       refnumber:
