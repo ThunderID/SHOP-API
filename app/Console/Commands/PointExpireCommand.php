@@ -150,7 +150,7 @@ class PointExpireCommand extends Command {
 			$data						= ['point' => $point, 'balin' => $parameters['store'], 'product' => $product];
 
 			//send mail
-			Mail::send('mail.'.$parameters['template'].'.point.reminder', ['data' => $data], function($message) use($point, $parameters)
+			Mail::send('mail.'.$parameters['template'].'.crm.point', ['data' => $data], function($message) use($point, $parameters)
 			{
 				$message->to($point['user']['email'], $point['user']['name'])->subject(strtoupper($parameters['template']).' - POINT REMINDER');
 			}); 

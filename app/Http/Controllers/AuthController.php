@@ -188,7 +188,7 @@ class AuthController extends Controller
 
 		if(!$errors->count())
 		{
-			$invitation 				= \App\Mail\UserInvitationLog::email($customer_data['email'])->userid($referral_data['user_id'])->first();
+			$invitation 				= \App\Models\UserInvitationLog::email($customer_data['email'])->userid($referral_data['user_id'])->first();
 
 			if($invitation)
 			{
