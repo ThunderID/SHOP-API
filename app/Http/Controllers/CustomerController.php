@@ -42,6 +42,37 @@ class CustomerController extends Controller
 			}
 		}
 
+		if(Input::has('sort'))
+		{
+			$sort                 = Input::get('sort');
+
+			foreach ($sort as $key => $value) 
+			{
+				if(!in_array($value, ['asc', 'desc']))
+				{
+					return new JSend('error', (array)Input::all(), $key.' harus bernilai asc atau desc.');
+				}
+				switch (strtolower($key)) 
+				{
+					case 'name':
+						$result     = $result->orderby($key, $value);
+						break;
+					case 'referralcode':
+						$result     = $result->orderby('code_referral', $value);
+						break;
+					case 'totalreference':
+						$result     = $result->orderby('total_reference', $value);
+						break;
+					case 'totalpoint':
+						$result     = $result->orderby('total_point', $value);
+						break;
+					default:
+						# code...
+						break;
+				}
+			}
+		}
+
 		$count                      = count($result->get(['id']));
 
 		if(Input::has('skip'))

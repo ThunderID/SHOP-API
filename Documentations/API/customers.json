@@ -90,6 +90,20 @@ definitions:
       name:
         type: string
         description: 'Search customer that hath certain label'
+  sort:
+    properties:
+      name:
+        type: string
+        description: 'sort by customer name, value must be asc or desc'
+      referralcode:
+        type: string
+        description: 'sort by customers` referral code, value must be asc or desc'
+      totalreference:
+        type: string
+        description: 'sort by customer total reference, value must be asc or desc'
+      totalpoint:
+        type: string
+        description: 'sort by customers` total point, value must be asc or desc'
   customers:
     properties:
       count:

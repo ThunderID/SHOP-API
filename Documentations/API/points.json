@@ -113,6 +113,14 @@ definitions:
       customername:
         type: string
         description: 'Search point that contain customers name'
+  sort:
+    properties:
+      expired:
+        type: string
+        description: 'sort by point expired, value must be asc or desc'
+      amount:
+        type: string
+        description: 'sort by points` amount, value must be asc or desc'
   points:
     properties:
       count:

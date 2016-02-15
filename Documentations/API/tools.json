@@ -105,9 +105,9 @@ definitions:
       ended_at:
         type: string
       category_ids:
-        type: array
+        type: string
       tag_ids:
-        type: array
+        type: string
       is_labeled:
         type: boolean
   queue:

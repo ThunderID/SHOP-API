@@ -51,6 +51,31 @@ class PointController extends Controller
 			}
 		}
 		
+		if(Input::has('sort'))
+		{
+			$sort                 = Input::get('sort');
+
+			foreach ($sort as $key => $value) 
+			{
+				if(!in_array($value, ['asc', 'desc']))
+				{
+					return new JSend('error', (array)Input::all(), $key.' harus bernilai asc atau desc.');
+				}
+				switch (strtolower($key)) 
+				{
+					case 'expired':
+						$result     = $result->orderby('expired_at', $value);
+						break;
+					case 'amount':
+						$result     = $result->orderby('amount', $value);
+						break;
+					default:
+						# code...
+						break;
+				}
+			}
+		}
+
 		$count                      = $result->count();
 
 		if(Input::has('skip'))
