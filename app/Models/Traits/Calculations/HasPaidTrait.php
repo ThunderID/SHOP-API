@@ -49,7 +49,7 @@ trait HasPaidTrait
 	 */
 	public function RevertPoint($transaction)
 	{
-		foreach ($transaction->pointlogs as $key => $value) 
+		foreach ($transaction->paidpointlogs as $key => $value) 
 		{
 			if($value->amount < 0)
 			{
@@ -57,13 +57,13 @@ trait HasPaidTrait
 				$point->fill([
 						'user_id'           => $value->user_id,
 						'point_log_id'      => $value->id,
+						'reference_id'     	=> $transaction->id,
+						'reference_type'    => get_class($transaction),
 						'amount'            => 0 - $value->amount,
 						'expired_at'        => $value->expired_at,
 						'notes'             => 'Revert Belanja #'.$transaction->ref_number,
 					]);
 		
-				$point->reference()->associate($transaction);
-
 				if(!$point->save())
 				{
 					$this->errors                   = $point->getError();
@@ -145,12 +145,12 @@ trait HasPaidTrait
 
 			$pointlog->fill([
 					'user_id'               => $upline->reference_id,
+					'reference_id'			=> $transaction->id,
+					'reference_type'    	=> get_class($transaction),
 					'amount'                => $point->value,
 					'expired_at'            => date('Y-m-d H:i:s', strtotime($transaction->transact_at.' '.$expired->value)),
 					'notes'                 => 'Bonus belanja '.$transaction->user->name
 				]);
-
-			$pointlog->reference()->associate($transaction);
 
 			if(!$pointlog->save())
 			{
@@ -192,6 +192,7 @@ trait HasPaidTrait
 			{
 				$currentamount              = $currentamount + $value['amount'];
 			}
+			\Log::info($currentamount);
 
 			//if leftover more than 0
 			if($currentamount > 0 && $currentamount >= $transactionamount)
@@ -208,13 +209,13 @@ trait HasPaidTrait
 				$point                      = new PointLog;
 				$point->fill([
 						'user_id'           => $points[$idx]->user_id,
+						'reference_id'     	=> $transaction->id,
+						'reference_type'    => get_class($transaction),
 						'point_log_id'      => $points[$idx]->id,
 						'amount'            => $camount,
 						'expired_at'        => $points[$idx]->expired_at,
 						'notes'             => 'Pembayaran Belanja #'.$transaction->ref_number,
 					]);
-
-				$point->reference()->associate($transaction);
 
 				if(!$point->save())
 				{
@@ -229,6 +230,6 @@ trait HasPaidTrait
 			$idx++;
 		}
 
-		return true;
+		return $transactionamount;
 	}
 }

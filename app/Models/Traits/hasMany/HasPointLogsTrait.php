@@ -1,5 +1,7 @@
 <?php namespace App\Models\Traits\hasMany;
 
+use Illuminate\Support\Pluralizer;
+
 /**
  * Trait for models has many Point Logs.
  *
@@ -23,7 +25,7 @@ trait HasPointLogsTrait
 	 **/
 	public function PointLogs()
 	{
-		return $this->hasMany('App\Models\PointLog', 'user_id');
+		return $this->hasMany('App\Models\PointLog', Pluralizer::singular($this->getTable()).'_id');
 	}
 
 	/**
@@ -60,7 +62,7 @@ trait HasPointLogsTrait
 	 **/
 	public function PaidPointLogs()
 	{
-		return $this->hasMany('App\Models\PointLog', 'reference_id')->where('reference_type', '=', 'App\Models\Transaction')->where('amount', '<', 0);
+		return $this->hasMany('App\Models\PointLog', 'reference_id')->where('reference_type', '=', 'App\Models\Sale')->where('amount', '<', 0);
 	}
 
 	/**

@@ -23,7 +23,10 @@ class TransactionLogObserver
 		$errors                         = new MessageBag();
 
 		//1. modify changed at
-		$model->changed_at              = Carbon::now()->format('Y-m-d H:i:s');
+		if(!isset($model->changed_at))
+		{
+			$model->changed_at			= Carbon::now()->format('Y-m-d H:i:s');
+		}
 
 		return true;
 	}
@@ -161,19 +164,14 @@ class TransactionLogObserver
 				case 'wait' :
 					$result                     = $model->CreditPoint($model->sale);
 
-					if(!$result)
+					if(!$result && count($model['errors']))
 					{
 						return false;
 					}
 
-					if(!$model->sale->save())
+					if($result==0)
 					{
-						$errors->add('Log', $model->sale->getError());
-					}
-
-					if($model->sale->bills==0)
-					{
-						$result                 = $model->ChangeStatus($model->sale, 'paid');
+						$result                 = $model->ChangeStatus($model->sale, 'paid', 'Full Point', ' + 1 second ');
 					}
 				break;
 				case 'paid' :

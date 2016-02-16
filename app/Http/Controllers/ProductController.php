@@ -77,6 +77,12 @@ class ProductController extends Controller
 					case 'price':
 						$result     = $result->orderby($key, $value);
 						break;
+					case 'discount':
+						$result     = $result->orderby('IFNULL(IF(prices.promo_price=0, 0, SUM(prices.price - prices.promo_price)), 0)', $value);
+						break;
+					case 'promo':
+						$result     = $result->orderby('promo_price', $value);
+						break;
 					case 'newest':
 						$result     = $result->orderby('created_at', $value);
 						break;
