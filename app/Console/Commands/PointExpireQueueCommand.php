@@ -100,7 +100,7 @@ class PointExpireQueueCommand extends Command
 				{
 					$store[$value2['type']]		= $value2['value'];
 				}
-				$store['action'] 				= $store['url'].'/products';
+				$store['action'] 				= $store['url'].'/product';
 
 				DB::beginTransaction();
 
