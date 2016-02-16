@@ -75,7 +75,7 @@ trait HasPointLogsTrait
 		return 	$query
 						->selectraw('point_logs.*')
 						->selectraw("SUM(IFNULL((SELECT sum(amount) FROM point_logs as point_logs2 WHERE point_logs2.point_log_id = point_logs.id and point_logs2.deleted_at is null),0) + point_logs.amount) as amount")
-						->havingraw("IFNULL((SELECT abs(sum(amount)) FROM point_logs as point_logs2 WHERE point_logs2.point_log_id = point_logs.id and point_logs2.deleted_at is null),0) < point_logs.amount")
+						->havingraw("SUM(IFNULL((SELECT sum(amount) FROM point_logs as point_logs2 WHERE point_logs2.point_log_id = point_logs.id and point_logs2.deleted_at is null),0) + point_logs.amount) > 0")
 						->groupby('point_logs.user_id')
 		;
 	}

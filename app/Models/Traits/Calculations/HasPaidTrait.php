@@ -192,7 +192,6 @@ trait HasPaidTrait
 			{
 				$currentamount              = $currentamount + $value['amount'];
 			}
-			\Log::info($currentamount);
 
 			//if leftover more than 0
 			if($currentamount > 0 && $currentamount >= $transactionamount)
