@@ -26,7 +26,6 @@ class CurrentPriceScope implements ScopeInterface
 		$builder
 		->selectraw('IFNULL(prices.price, 0) as price')
 		->selectraw('IFNULL(prices.promo_price, 0) as promo_price')
-		->selectraw('IFNULL(IF(prices.promo_price=0, 0, SUM(prices.price - prices.promo_price)), 0) as discount')
 		->selectraw('IFNULL(prices.started_at, NOW()) as price_start')
 		->leftjoin('prices', function ($join)
 		 {
