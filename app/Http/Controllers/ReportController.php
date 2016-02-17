@@ -32,7 +32,35 @@ class ReportController extends Controller
 				{
 					case 'ondate':
 						$result 	= $result->TransactionLogChangedAt($value);
-                        break;
+						break;
+					case 'username':
+						$result 	= $result->UserName($value);
+						break;
+					default:
+						# code...
+						break;
+				}
+			}
+		}
+
+		if(Input::has('sort'))
+		{
+			$sort                 = Input::get('sort');
+
+			foreach ($sort as $key => $value) 
+			{
+				if(!in_array($value, ['asc', 'desc']))
+				{
+					return new JSend('error', (array)Input::all(), $key.' harus bernilai asc atau desc.');
+				}
+				switch (strtolower($key)) 
+				{
+					case 'amount':
+						$result     = $result->orderby($key, $value);
+						break;
+					case 'newest':
+						$result     = $result->orderby('transact_at', $value);
+						break;
 					default:
 						# code...
 						break;
@@ -79,7 +107,7 @@ class ReportController extends Controller
 				{
 					case 'ondate':
 						$result 	= $result->TransactionLogChangedAt($value);
-                        break;
+						break;
 					default:
 						# code...
 						break;

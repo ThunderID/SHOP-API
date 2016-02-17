@@ -47,6 +47,15 @@ trait HasUserTrait
 	}
 
 	/**
+	 * check if model has user name
+	 *
+	 **/
+	public function scopeUserName($query, $variable)
+	{
+		return $query->whereHas('user', function($q)use($variable){$q->name;});
+	}
+
+	/**
 	 * call belongs to relationship with customer only
 	 *
 	 **/

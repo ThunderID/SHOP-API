@@ -176,6 +176,12 @@ class MyOrderController extends Controller
 					}
 					else
 					{
+						$check_prev_trans 				= \App\Models\TransactionDetail::transactionid($order_data['id'])->varianid($value['varian_id'])->first();
+						if($check_prev_trans)
+						{
+							$detail_data 				= $check_prev_trans;
+						}
+						
 						$value['transaction_id']        = $order_data['id'];
 
 						$detail_data                    = $detail_data->fill($value);

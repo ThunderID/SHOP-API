@@ -113,6 +113,9 @@ class WarehouseController extends Controller
 			{
 				switch (strtolower($key)) 
 				{
+					case 'size':
+						$result     = $result->size($value);
+						break;
 					case 'ondate':
 						$result     = $result->TransactionLogChangedAt($value);
 						break;
@@ -126,6 +129,31 @@ class WarehouseController extends Controller
 			}
 		}
    
+		if(Input::has('sort'))
+		{
+			$sort                 = Input::get('sort');
+
+			foreach ($sort as $key => $value) 
+			{
+				if(!in_array($value, ['asc', 'desc']))
+				{
+					return new JSend('error', (array)Input::all(), $key.' harus bernilai asc atau desc.');
+				}
+				switch (strtolower($key)) 
+				{
+					case 'stockinventory':
+						$result     = $result->orderby('inventory_stock', $value);
+						break;
+					case 'stockout':
+						$result     = $result->orderby('sold_item', $value);
+						break;
+					default:
+						# code...
+						break;
+				}
+			}
+		}
+
 		if(Input::has('skip'))
 		{
 			$skip                   = Input::get('skip');
