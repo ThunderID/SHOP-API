@@ -20,28 +20,7 @@ class ReportController extends Controller
 	 */
 	public function voucher()
 	{
-		$result                     = \App\Models\Sale::status(['paid', 'packed', 'shipping', 'delivered']);
-
-		if(Input::has('search'))
-		{
-			$search                 = Input::get('search');
-
-			foreach ($search as $key => $value) 
-			{
-				switch (strtolower($key)) 
-				{
-					case 'ondate':
-						$result 	= $result->TransactionLogChangedAt($value);
-						break;
-					case 'username':
-						$result 	= $result->UserName($value);
-						break;
-					default:
-						# code...
-						break;
-				}
-			}
-		}
+		$result                     = new \App\Models\Sale;
 
 		if(Input::has('sort'))
 		{
@@ -56,10 +35,35 @@ class ReportController extends Controller
 				switch (strtolower($key)) 
 				{
 					case 'amount':
-						$result     = $result->orderby($key, $value);
+						$result->sort 			= 'amount';
+						$result->sort_param 	= $value;
 						break;
 					case 'newest':
-						$result     = $result->orderby('transact_at', $value);
+						$result->sort 			= 'transact_at';
+						$result->sort_param 	= $value;
+						break;
+					default:
+						# code...
+						break;
+				}
+			}
+		}
+
+		$result 					= $result->status(['paid', 'packed', 'shipping', 'delivered']);
+
+		if(Input::has('search'))
+		{
+			$search                 = Input::get('search');
+
+			foreach ($search as $key => $value) 
+			{
+				switch (strtolower($key)) 
+				{
+					case 'ondate':
+						$result 	= $result->TransactionLogChangedAt($value);
+						break;
+					case 'username':
+						$result 	= $result->UserName($value);
 						break;
 					default:
 						# code...

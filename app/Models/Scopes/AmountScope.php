@@ -22,12 +22,25 @@ class AmountScope implements ScopeInterface
 	 */
 	public function apply(Builder $builder, Model $model)
 	{
-		$builder->selectraw("
+		if(isset($model->sort))
+		{
+			$builder->selectraw("
+							sum(IFNULL((SELECT sum((price - discount) * quantity) FROM transaction_details WHERE transaction_details.transaction_id = transactions.id and transaction_details.deleted_at is null),0)
+							+ transactions.shipping_cost - transactions.voucher_discount - transactions.unique_number
+							) as amount
+						")
+						->orderby($model->sort, $model->sort_param)
+					;
+		}
+		else
+		{
+			$builder->selectraw("
 						sum(IFNULL((SELECT sum((price - discount) * quantity) FROM transaction_details WHERE transaction_details.transaction_id = transactions.id and transaction_details.deleted_at is null),0)
 						+ transactions.shipping_cost - transactions.voucher_discount - transactions.unique_number
 						) as amount
 					")
 				;
+		}
 	}
 
 	/**

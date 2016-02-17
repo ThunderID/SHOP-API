@@ -103,7 +103,34 @@ class WarehouseController extends Controller
 	 */
 	public function opname()
 	{
-		$result                     = \App\Models\Varian::with(['product']);
+		$result                     = new \App\Models\Varian;
+
+		if(Input::has('sort'))
+		{
+			$sort                 = Input::get('sort');
+
+			foreach ($sort as $key => $value) 
+			{
+				if(!in_array($value, ['asc', 'desc']))
+				{
+					return new JSend('error', (array)Input::all(), $key.' harus bernilai asc atau desc.');
+				}
+				switch (strtolower($key)) 
+				{
+					case 'stockinventory':
+						$result->sort 			= 'inventory_stock';
+						$result->sort_param 	= $value;
+						break;
+					case 'stockout':
+						$result->sort 			= 'sold_item';
+						$result->sort_param 	= $value;
+						break;
+					default:
+						# code...
+						break;
+				}
+			}
+		}
 
 		if(Input::has('search'))
 		{
@@ -128,31 +155,6 @@ class WarehouseController extends Controller
 				}
 			}
 		}
-   
-		if(Input::has('sort'))
-		{
-			$sort                 = Input::get('sort');
-
-			foreach ($sort as $key => $value) 
-			{
-				if(!in_array($value, ['asc', 'desc']))
-				{
-					return new JSend('error', (array)Input::all(), $key.' harus bernilai asc atau desc.');
-				}
-				switch (strtolower($key)) 
-				{
-					case 'stockinventory':
-						$result     = $result->orderby('inventory_stock', $value);
-						break;
-					case 'stockout':
-						$result     = $result->orderby('sold_item', $value);
-						break;
-					default:
-						# code...
-						break;
-				}
-			}
-		}
 
 		if(Input::has('skip'))
 		{
@@ -165,9 +167,10 @@ class WarehouseController extends Controller
 			$take                   = Input::get('take');
 			$result                 = $result->take($take);
 		}
+
 		$count                      = count($result->get(['id']));
 
-		$result                     = $result->get()->toArray();
+		$result                     = $result->with(['product'])->get()->toArray();
 
 		return new JSend('success', (array)['count' => $count, 'data' => $result]);
 	}

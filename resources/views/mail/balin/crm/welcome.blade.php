@@ -18,9 +18,9 @@
 
 				<p>Dengan menjadi bagian dari Balin.id, anda juga dapat menikmati fasilitas yang kami berikan berupa Kode Referal dan Balin Point. Dengan kode Referal, 
 				anda dapat mengajak teman atau kerabat anda untuk mendaftar ke situs Balin.id dan berikan kode referal anda. Dengan menggunakan kode referal anda, 
-				teman anda akan mendapatkan Balin Point sebesar Rp. 50.000 dan anda akan mendapatkan Balin Point sebesar Rp. 10.000. Kode referal anda, pada mulanya 
+				teman anda akan mendapatkan Balin Point sebesar IDR. 50.000 dan anda akan mendapatkan Balin Point sebesar IDR. 10.000. Kode referal anda, pada mulanya 
 				hanya dapat anda berikan kepada 10 orang teman anda. Apabila teman yang menggunakan kode referal anda melakukan pembelian, anda akan mendapatkan 
-				tambahan kuota tersebut menjadi 11 dan anda akan mendapatkan Balin Point sebesar Rp. 10.000, dan demikian seterusnya tanpa ada batasnya. Balin Point
+				tambahan kuota tersebut menjadi 11 dan anda akan mendapatkan Balin Point sebesar IDR. 10.000, dan demikian seterusnya tanpa ada batasnya. Balin Point
 				tersebut dapat anda gunakan untuk berbelanja di Balin.id, namun tidak dapat diuangkan.
 				</p>
 

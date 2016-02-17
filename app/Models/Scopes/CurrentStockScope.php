@@ -34,11 +34,23 @@ class CurrentStockScope implements ScopeInterface
 		}
 		else
 		{
-			$builder->selectglobalstock(true)
-					->LeftJoinTransactionDetailFromVarian(true)
-					->LeftTransactionStockOn(['wait', 'paid', 'packed', 'shipping', 'delivered'])
-					->groupby('varians.id')
-					;
+			if(isset($model->sort))
+			{
+				$builder->selectglobalstock(true)
+						->LeftJoinTransactionDetailFromVarian(true)
+						->LeftTransactionStockOn(['wait', 'paid', 'packed', 'shipping', 'delivered'])
+						->groupby('varians.id')
+						->orderby($model->sort, $model->sort_param)
+						;
+			}
+			else
+			{
+				$builder->selectglobalstock(true)
+						->LeftJoinTransactionDetailFromVarian(true)
+						->LeftTransactionStockOn(['wait', 'paid', 'packed', 'shipping', 'delivered'])
+						->groupby('varians.id')
+						;
+			}
 		}
 	}
 
