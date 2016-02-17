@@ -33,6 +33,20 @@ class SaleController extends Controller
 			{
 				switch (strtolower($key)) 
 				{
+					case 'expiredcart':
+						
+						$policy 	= new \App\Models\Policy;
+						$policy 	= $policy->default(true)->type('expired_cart')->first();
+						
+						if($policy)
+						{
+							$result	= $result->status('cart')->TransactionLogChangedAt($policy['value']);
+						}
+						else
+						{
+							$result	= $result->status('cart')->TransactionLogChangedAt('- 2 days');
+						}
+						break;
 					case 'ondate':
 						$result 	= $result->TransactionLogChangedAt($value);
 						break;

@@ -25,6 +25,11 @@ class ShipmentObserver
 	{
 		$errors                             = new MessageBag();
 
+		if($model->package=='')
+		{
+			$model->package 				= 'regular';
+		}
+		
 		//1. check haven't been paid
 		if($model->sale()->count() && !in_array($model->sale->status, ['na', 'cart', 'wait']) && isset($model->getDirty()['address_id']))
 		{

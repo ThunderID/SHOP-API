@@ -19,6 +19,8 @@ class CreateShipmentTable extends Migration
             $table->integer('address_id')->unsigned()->index();
             $table->string('receipt_number', 255)->nullable();
             $table->string('receiver_name', 255);
+            $table->string('package');
+            $table->text('card');
             $table->timestamps();
             $table->softDeletes();
             
