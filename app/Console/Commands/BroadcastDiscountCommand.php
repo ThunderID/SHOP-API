@@ -169,15 +169,15 @@ class BroadcastDiscountCommand extends Command {
 
 			if($price)
 			{
-				if(isset($parameters['dicount_amount']) && isset($parameters['discount_percentage']))
+				if(isset($parameters['discount_amount']) && isset($parameters['discount_percentage']) && $parameters['discount_percentage'] != 0)
 				{
 					$promo 		= $price['price'] - $parameters['discount_amount'] - (($price['price'] - $parameters['discount_amount']) * $parameters['discount_percentage']/100);
 				}
-				elseif(isset($parameters['dicount_amount']))
+				elseif(isset($parameters['discount_amount']))
 				{
 					$promo 		= $price['price'] - $parameters['discount_amount'];
 				}
-				elseif(isset($parameters['discount_percentage']))
+				elseif(isset($parameters['discount_percentage']) && $parameters['discount_percentage'] != 0)
 				{
 					$promo 		= $price['price'] - ($price['price'] * $parameters['discount_percentage']/100);
 				}
@@ -214,15 +214,15 @@ class BroadcastDiscountCommand extends Command {
 				
 				if($price)
 				{
-					if(isset($parameters['dicount_amount']) && isset($parameters['discount_percentage']))
+					if(isset($parameters['discount_amount']) && isset($parameters['discount_percentage']) && $parameters['discount_percentage'] != 0)
 					{
 						$promo 		= $price['price'] - $parameters['discount_amount'] - (($price['price'] - $parameters['discount_amount']) * $parameters['discount_percentage']/100);
 					}
-					elseif(isset($parameters['dicount_amount']))
+					elseif(isset($parameters['discount_amount']))
 					{
 						$promo 		= $price['price'] - $parameters['discount_amount'];
 					}
-					elseif(isset($parameters['discount_percentage']))
+					elseif(isset($parameters['discount_percentage']) && $parameters['discount_percentage'] != 0)
 					{
 						$promo 		= $price['price'] - ($price['price'] * $parameters['discount_percentage']/100);
 					}

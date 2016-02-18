@@ -142,7 +142,7 @@ class StoreSettingController extends Controller
 
 			$setting_rules          =   [
 												'started_at'                => 'date_format:"Y-m-d H:i:s"',
-												'ended_at'                  => 'date_format:"Y-m-d H:i:s"',
+												'ended_at'                  => 'date_format:"Y-m-d H:i:s"|after:started_at',
 											];
 
 			$validator              = Validator::make($setting, $setting_rules);

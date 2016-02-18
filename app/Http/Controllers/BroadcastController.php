@@ -140,7 +140,7 @@ class BroadcastController extends Controller
 											'discount_amount'		=> 'required_without:discount_percentage|numeric',
 											'discount_percentage'	=> 'required_without:discount_amount|numeric',
 											'started_at'			=> 'required|date_format:"Y-m-d H:i:s"',
-											'ended_at'				=> 'required|date_format:"Y-m-d H:i:s"',
+											'ended_at'				=> 'required|date_format:"Y-m-d H:i:s"|after:started_at',
 											'category_ids'			=> 'required_if:item,category|array',
 											'tag_ids'				=> 'required_if:item,tag|array',
 											'is_labeled'			=> 'boolean',
