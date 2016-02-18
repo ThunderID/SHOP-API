@@ -118,31 +118,30 @@ class ProductExtensionController extends Controller
 			return new JSend('error', (array)Input::all(), 'Tidak ada data extension.');
 		}
 
-		$errors                     = new MessageBag();
+		$errors						= new MessageBag();
 
 		DB::beginTransaction();
 
 		//1. Validate Extension Parameter
-		$extension                    = Input::get('extension');
+		$extension					= Input::get('extension');
 		
 		if(is_null($extension['id']))
 		{
-			$is_new                 = true;
+			$is_new					= true;
 		}
 		else
 		{
-			$is_new                 = false;
+			$is_new					= false;
 		}
 
-		$extension_rules             =   [
-											'name'                      => 'required|max:255',
-											'upc'						=> 'required|max:255',
+		$extension_rules			=   [
+											'name'						=> 'required|max:255',
 											'price'						=> 'numeric',
 											'is_active'					=> 'boolean',
 										];
 
 		//1a. Get original data
-		$extension_data              = \App\Models\Extension::findornew($extension['id']);
+		$extension_data				= \App\Models\ProductExtension::findornew($extension['id']);
 
 		//1b. Validate Basic Extension Parameter
 		$validator                  = Validator::make($extension, $extension_rules);

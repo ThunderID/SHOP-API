@@ -27,20 +27,20 @@ class ProductExtensionObserver
 		$errors 						= new MessageBag();
 
 		//1. Check unique UPC
-		$upc                            = Product::upc($model->upc)->notid($model->id)->first();
+		// $upc                            = Product::upc($model->upc)->notid($model->id)->first();
 
-		if(!is_null($upc))
-		{
-			$errors->add('slug', 'UPC sudah terdaftar.');
-		}
-		else
-		{
-			$upc                        = ProductExtensionExtension::upc($model->upc)->notid($model->id)->first();
-			if(!is_null($upc))
-			{
-				$errors->add('slug', 'UPC sudah terdaftar.');
-			}
-		}
+		// if(!is_null($upc))
+		// {
+		// 	$errors->add('slug', 'UPC sudah terdaftar.');
+		// }
+		// else
+		// {
+		// 	$upc                        = ProductExtensionExtension::upc($model->upc)->notid($model->id)->first();
+		// 	if(!is_null($upc))
+		// 	{
+		// 		$errors->add('slug', 'UPC sudah terdaftar.');
+		// 	}
+		// }
 
 		if($errors->count())
 		{

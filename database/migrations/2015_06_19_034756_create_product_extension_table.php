@@ -14,10 +14,10 @@ class CreateProductExtensionTable extends Migration
     {
         Schema::create('product_extensions', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('upc')->unique();
             $table->string('name');
             $table->double('price');
             $table->boolean('is_active');
+            $table->text('description');
             $table->timestamps();
             $table->softDeletes();
 

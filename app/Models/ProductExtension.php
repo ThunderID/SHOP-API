@@ -77,10 +77,10 @@ class ProductExtension extends BaseModel
 	 */
 
 	protected $fillable				=	[
-											'upc'							,
 											'name'							,
 											'price'							,
 											'is_active'						,
+											'description'					,
 										];
 										
 	/**
@@ -89,7 +89,6 @@ class ProductExtension extends BaseModel
 	 * @var array
 	 */
 	protected $rules				=	[
-											'upc'							=> 'max:255',
 											'name'							=> 'required|max:255',
 											'price'							=> 'numeric',
 											'is_active'						=> 'boolean',
