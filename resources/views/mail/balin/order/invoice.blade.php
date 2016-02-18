@@ -153,20 +153,39 @@
 			<td colspan="2">&nbsp;</td>
 			<td colspan="2" style="text-align:left;">Diskon Voucher</td>
 			<td style="text-align:right;">IDR</td>
-			<td style="text-align:right;padding:5px;">@thunder_mail_money_indo_without_IDR(($data['invoice']['voucher_discount'] ? $data['invoice']['voucher_discount'] : 0))</td>
+			<td style="text-align:right;padding:5px;color:red;">@thunder_mail_money_indo_without_IDR(($data['invoice']['voucher_discount'] ? $data['invoice']['voucher_discount'] : 0))</td>
 		</tr>
 		<tr>
 			<td colspan="2">&nbsp;</td>
 			<td colspan="2" style="text-align:left;">Balin Point yang digunakan</td>
 			<td style="text-align:right;">IDR</td>
-			<td style="text-align:right;padding:5px;">@thunder_mail_money_indo_without_IDR( $data['invoice']['amount'] - $data['invoice']['bills'] - (isset($data['invoice']['payment']['amount']) ? $data['invoice']['payment']['amount'] : 0))</td>
+			<td style="text-align:right;padding:5px;color:red;">@thunder_mail_money_indo_without_IDR( $data['invoice']['point_discount'])</td>
 		</tr>
 		<tr>
 			<td colspan="2">&nbsp;</td>
 			<td colspan="2" style="text-align:left;">Potongan Transfer</td>
 			<td style="text-align:right;">IDR</td>
-			<td style="text-align:right;padding:5px;">@thunder_mail_money_indo_without_IDR($data['invoice']['unique_number'])</td>
+			<td style="text-align:right;padding:5px;color:red;">@thunder_mail_money_indo_without_IDR($data['invoice']['unique_number'])</td>
 		</tr>
+		<tr>
+			<td colspan="2">&nbsp;</td>
+			<td colspan="2" style="text-align:left;">
+				Biaya Tambahan
+				@foreach($data['invoice']['transactionextensions'] as $key => $value)
+					<br/> {{$value['productextension']['name']}}
+				@endforeach
+			</td>
+			<td style="text-align:right;">IDR</td>
+			<td style="text-align:right;padding:5px;">@thunder_mail_money_indo_without_IDR( $data['invoice']['extend_cost'])</td>
+		</tr>
+		@if(count($data['invoice']['payment']))
+		<tr>
+			<td colspan="2">&nbsp;</td>
+			<td colspan="2" style="text-align:left;">{{$data['invoice']['payment']['method']}}</td>
+			<td style="text-align:right;">IDR</td>
+			<td style="text-align:right;padding:5px;color:red;">@thunder_mail_money_indo_without_IDR( $data['invoice']['payment']['amount'])</td>
+		</tr>
+		@endif
 		<tr>
 			<td colspan="2">&nbsp;</td>
 			<td colspan="2" style="text-align:left;">Total Yang Harus Dibayarkan</td>

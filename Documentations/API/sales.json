@@ -190,6 +190,10 @@ definitions:
             type: number
           bills:
             type: number
+          point_discount:
+            type: number
+          extend_cost:
+            type: number
           user:
             type: array
             items:
@@ -214,6 +218,10 @@ definitions:
         type: number
       bills:
         type: number
+      point_discount:
+        type: number
+      extend_cost:
+        type: number
       voucher:
         type: array
         items:
@@ -226,6 +234,10 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/details'
+      transactionextensions:
+        type: array
+        items:
+          $ref: '#/definitions/extensions'
       transactionlogs:
         type: array
         items:
@@ -272,6 +284,30 @@ definitions:
         type: number
       total_reference:
         type: number
+  extensions:
+    properties:
+      id:
+        type: string
+      price:
+        type: number
+      value:
+        type: string
+      productextension:
+        type: array
+        items:
+          $ref: '#/definitions/productextension'
+  productextension:
+    properties:
+      id:
+        type: string
+      upc:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      is_active:
+        type: boolean
   details:
     properties:
       id:

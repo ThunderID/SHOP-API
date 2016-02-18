@@ -142,28 +142,47 @@
 							<td colspan="2">&nbsp;</td>
 							<td colspan="2" style="text-align:left;">Diskon Voucher</td>
 							<td style="text-align:right;">IDR</td>
-							<td style="text-align:right;padding:5px;">@thunder_mail_money_indo_without_IDR(($data['paid']['voucher_discount'] ? $data['paid']['voucher_discount'] : 0))</td>
+							<td style="text-align:right;padding:5px;color:red;">@thunder_mail_money_indo_without_IDR(($data['paid']['voucher_discount'] ? $data['paid']['voucher_discount'] : 0))</td>
 						</tr>
 						<tr>
 							<td colspan="2">&nbsp;</td>
 							<td colspan="2" style="text-align:left;">Balin Point yang digunakan</td>
 							<td style="text-align:right;">IDR</td>
-							<td style="text-align:right;padding:5px;">@thunder_mail_money_indo_without_IDR($point)</td>
+							<td style="text-align:right;padding:5px;color:red;">@thunder_mail_money_indo_without_IDR( $data['paid']['point_discount'])</td>
 						</tr>
 						<tr>
 							<td colspan="2">&nbsp;</td>
 							<td colspan="2" style="text-align:left;">Potongan Transfer</td>
 							<td style="text-align:right;">IDR</td>
-							<td style="text-align:right;padding:5px;">@thunder_mail_money_indo_without_IDR($data['paid']['unique_number'])</td>
+							<td style="text-align:right;padding:5px;color:red;">@thunder_mail_money_indo_without_IDR($data['paid']['unique_number'])</td>
 						</tr>
 						<tr>
 							<td colspan="2">&nbsp;</td>
-							<td colspan="2" style="text-align:left;">Total Bayar</td>
+							<td colspan="2" style="text-align:left;">
+								Biaya Tambahan
+								@foreach($data['paid']['transactionextensions'] as $key => $value)
+									<br/> {{$value['productextension']['name']}}
+								@endforeach
+							</td>
 							<td style="text-align:right;">IDR</td>
-							@if($data['paid']['amount'] < 0)
+							<td style="text-align:right;padding:5px;">@thunder_mail_money_indo_without_IDR( $data['paid']['extend_cost'])</td>
+						</tr>
+						@if(count($data['paid']['payment']))
+						<tr>
+							<td colspan="2">&nbsp;</td>
+							<td colspan="2" style="text-align:left;">{{$data['paid']['payment']['method']}}</td>
+							<td style="text-align:right;">IDR</td>
+							<td style="text-align:right;padding:5px;color:red;">@thunder_mail_money_indo_without_IDR( $data['paid']['payment']['amount'])</td>
+						</tr>
+						@endif
+						<tr>
+							<td colspan="2">&nbsp;</td>
+							<td colspan="2" style="text-align:left;">Total</td>
+							<td style="text-align:right;">IDR</td>
+							@if($data['invoice']['bills'] < 0)
 								<td style="text-align:right;padding:5px;">@thunder_mail_money_indo_without_IDR(0)</td>
 							@else
-								<td style="text-align:right;padding:5px;">@thunder_mail_money_indo_without_IDR($data['paid']['amount'])</td>
+								<td style="text-align:right;padding:5px;">@thunder_mail_money_indo_without_IDR($data['invoice']['bills'])</td>
 							@endif
 						</tr>
 					</tbody>

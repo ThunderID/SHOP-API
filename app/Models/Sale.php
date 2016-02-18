@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\HasBillAmountTrait;
+use App\Models\Traits\HasPointDiscountTrait;
 use App\Models\Traits\HasExtendAmountTrait;
 use App\Models\Traits\HasProductExtendTrait;
 use App\Models\Traits\HasAddressExtendTrait;
@@ -30,6 +31,7 @@ class Sale extends Transaction
 	 * Global traits used as query builder (global scope).
 	 *
 	 */
+	use HasPointDiscountTrait;
 	use HasBillAmountTrait;
 	use HasExtendAmountTrait;
 	use HasVoucherQuotaTrait;

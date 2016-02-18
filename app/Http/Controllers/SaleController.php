@@ -52,11 +52,11 @@ class SaleController extends Controller
 						
 						if($policy)
 						{
-							$result	= $result->status('cart')->TransactionLogChangedAt($policy['value']);
+							$result	= $result->status('wait')->TransactionLogChangedAt($policy['value']);
 						}
 						else
 						{
-							$result	= $result->status('cart')->TransactionLogChangedAt('- 2 days');
+							$result	= $result->status('wait')->TransactionLogChangedAt('- 2 days');
 						}
 						break;
 					case 'ondate':

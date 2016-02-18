@@ -892,6 +892,10 @@ definitions:
             type: number
           bills:
             type: number
+          point_discount:
+            type: number
+          bills:
+            type: number
   order:
     properties:
       id:
@@ -936,6 +940,10 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/voucher'
+      transactionextensions:
+        type: array
+        items:
+          $ref: '#/definitions/extensions'
   cart:
     properties:
       id:
@@ -960,6 +968,30 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/details'
+  extensions:
+    properties:
+      id:
+        type: string
+      price:
+        type: number
+      value:
+        type: string
+      productextension:
+        type: array
+        items:
+          $ref: '#/definitions/productextension'
+  productextension:
+    properties:
+      id:
+        type: string
+      upc:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      is_active:
+        type: boolean
   details:
     properties:
       id:
