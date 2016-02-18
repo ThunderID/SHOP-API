@@ -40,7 +40,6 @@ trait HasAddressExtendTrait
 	public function scopeShippingNotes($query, $variable)
 	{
 		return $query->selectraw('shipments.receipt_number as shipping_notes')
-					->selectraw('shipments.card as card')
 					->JoinShipmentFromTransaction(true)
 					;
 	}

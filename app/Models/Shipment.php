@@ -75,8 +75,6 @@ class Shipment extends BaseModel
 											'address_id'					,
 											'receipt_number'				,
 											'receiver_name'					,
-											'package'						,
-											'card'							,
 										];
 										
 	/**
@@ -89,7 +87,6 @@ class Shipment extends BaseModel
 											'courier_id'					=> 'exists:couriers,id',
 											'receipt_number'				=> 'max:255',
 											'receiver_name'					=> 'max:255',
-											'package'						=> 'max:255|in:gift,regular',
 										];
 	
 	/* ---------------------------------------------------------------------------- RELATIONSHIP ----------------------------------------------------------------------------*/
