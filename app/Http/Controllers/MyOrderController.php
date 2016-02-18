@@ -291,7 +291,7 @@ class MyOrderController extends Controller
 			$extend_current_ids         = [];
 			foreach ($order['transactionextensions'] as $key => $value) 
 			{
-				if(!$errors->count() && isset($value['quantity']) && $value['quantity']>0)
+				if(!$errors->count())
 				{
 					$extend_data		= \App\Models\TransactionExtension::findornew($value['id']);
 
