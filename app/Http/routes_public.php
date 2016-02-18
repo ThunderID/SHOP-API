@@ -7,15 +7,17 @@
 *
 * Here is where you can register all of the routes for Public resources who can be accessed by everyone from registered engine.
 *
-* AUTHENTICATE				: Line 26 - 42 
+* AUTHENTICATE				: Line 28 - 62 
 *
-* PRODUCTS 					: Line 47 - 51
+* PRODUCTS 					: Line 67 - 71
 *
-* CLUSTERS 					: Line 56 - 60
+* CLUSTERS 					: Line 76 - 80
 *
-* LABELS 					: Line 65 - 69
+* LABELS 					: Line 85 - 89
 *
-* STORE 					: Line 74 - 78
+* STORE 					: Line 94 - 98
+*
+* EXTENSIONS				: Line 103 - 107
 */
 
 $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], function ($app) 
@@ -92,6 +94,15 @@ $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers'], fu
 	$app->get('/balin/public/config',
 		[
 			'uses'				=> 'UIController@config'
+		]
+	);
+
+	// ------------------------------------------------------------------------------------
+	// EXTENSIONS
+	// ------------------------------------------------------------------------------------
+	$app->get('/balin/public/extensions',
+		[
+			'uses'				=> 'UIController@extensions'
 		]
 	);
 });

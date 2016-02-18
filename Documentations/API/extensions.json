@@ -1,0 +1,235 @@
+swagger: '2.0'
+info:
+  title: Extension API
+  description: Move your app forward with the Extension API
+  version: 1.0.0
+host: localhost:8800
+schemes:
+  - https
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /products/extensions:
+    get:
+      summary: Extension Lists
+      description: |
+        The extensions endpoint returns information about the *BALIN* Extension
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+        - name: search
+          in: query
+          description: search parameter (see below).
+          required: false
+          type: array
+          items:
+            type: string
+        - name: skip
+          in: query
+          description: How many records are going to be skipped
+          required: false
+          type: number
+          format: integer
+        - name: take
+          in: query
+          description: How many records are going to be taken from resource
+          required: false
+          type: number
+          format: integer
+      tags:
+        - extensions
+      responses:
+        '200':
+          description: An array of extensions' data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/extensions'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /products/extension/store:
+    post:
+      summary: Store an extension
+      description: >
+        Store extension
+      parameters:
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+        - name: upc
+          in: query
+          description: extension upc.
+          required: true
+          type: string
+          format: string
+        - name: name
+          in: query
+          description: extension name.
+          required: true
+          type: string
+          format: string
+        - name: price
+          in: query
+          description: extension price.
+          required: true
+          type: string
+          format: string
+        - name: is_active
+          in: query
+          description: extension is_active.
+          required: true
+          type: boolean
+          format: boolean
+        - name: images
+          in: query
+          description: Must be array of images' (see below).
+          required: true
+          type: array
+          items:
+            type: string
+      tags:
+        - extensions
+      responses:
+        '200':
+          description: An array of extension
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/extension'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /products/extension/id/:
+    get:
+      summary: Extension Detail
+      description: 'Get Extension detail information.'
+      parameters:
+        - name: id
+          in: query
+          description: extension id.
+          required: true
+          type: number
+          format: integer
+        - name: access_token
+          in: query
+          description: Access token given by apps.
+          required: true
+          type: string
+          format: string
+      tags:
+        - extensions
+      responses:
+        '200':
+          description: extension rich data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/extension'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  search:
+    properties:
+      name:
+        type: string
+        description: 'Search extension that hath certain name'
+  sort:
+    properties:
+      name:
+        type: string
+        description: 'sort by extension name, value must be asc or desc'
+  extensions:
+    properties:
+      count:
+        type: number
+        description: 'Total extensions.'
+      data:
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+          upc:
+            type: string
+          price:
+            type: string
+          is_active:
+            type: string
+          thumbnail:
+            type: string
+          image_xs:
+            type: string
+          image_sm:
+            type: string
+          image_md:
+            type: string
+          image_lg:
+            type: string
+  extension:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      upc:
+        type: string
+      price:
+        type: string
+      is_active:
+        type: string
+      thumbnail:
+        type: string
+      image_xs:
+        type: string
+      image_sm:
+        type: string
+      image_md:
+        type: string
+      image_lg:
+        type: string
+      images:
+        type: array
+        items:
+          $ref: '#/definitions/images'
+  images:
+    properties:
+      id:
+        type: string
+      product_id:
+        type: string
+      thumbnail:
+        type: string
+      image_xs:
+        type: string
+      image_sm:
+        type: string
+      image_md:
+        type: string
+      image_lg:
+        type: string
+      is_default:
+        type: boolean
+  Error:
+    type: object
+    properties:
+      status:
+        type: string
+      data:
+        type: string
+      message:
+        type: string
+      code:
+        type: integer
+        format: int32

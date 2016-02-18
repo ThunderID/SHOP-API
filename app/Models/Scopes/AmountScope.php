@@ -26,6 +26,7 @@ class AmountScope implements ScopeInterface
 		{
 			$builder->selectraw("
 							sum(IFNULL((SELECT sum((price - discount) * quantity) FROM transaction_details WHERE transaction_details.transaction_id = transactions.id and transaction_details.deleted_at is null),0)
+							+ IFNULL((SELECT sum(price) FROM transaction_extensions WHERE transaction_extensions.transaction_id = transactions.id and transaction_extensions.deleted_at is null),0)
 							+ transactions.shipping_cost - transactions.voucher_discount - transactions.unique_number
 							) as amount
 						")
@@ -36,6 +37,7 @@ class AmountScope implements ScopeInterface
 		{
 			$builder->selectraw("
 						sum(IFNULL((SELECT sum((price - discount) * quantity) FROM transaction_details WHERE transaction_details.transaction_id = transactions.id and transaction_details.deleted_at is null),0)
+						+ IFNULL((SELECT sum(price) FROM transaction_extensions WHERE transaction_extensions.transaction_id = transactions.id and transaction_extensions.deleted_at is null),0)
 						+ transactions.shipping_cost - transactions.voucher_discount - transactions.unique_number
 						) as amount
 					")

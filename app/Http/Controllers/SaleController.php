@@ -69,7 +69,7 @@ class SaleController extends Controller
 						$result 	= $result->AddressNotes(true);
 						break;
 					case 'shippingnotes':
-						$result 	= $result->ShippingNotes(true);
+						$result 	= $result->ShippingNotes(true)->with(['transactionextensions', 'transactionextensions.productextension']);
 						break;
 					case 'bills':
 						$result 	= $result->bills($value);
@@ -144,7 +144,7 @@ class SaleController extends Controller
 	 */
 	public function detail($id = null)
 	{
-		$result                 = \App\Models\Sale::id($id)->with(['voucher', 'transactionlogs', 'user', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'paidpointlogs', 'payment', 'shipment', 'shipment.address', 'shipment.courier'])->first();
+		$result                 = \App\Models\Sale::id($id)->with(['voucher', 'transactionlogs', 'user', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'paidpointlogs', 'payment', 'shipment', 'shipment.address', 'shipment.courier', 'transactionextensions', 'transactionextensions.productextension'])->first();
 
 		if($result)
 		{
@@ -317,7 +317,7 @@ class SaleController extends Controller
 
 		DB::commit();
 		
-		$final_sale                 = \App\Models\Sale::id($sale_data['id'])->with(['voucher', 'transactionlogs', 'user', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'paidpointlogs', 'payment', 'shipment', 'shipment.address', 'shipment.courier'])->first()->toArray();
+		$final_sale                 = \App\Models\Sale::id($sale_data['id'])->with(['voucher', 'transactionlogs', 'user', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'paidpointlogs', 'payment', 'shipment', 'shipment.address', 'shipment.courier', 'transactionextensions', 'transactionextensions.productextension'])->first()->toArray();
 
 		return new JSend('success', (array)$final_sale);
 	}

@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
-  title: Label API
-  description: Move your app forward with the Label API
+  title: Extension API
+  description: Move your app forward with the Extension API
   version: 1.0.0
 host: localhost:8800
 schemes:
@@ -10,11 +10,12 @@ basePath: /v1
 produces:
   - application/json
 paths:
-  /balin/public/labels:
+  /balin/public/extensions:
     get:
-      summary: Label Lists
+      summary: Extension Lists
       description: |
-        The Labels endpoint returns information about the *BALIN* UI Labels.
+        The Extensions endpoint returns information about the *BALIN* UI Extensions
+        for additional charges.
       parameters:
         - name: access_token
           in: query
@@ -42,14 +43,14 @@ paths:
           type: number
           format: integer
       tags:
-        - Labels
+        - Extensions
       responses:
         '200':
-          description: An array of Labels' data
+          description: An array of Extensions' data
           schema:
             type: array
             items:
-              $ref: '#/definitions/label'
+              $ref: '#/definitions/extensions'
         default:
           description: Unexpected error
           schema:
@@ -59,22 +60,38 @@ definitions:
     properties:
       name:
         type: string
-        description: 'Search Label that hath likely name'
+        description: 'Search Extension that hath likely name'
   sort:
     properties:
-      label:
+      extensions:
         type: string
-        description: 'sort by label, value must be asc or desc'
-  label:
+        description: 'sort by Extension, value must be asc or desc'
+  extensions:
     properties:
       count:
         type: number
-        description: 'Total label.'
+        description: 'Total Extension.'
       data:
         properties:
           id:
             type: string
-          lable:
+          upc:
+            type: string
+          name:
+            type: string
+          price:
+            type: string
+          is_active:
+            type: string
+          thumbnail:
+            type: string
+          image_xs:
+            type: string
+          image_sm:
+            type: string
+          image_md:
+            type: string
+          image_lg:
             type: string
   Error:
     type: object

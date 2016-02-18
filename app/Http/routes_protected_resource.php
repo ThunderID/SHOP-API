@@ -121,6 +121,34 @@ $app->group(['middleware' => 'oauth|staff', 'namespace' => 'App\Http\Controllers
 	);
 
 	// ------------------------------------------------------------------------------------
+	// EXTENSIONS
+	// ------------------------------------------------------------------------------------
+
+	$app->get('/products/extensions',
+		[
+			'uses'				=> 'ProductExtensionController@index'
+		]
+	);
+
+	$app->get('/products/extension/{id}',
+		[
+			'uses'				=> 'ProductExtensionController@detail'
+		]
+	);
+
+	$app->post('/products/extension/store',
+		[
+			'uses'				=> 'ProductExtensionController@store'
+		]
+	);
+
+	$app->delete('/products/extension/delete/{id}',
+		[
+			'uses'				=> 'ProductExtensionController@delete'
+		]
+	);
+
+	// ------------------------------------------------------------------------------------
 	// SUPPLIERS
 	// ------------------------------------------------------------------------------------
 

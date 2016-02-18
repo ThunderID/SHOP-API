@@ -47,7 +47,7 @@ class MyOrderController extends Controller
 	 */
 	public function detail($user_id = null, $order_id = null)
 	{
-		$result                 = \App\Models\Sale::userid($user_id)->id($order_id)->status(['wait', 'canceled', 'paid', 'shipping', 'packed', 'delivered'])->with(['payment', 'orderlogs', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'shipment', 'shipment.courier', 'shipment.address', 'voucher', 'user'])->first();
+		$result                 = \App\Models\Sale::userid($user_id)->id($order_id)->status(['wait', 'canceled', 'paid', 'shipping', 'packed', 'delivered'])->with(['payment', 'orderlogs', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'shipment', 'shipment.courier', 'shipment.address', 'voucher', 'user', 'transactionextensions', 'transactionextensions.productextension'])->first();
 
 		if($result)
 		{
@@ -64,7 +64,7 @@ class MyOrderController extends Controller
 	 */
 	public function incart($user_id = null)
 	{
-		$result                 = \App\Models\Sale::userid($user_id)->status('cart')->with(['payment', 'orderlogs', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'shipment', 'shipment.courier', 'shipment.address', 'voucher', 'user'])->first();
+		$result                 = \App\Models\Sale::userid($user_id)->status('cart')->with(['payment', 'orderlogs', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'shipment', 'shipment.courier', 'shipment.address', 'voucher', 'user', 'transactionextensions', 'transactionextensions.productextension'])->first();
 
 		if($result)
 		{
@@ -226,7 +226,82 @@ class MyOrderController extends Controller
 			}
 		}
 
-		//2. Check if need to save address
+		//3. Validate Order Detail Parameter
+		if(!$errors->count() && isset($order['transactionextensions']) && is_array($order['transactionextensions']))
+		{
+			$extend_current_ids         = [];
+			foreach ($order['transactionextensions'] as $key => $value) 
+			{
+				if(!$errors->count() && isset($value['quantity']) && $value['quantity']>0)
+				{
+					$extend_data		= \App\Models\TransactionExtension::findornew($value['id']);
+
+					$extend_rules		=   [
+												'transaction_id'            => 'exists:transactions,id|'.($is_new ? '' : 'in:'.$order_data['id']),
+												'product_extension_id'		=> 'required|exists:product_extensions,id',
+												'price'                     => 'required|numeric',
+											];
+
+					$validator			= Validator::make($value, $extend_rules);
+
+					//if there was extend and validator false
+					if (!$validator->passes())
+					{
+						$errors->add('Extend', $validator->errors());
+					}
+					else
+					{
+						$check_prev_trans 				= \App\Models\TransactionExtension::transactionid($order_data['id'])->productextensionid($value['product_extension_id'])->first();
+						if($check_prev_trans)
+						{
+							$extend_data 				= $check_prev_trans;
+						}
+						
+						$value['transaction_id']        = $order_data['id'];
+
+						$extend_data                    = $extend_data->fill($value);
+
+						if(!$extend_data->save())
+						{
+							$errors->add('Extend', $extend_data->getError());
+						}
+						else
+						{
+							$extend_current_ids[]       = $extend_data['id'];
+						}
+					}
+				}
+			}
+
+			//if there was no error, check if there were things need to be delete
+			if(!$errors->count())
+			{
+				$extends                            = \App\Models\TransactionExtension::transactionid($order['id'])->get(['id'])->toArray();
+				
+				$extend_should_be_ids               = [];
+				foreach ($extends as $key => $value) 
+				{
+					$extend_should_be_ids[]         = $value['id'];
+				}
+
+				$difference_extend_ids              = array_diff($extend_should_be_ids, $extend_current_ids);
+
+				if($difference_extend_ids)
+				{
+					foreach ($difference_extend_ids as $key => $value) 
+					{
+						$extend_data                = \App\Models\TransactionExtension::find($value);
+
+						if(!$extend_data->delete())
+						{
+							$errors->add('Extend', $extend_data->getError());
+						}
+					}
+				}
+			}
+		}
+
+		//4. Check if need to save address
 		if(!$errors->count() && isset($order['shipment']['address']))
 		{
 			$address_data        = \App\Models\Address::findornew($order['shipment']['address']['id']);
@@ -241,7 +316,7 @@ class MyOrderController extends Controller
 
 			$validator      	= Validator::make($order['shipment']['address'], $address_rules);
 
-			//2a. save address
+			//4a. save address
 			//if there was address and validator false
 			if (!$validator->passes())
 			{
@@ -262,7 +337,7 @@ class MyOrderController extends Controller
 			}
 		}
 
-		//2b. save shipment
+		//4b. save shipment
 		if(!$errors->count() && isset($order['shipment']))
 		{
 			if($order_data->shipment()->count())
@@ -281,7 +356,7 @@ class MyOrderController extends Controller
 
 			$validator				= Validator::make($order['shipment'], $shipment_rules);
 
-			//2a. save shipment
+			//4c. save shipment
 			//if there was shipment and validator false
 			if (!$validator->passes())
 			{
@@ -305,7 +380,7 @@ class MyOrderController extends Controller
 			}
 		}
 
-		//3. update status
+		//5. update status
 		if(!$errors->count() && isset($order['status']) && $order_data['status'] != $order['status'])
 		{
 			//3a. check cart price and product current  price
@@ -317,6 +392,19 @@ class MyOrderController extends Controller
 					if($value['price'] != $value['varian']['product']['price'] || $value['discount'] != $discount )
 					{
 						$errors->add('Price', 'Harga item '. $value['varian']['product']['name'].' telah berubah sejak '.$value['varian']['product']['price_start'].'. Silahkan update keranjang Anda.');
+					}
+				}
+
+				foreach ($order_data['transactionextensions'] as $key => $value) 
+				{
+					if($value['price'] != $value['productextension']['price'])
+					{
+						$errors->add('Price', 'Biaya '. $value['productextension']['name'].' telah berubah sejak '.$value['productextension']['updated_at'].'. Silahkan update keranjang Anda.');
+					}
+
+					if(!$value['productextension']['is_active'])
+					{
+						$errors->add('Active', $value['productextension']['name'].' telah di non aktif kan sejak '.$value['productextension']['updated_at'].'. Silahkan update keranjang Anda.');
 					}
 				}
 			}
@@ -343,7 +431,7 @@ class MyOrderController extends Controller
 
 		DB::commit();
 		
-		$final_order                 = \App\Models\Sale::userid($user_id)->id($order_data['id'])->status(['cart', 'wait', 'canceled', 'paid', 'shipping', 'packed', 'delivered'])->with(['payment', 'orderlogs', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'shipment', 'shipment.courier', 'shipment.address', 'voucher', 'user'])->first()->toArray();
+		$final_order                 = \App\Models\Sale::userid($user_id)->id($order_data['id'])->status(['cart', 'wait', 'canceled', 'paid', 'shipping', 'packed', 'delivered'])->with(['payment', 'orderlogs', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'shipment', 'shipment.courier', 'shipment.address', 'voucher', 'user', 'transactionextensions', 'transactionextensions.productextension'])->first()->toArray();
 
 		return new JSend('success', (array)$final_order);
 	}
