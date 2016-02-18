@@ -277,8 +277,6 @@ class MyOrderController extends Controller
 			$shipment_rules     	=   [
 											'courier_id'	=> 'required|exists:couriers,id',
 											'receiver_name'	=> 'required|max:255',
-											'package'		=> 'max:255|in:gift,regular',
-											'card'			=> 'required_if:package,gift',
 										];
 
 			$validator				= Validator::make($order['shipment'], $shipment_rules);
