@@ -8,7 +8,7 @@ use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
-use Request;
+use Request, Carbon\Carbon;
 
 class MyOrderController extends Controller
 {
@@ -108,14 +108,73 @@ class MyOrderController extends Controller
 
 		if(isset($order['voucher_code']))
 		{
-			$voucher 				= \App\Models\Voucher::code($order['voucher_code'])->type(['free_shipping_cost', 'debit_point'])->first();
+			//a. check if voucher code is voucher
+			$voucher 						= \App\Models\Voucher::code($order['voucher_code'])->type(['free_shipping_cost', 'debit_point'])->first();
 
 			if(!$voucher)
 			{
-				return new JSend('error', (array)Input::all(), ['Voucher tidak valid.']);
+				//b. check if voucher is referral
+				$voucher_data              	= \App\Models\Referral::code($order['voucher_code'])->first();
+				if(!$voucher_data)
+				{
+					$voucher_data			= \App\Models\Voucher::code($order['voucher_code'])->type('promo_referral')->ondate('now')->first();
+				}
+
+				if(!$voucher_data)
+				{
+					return new JSend('error', (array)Input::all(), ['Voucher tidak valid.']);
+				}
+				elseif($voucher_data->quota <= 0)
+				{
+					$errors->add('Redeem', 'Quota referral sudah habis.');
+				}
+				else
+				{
+					$store                      = \App\Models\StoreSetting::type('voucher_point_expired')->Ondate('now')->first();
+
+					if($store)
+					{
+						$expired_at             = new Carbon($store->value);
+					}
+					else
+					{
+						$expired_at             = new Carbon('+ 3 months');
+					}
+
+					//if validator passed, save voucher
+					if($voucher_data['type']=='referral')
+					{
+						$reference_id 			= $voucher_data['user_id'];
+						$reference_type			= 'App\Models\User';
+					}
+					else
+					{
+						$reference_id 			= $voucher_data['id'];
+						$reference_type			= 'App\Models\Voucher';
+					}
+
+					$point                  =   [
+													'user_id'               => $user_id,
+													'reference_id'        	=> $reference_id,
+													'reference_type'        => $reference_type,
+													'expired_at'            => $expired_at->format('Y-m-d H:i:s'),
+												];
+
+					$point_data             = new \App\Models\PointLog;
+					
+					$point_data->fill($point);
+
+					if(!$point_data->save())
+					{
+						$errors->add('Redeem', $point_data->getError());
+					}
+				}
+			}
+			else
+			{
+				$order['voucher_id']	= $voucher['id'];
 			}
 
-			$order['voucher_id']	= $voucher['id'];
 		}
 
 		if(isset($order['voucher_id']) && ($order['voucher_id'])==0)
@@ -129,16 +188,16 @@ class MyOrderController extends Controller
 										];
 
 		//1a. Get original data
-		$order_data              = \App\Models\Sale::findornew($order['id']);
+		$order_data					= \App\Models\Sale::findornew($order['id']);
 
 		//1b. Validate Basic Order Parameter
-		$validator                  = Validator::make($order, $order_rules);
+		$validator					= Validator::make($order, $order_rules);
 
-		if (!$validator->passes())
+		if (!$validator->passes() && !$errors->count())
 		{
 			$errors->add('Sale', $validator->errors());
 		}
-		else
+		elseif (!$errors->count())
 		{
 			//if validator passed, save order
 			$order_data           = $order_data->fill(['user_id' => $user_id, 'voucher_id' => (isset($order['voucher_id']) ? $order['voucher_id'] : '0')]);
