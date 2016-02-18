@@ -66,11 +66,15 @@ class WarehouseController extends Controller
 			$balance 				= $balance->first();
 			$balance_old[] 			= ['ref' => 'Balance','varian_id' => $id, 'transact_at' => Carbon::parse($prev_date)->format('Y-m-d H:i:s'), 'stock_in' => $balance['inventory_stock'], 'stock_out' => 0];
 			$detail_old 			= $detail->get()->toArray();
+
 			if(!empty($detail_old))
 			{
-				array_push($balance_old, $detail_old);
+				$varian['details'] 	= array_merge($balance_old, $detail_old);
 			}
-			$varian['details']		= $balance_old;
+			else
+			{
+				$varian['details'] 	= $balance_old;
+			}
 		}
 		else
 		{
