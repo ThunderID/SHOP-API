@@ -140,6 +140,7 @@ class TransactionDetail extends BaseModel
 	{
 		return 	$query
 					->selectraw('transaction_details.varian_id')
+					->selectraw('transactions.ref_number as ref')
 					->selectraw('transactions.transact_at')
 					->selectraw('sum(if(transactions.type = "buy", quantity, 0)) as stock_in')
 					->selectraw('sum(if(transactions.type = "sell", quantity, 0)) as stock_out')

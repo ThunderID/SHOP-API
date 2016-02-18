@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Libraries\JSend;
 use Illuminate\Support\Facades\Input;
+use Carbon\Carbon;
 
 /**
  * Handle Protected Warehouse's report
@@ -33,8 +34,18 @@ class WarehouseController extends Controller
 				switch (strtolower($key)) 
 				{
 					case 'ondate':
-						$detail     = $detail->TransactionLogChangedAt($value);
-						$varian     = $varian->TransactionLogChangedAt($value);
+						if(is_array($value))
+						{
+							$balance	= \App\Models\Varian::id($id)->TransactionLogChangedAt($value[0]);
+							$prev_date 	= $value[0];
+							$detail     = $detail->TransactionLogChangedAt($value);
+							$varian     = $varian->TransactionLogChangedAt($value[1]);
+						}
+						else
+						{
+							$detail     = $detail->TransactionLogChangedAt($value);
+							$varian     = $varian->TransactionLogChangedAt($value);
+						}
 						break;
 					default:
 						# code...
@@ -50,7 +61,21 @@ class WarehouseController extends Controller
 
 		$varian                     = $varian->with(['product'])->first()->toArray();
 
-		$varian['details']          = $detail->get()->toArray();
+		if(isset($balance))
+		{
+			$balance 				= $balance->first();
+			$balance_old[] 			= ['ref' => 'Balance','varian_id' => $id, 'transact_at' => Carbon::parse($prev_date)->format('Y-m-d H:i:s'), 'stock_in' => $balance['inventory_stock'], 'stock_out' => 0];
+			$detail_old 			= $detail->get()->toArray();
+			if(!empty($detail_old))
+			{
+				array_push($balance_old, $detail_old);
+			}
+			$varian['details']		= $balance_old;
+		}
+		else
+		{
+			$varian['details']		= $detail->get()->toArray();
+		}
 
 		return new JSend('success', (array)$varian);
 	}
