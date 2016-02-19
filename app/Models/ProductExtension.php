@@ -80,6 +80,7 @@ class ProductExtension extends BaseModel
 											'name'							,
 											'price'							,
 											'is_active'						,
+											'is_customize'					,
 											'description'					,
 										];
 										
@@ -92,6 +93,7 @@ class ProductExtension extends BaseModel
 											'name'							=> 'required|max:255',
 											'price'							=> 'numeric',
 											'is_active'						=> 'boolean',
+											'is_customize'					=> 'boolean',
 										];
 	
 	/* ---------------------------------------------------------------------------- RELATIONSHIP ----------------------------------------------------------------------------*/

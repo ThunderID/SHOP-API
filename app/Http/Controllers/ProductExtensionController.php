@@ -138,6 +138,7 @@ class ProductExtensionController extends Controller
 											'name'						=> 'required|max:255',
 											'price'						=> 'numeric',
 											'is_active'					=> 'boolean',
+											'is_customize'				=> 'boolean',
 										];
 
 		//1a. Get original data

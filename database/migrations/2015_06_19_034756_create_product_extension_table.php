@@ -17,6 +17,7 @@ class CreateProductExtensionTable extends Migration
             $table->string('name');
             $table->double('price');
             $table->boolean('is_active');
+            $table->boolean('is_customize');
             $table->text('description');
             $table->timestamps();
             $table->softDeletes();
