@@ -178,7 +178,7 @@
 			<td style="text-align:right;">IDR</td>
 			<td style="text-align:right;padding:5px;">@thunder_mail_money_indo_without_IDR( $data['invoice']['extend_cost'])</td>
 		</tr>
-		@if(count($data['invoice']['payment']))
+		@if(isset($data['invoice']['payment']) && count($data['invoice']['payment']))
 		<tr>
 			<td colspan="2">&nbsp;</td>
 			<td colspan="2" style="text-align:left;">{{$data['invoice']['payment']['method']}}</td>

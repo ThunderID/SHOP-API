@@ -447,7 +447,7 @@ class MyOrderController extends Controller
 			{
 				foreach ($order_data['transactiondetails'] as $key => $value) 
 				{
-					$discount 			= ($value['varian']['product']['promo_price']==0 ? ($value['varian']['product']['price']) : ($value['varian']['product']['price'] - $value['varian']['product']['promo_price']));
+					$discount 			= ($value['varian']['product']['promo_price']==0 ? (0) : ($value['varian']['product']['price'] - $value['varian']['product']['promo_price']));
 					if($value['price'] != $value['varian']['product']['price'] || $value['discount'] != $discount )
 					{
 						$errors->add('Price', 'Harga item '. $value['varian']['product']['name'].' telah berubah sejak '.$value['varian']['product']['price_start'].'. Silahkan update keranjang Anda.');
