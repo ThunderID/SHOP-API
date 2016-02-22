@@ -7,25 +7,29 @@
 *
 * ORDER
 *
-* Invoice 					: Line 37 
+* Invoice 					: Line 41 
 *	
-* Paid 						: Line 43
+* Paid 						: Line 47
 *	
-* Shipped 					: Line 49
+* Shipped 					: Line 53
 *	
-* Delivered 				: Line 55
+* Delivered 				: Line 59
 *	
-* Canceled 					: Line 61
+* Canceled 					: Line 65
 *	
 * ACCOUNT
 *	
-* Reset Password 			: Line 71
+* Reset Password 			: Line 75
 *	
-* Send Invitation 			: Line 77
+* Send Invitation 			: Line 81
 *	
 * CRM
 *	
-* Welcome					: Line 87
+* Welcome					: Line 91
+*	
+* Abandon					: Line 97
+*	
+* Contact					: Line 103
 */
 
 $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers\Mail', 'prefix' => 'mail'], function ($app) 
@@ -96,4 +100,9 @@ $app->group(['middleware' => 'oauth', 'namespace' => 'App\Http\Controllers\Mail'
 		]
 	);
 
+	$app->post('/contact',
+		[
+			'uses'				=> 'CRMController@contact'
+		]
+	);
 });
