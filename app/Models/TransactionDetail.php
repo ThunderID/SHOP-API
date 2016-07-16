@@ -161,7 +161,7 @@ class TransactionDetail extends BaseModel
 		return 	$query
 				->selectraw('transaction_details.*')
 				// ->selectcurrentstock(true)
-				->TransactionStockOn(['wait', 'paid', 'packed', 'shipping', 'delivered'])
+				->TransactionStockOn(['wait', 'payment_process', 'paid', 'packed', 'shipping', 'delivered'])
 				->HavingCurrentStock($variable)
 				// ->orderby('current_stock', 'asc')
 				->groupBy('varian_id')

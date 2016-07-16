@@ -19,7 +19,7 @@ class MyOrderController extends Controller
 	 */
 	public function index($user_id = null)
 	{
-		$result                     = \App\Models\Sale::userid($user_id)->status(['wait', 'canceled', 'paid', 'shipping', 'packed', 'delivered']);
+		$result                     = \App\Models\Sale::userid($user_id)->status(['wait', 'canceled', 'payment_process', 'paid', 'shipping', 'packed', 'delivered']);
 
 		$count                      = count($result->get());
 
@@ -47,7 +47,24 @@ class MyOrderController extends Controller
 	 */
 	public function detail($user_id = null, $order_id = null)
 	{
-		$result                 = \App\Models\Sale::userid($user_id)->id($order_id)->status(['wait', 'canceled', 'paid', 'shipping', 'packed', 'delivered'])->with(['payment', 'orderlogs', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'shipment', 'shipment.courier', 'shipment.address', 'voucher', 'user', 'transactionextensions', 'transactionextensions.productextension'])->first();
+		$result                 = \App\Models\Sale::userid($user_id)->id($order_id)->status(['wait', 'payment_process', 'canceled', 'paid', 'shipping', 'packed', 'delivered'])->with(['payment', 'orderlogs', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'shipment', 'shipment.courier', 'shipment.address', 'voucher', 'user', 'transactionextensions', 'transactionextensions.productextension'])->first();
+
+		if($result)
+		{
+			return new JSend('success', (array)$result->toArray());
+		}
+
+		return new JSend('error', (array)Input::all(), 'ID Tidak Valid.');
+	}
+
+	/**
+	 * Display an order by ref_number
+	 *
+	 * @return Response
+	 */
+	public function refnumber($user_id = null, $refnumber = null)
+	{
+		$result                 = \App\Models\Sale::userid($user_id)->refnumber($refnumber)->status(['wait', 'payment_process', 'canceled', 'paid', 'shipping', 'packed', 'delivered'])->with(['payment', 'orderlogs', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'shipment', 'shipment.courier', 'shipment.address', 'voucher', 'user', 'transactionextensions', 'transactionextensions.productextension'])->first();
 
 		if($result)
 		{
@@ -490,7 +507,7 @@ class MyOrderController extends Controller
 
 		DB::commit();
 		
-		$final_order                 = \App\Models\Sale::userid($user_id)->id($order_data['id'])->status(['cart', 'wait', 'canceled', 'paid', 'shipping', 'packed', 'delivered'])->with(['payment', 'orderlogs', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'shipment', 'shipment.courier', 'shipment.address', 'voucher', 'user', 'transactionextensions', 'transactionextensions.productextension'])->first()->toArray();
+		$final_order                 = \App\Models\Sale::userid($user_id)->id($order_data['id'])->status(['cart', 'wait', 'payment_process', 'canceled', 'paid', 'shipping', 'packed', 'delivered'])->with(['payment', 'orderlogs', 'transactiondetails', 'transactiondetails.varian', 'transactiondetails.varian.product', 'shipment', 'shipment.courier', 'shipment.address', 'voucher', 'user', 'transactionextensions', 'transactionextensions.productextension'])->first()->toArray();
 
 		return new JSend('success', (array)$final_order);
 	}

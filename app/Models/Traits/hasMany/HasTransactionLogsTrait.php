@@ -35,7 +35,7 @@ trait HasTransactionLogsTrait
 	 **/
 	public function OrderLogs()
 	{
-		return $this->hasMany('App\Models\TransactionLog', 'transaction_id')->wherein('status', ['wait', 'paid', 'packed', 'shipping', 'delivered', 'canceled']);
+		return $this->hasMany('App\Models\TransactionLog', 'transaction_id')->wherein('status', ['wait', 'payment_process', 'paid', 'packed', 'shipping', 'delivered', 'canceled']);
 	}
 
 	/**

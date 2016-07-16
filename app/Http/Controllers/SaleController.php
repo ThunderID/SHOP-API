@@ -284,7 +284,7 @@ class SaleController extends Controller
 		{
 			$log_rules   =   [
 									'transaction_id'	=> 'exists:transactions,id|'.($is_new ? '' : 'in:'.$sale_data['id']),
-									'status'			=> 'required|max:255|in:cart,wait,paid,packed,shipping,delivered,canceled,abandoned',
+									'status'			=> 'required|max:255|in:cart,wait,payment_process,paid,packed,shipping,delivered,canceled,abandoned',
 								];
 
 			$validator   = Validator::make($sale, $log_rules);

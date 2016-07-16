@@ -120,7 +120,7 @@ class Transaction extends BaseModel
 
 				$latest_transaction             = Transaction::select('ref_number')
 													->where('ref_number', 'like', $prefix.'%')
-													->status(['wait', 'paid', 'packed', 'shipping', 'delivered', 'canceled'])
+													->status(['wait', 'payment_process', 'paid', 'packed', 'shipping', 'delivered', 'canceled'])
 													->orderBy('ref_number', 'DESC')
 													->first();
 

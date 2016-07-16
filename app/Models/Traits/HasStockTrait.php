@@ -38,7 +38,7 @@ trait HasStockTrait
 	public function scopeSelectCurrentStock($query, $variable)
 	{
 		return $query->selectraw('IFNULL(SUM(
-									if(transactions.type ="sell", if(transaction_logs.status ="wait" OR transaction_logs.status ="paid" OR transaction_logs.status ="shipping" OR transaction_logs.status="packed" OR transaction_logs.status ="delivered", 0-quantity, 0), quantity)
+									if(transactions.type ="sell", if(transaction_logs.status ="wait" OR transaction_logs.status ="payment_process" OR transaction_logs.status ="paid" OR transaction_logs.status ="shipping" OR transaction_logs.status="packed" OR transaction_logs.status ="delivered", 0-quantity, 0), quantity)
 									),0) as current_stock')
 		;
 	}
@@ -51,7 +51,7 @@ trait HasStockTrait
 	public function scopeSelectOnHoldStock($query, $variable)
 	{
 		return $query->selectraw('IFNULL(SUM(
-									if(transactions.type ="sell", if(transaction_logs.status ="wait", quantity, 0), 0)
+									if(transactions.type ="sell", if(transaction_logs.status ="wait" OR transaction_logs.status ="payment_process", quantity, 0), 0)
 									),0) as on_hold_stock')
 		;
 	}
@@ -138,7 +138,7 @@ trait HasStockTrait
 		}
 
 		return $query->havingraw('IFNULL(SUM(
-									if(transactions.type ="sell", if(transaction_logs.status ="wait" OR transaction_logs.status ="paid" OR transaction_logs.status ="shipping" OR transaction_logs.status="packed" OR transaction_logs.status ="delivered", 0-quantity, 0), quantity)
+									if(transactions.type ="sell", if(transaction_logs.status ="wait" OR transaction_logs.status ="payment_process" OR transaction_logs.status ="paid" OR transaction_logs.status ="shipping" OR transaction_logs.status="packed" OR transaction_logs.status ="delivered", 0-quantity, 0), quantity)
 									),0) '.$param.' '.$variable)
 		;
 	}

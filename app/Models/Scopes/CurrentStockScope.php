@@ -28,7 +28,7 @@ class CurrentStockScope implements ScopeInterface
 			$builder->selectglobalstock(true)
 					->LeftJoinVarianFromProduct(true)
 					->LeftJoinTransactionDetailFromVarian(true)
-					->LeftTransactionStockOn(['wait', 'paid', 'packed', 'shipping', 'delivered'])
+					->LeftTransactionStockOn(['wait', 'payment_process', 'paid', 'packed', 'shipping', 'delivered'])
 					->groupby('products.id')
 					;
 		}
@@ -38,7 +38,7 @@ class CurrentStockScope implements ScopeInterface
 			{
 				$builder->selectglobalstock(true)
 						->LeftJoinTransactionDetailFromVarian(true)
-						->LeftTransactionStockOn(['wait', 'paid', 'packed', 'shipping', 'delivered'])
+						->LeftTransactionStockOn(['wait', 'payment_process', 'paid', 'packed', 'shipping', 'delivered'])
 						->groupby('varians.id')
 						->orderby($model->sort, $model->sort_param)
 						;
@@ -47,7 +47,7 @@ class CurrentStockScope implements ScopeInterface
 			{
 				$builder->selectglobalstock(true)
 						->LeftJoinTransactionDetailFromVarian(true)
-						->LeftTransactionStockOn(['wait', 'paid', 'packed', 'shipping', 'delivered'])
+						->LeftTransactionStockOn(['wait', 'payment_process', 'paid', 'packed', 'shipping', 'delivered'])
 						->groupby('varians.id')
 						;
 			}

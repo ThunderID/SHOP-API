@@ -78,6 +78,10 @@ class TransactionLogObserver
 							$errors->add('Log', 'Stok '.$value['varian']['product']['name'].' ukuran '.$value['varian']['size']. ' tidak mencukupi');
 						}
 					}
+					if(!$details->count())
+					{
+						$errors->add('Detail', 'Tidak dapat checkout tanpa produk.');
+					}
 					if(!$errors->count() && (!$model->sale->shipment()->count() || !$model->sale->shipment->address()->count()))
 					{
 						$errors->add('Log', 'Tidak dapat checkout tanpa alamat pengiriman.');
@@ -110,7 +114,7 @@ class TransactionLogObserver
 					{
 						$errors->add('Log', 'Tidak dapat membatalkan transaksi yang sudah dibayar.');
 					}
-					elseif($model->sale->status!='wait')
+					elseif($model->sale->status!='wait' && $model->sale->status!='payment_process')
 					{
 						$errors->add('Log', 'Tidak dapat mengabaikan transaksi yang belum di checkout.');
 					}

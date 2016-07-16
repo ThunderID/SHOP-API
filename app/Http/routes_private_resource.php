@@ -97,6 +97,12 @@ $app->group(['middleware' => 'oauth|me', 'namespace' => 'App\Http\Controllers'],
 		]
 	);
 
+	$app->get('/me/{user_id}/order/number/{refnumber}',
+		[
+			'uses'				=> 'MyOrderController@refnumber'
+		]
+	);
+
 	$app->get('/me/{user_id}/incart',
 		[
 			'uses'				=> 'MyOrderController@incart'

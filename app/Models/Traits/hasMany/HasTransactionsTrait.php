@@ -52,7 +52,7 @@ trait HasTransactionsTrait
 	 **/
 	public function MyOrders()
 	{
-		return $this->hasMany('App\Models\Sale', 'user_id')->wherein('status', ['wait', 'canceled', 'paid', 'shipping', 'packed', 'delivered']);
+		return $this->hasMany('App\Models\Sale', 'user_id')->wherein('status', ['wait', 'payment_process', 'canceled', 'paid', 'shipping', 'packed', 'delivered']);
     }
 
 	/**

@@ -66,7 +66,7 @@ class SaleObserver
         }
 
         //3. create transact_at
-        if(!in_array($model->status, ['canceled', 'abandoned', 'paid', 'shipping', 'delivered', 'na', 'wait']))
+        if(!in_array($model->status, ['canceled', 'abandoned', 'paid', 'shipping', 'delivered', 'na', 'wait', 'payment_process']))
         {
             $model->transact_at             = Carbon::now()->format('Y-m-d H:i:s');
         }

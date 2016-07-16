@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
 		'App\Console\Commands\PointExpireQueueCommand',
 		'App\Console\Commands\PointExpireCommand',
 		'App\Console\Commands\BroadcastDiscountCommand',
+		'App\Console\Commands\HandlingPaymentVeritransCommand',
 	];
 
 	/**
